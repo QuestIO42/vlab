@@ -4,7 +4,7 @@ A set of PHP files, scripts and database to allow remote users to edit programs 
 
 ![Editor](html/about/editor.png) 
 
-![Close](html/about/close.jpg) ![Open](html/about/open.jpg) ![Board](html/about/zybo.jpg)
+<img src="html/about/close.jpg" width="30%"/><img src="html/about/open.jpg" width="30%"/><img src="html/about/zybo.jpg" width="40%"/> 
 
 ## Features
 - Fully web based solution
