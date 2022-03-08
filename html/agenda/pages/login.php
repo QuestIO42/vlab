@@ -64,7 +64,10 @@ function registerUser(&$user) { //register user
 		if (!$user['name']) { $msg = $ax['log_no_un']; break; }
 		if (!$user['email']) { $msg = $ax['log_no_em']; break; }
 		if (!preg_match("/^[\w\s\._-]{2,}$/u", $user['name'])) { $msg = $ax['log_un_invalid']; break; }
-		if (!preg_match($rxEmail,$user['email'])) { $msg = $ax['log_em_invalid']; break; }
+	        $matches = array();
+	        $good_domains = array('ufscar.br', 'estudante.ufscar.br');
+		if (!preg_match($rxEmail,$user['email'],$matches)) { $msg = $ax['log_em_invalid']; break; }
+	        if (!in_array($matches[2], $good_domains)) { $msg = $ax['log_dm_invalid']; break; } 
 		if ($user['phone'] and !preg_match("/^\+?[\d]{4,19}$/",$user['phone'])) { $msg = $ax['log_ph_invalid']; break; }
 		if ($set['selfRegQ'] and $user['selfRegA'] != $set['selfRegA']) {
 			$_SESSION['srCnt'] = isset($_SESSION['srCnt']) ? $_SESSION['srCnt'] + 1 : 1;

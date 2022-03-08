@@ -355,6 +355,7 @@ $ax = array(
 "log_em_exists" => "Endereço de e-mail já existe",
 "log_un_invalid" => "Nome de utilizador inválido (Tamanho mín.: 2 Carateres aceites: A-Z, a-z, 0-9, e \"_\" \"-\" .) ",
 "log_em_invalid" => "Endereço de e-mail inválido",
+"log_dm_invalid" => "Domínio do e-mail inválido",
 "log_ph_invalid" => "Invalid mobile phone number",
 "log_sra_wrong" => "Incorrect answer to the question",
 "log_sra_wrong_4x" => "You have answered incorrectly 4 times - try again in 30 minutes",

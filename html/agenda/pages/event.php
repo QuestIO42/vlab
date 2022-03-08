@@ -11,45 +11,93 @@ The LuxCal Web Calendar is distributed WITHOUT ANY WARRANTY.
 ?>
 
 <?php
-function notEmlNow(&$evt,$addrList,$what) { //notify added/edited/deleted event by email
-	global $xx, $set, $nal, $apd, $tit, $cid, $sda, $eda, $sti, $eti, $r_t, $uid, $repTxt;
-	
-	//get category data
-	$stH = stPrep("SELECT `name`,`approve`,`color`,`bgColor`,`checkBx`,`checkLb`,`checkMk` FROM `categories` WHERE `ID` = ?");
-	stExec($stH,array($cid));
-	$row = $stH->fetch(PDO::FETCH_ASSOC);
-	$stH = null;
-	
-	//compose email message
-	switch ($what) {
-		case 'add': $noteText = $xx['evt_event_added']; break;
-		case 'upd': $noteText = $xx['evt_event_edited']; break;
-		case 'del': $noteText = $xx['evt_event_deleted']; break;
-		case 'apd': $noteText = $xx['evt_event_approved'];
+
+	function dateEmMysql($dateSql){
+	    $ano= substr($dateSql, 6);
+	    $mes= substr($dateSql, 3,-5);
+	    $dia= substr($dateSql, 0,-8);
+	    return $ano."-".$mes."-".$dia;
 	}
-	$dateTime = makeFullDT(false,$sda,$eda,$sti,$eti).($r_t ? " ({$repTxt})" : ''); //add full date/time and repeat text (display values)
-	$evD = DDtoID($sda);
-	$status = '';
-	if (!$eda and !$r_t) { //no multi-day and not repeating
-		if ($row['checkBx']) { $status .= $row['checkLb'].': '.(strpos($evt['chd'], $evD) ? $row['checkMk'] : '- -'); }
+
+	function notEmlNow(&$evt,$addrList,$what) { //notify added/edited/deleted event by email
+		global $xx, $set, $nal, $apd, $tit, $cid, $sda, $eda, $sti, $eti, $r_t, $uid, $repTxt;
+		global $sDate, $sTime, $eDate, $eTime;
+		
+		//get category data
+		$stH = stPrep("SELECT `name`,`approve`,`color`,`bgColor`,`checkBx`,`checkLb`,`checkMk` FROM `categories` WHERE `ID` = ?");
+		stExec($stH,array($cid));
+		$row = $stH->fetch(PDO::FETCH_ASSOC);
+		$stH = null;
+		
+		//compose email message
+		$aprova=0;
+		switch ($what) {
+			case 'add': $noteText = $xx['evt_event_added']; break;
+			case 'upd': $noteText = $xx['evt_event_edited']; break;
+			case 'del': $noteText = $xx['evt_event_deleted']; break;
+			case 'apd': $noteText = $xx['evt_event_approved'];
+			$aprova=1;
+		}
+		$dateTime = makeFullDT(false,$sda,$eda,$sti,$eti).($r_t ? " ({$repTxt})" : ''); //add full date/time and repeat text (display values)
+		$evD = DDtoID($sda);
+		$status = '';
+		if (!$eda and !$r_t) { //no multi-day and not repeating
+			if ($row['checkBx']) { $status .= $row['checkLb'].': '.(strpos($evt['chd'], $evD) ? $row['checkMk'] : '- -'); }
+		}
+		$subject = "{$noteText}: {$tit}";
+		$catColor = ($row['color'] ? "color:{$row['color']};" : "").($row['bgColor'] ? "background-color:{$row['bgColor']};" : "");
+		$eStyle = $catColor ? " style=\"{$catColor}\"" : "";
+		$eBoxStyle = ' style="padding-left:5px;'.(($row['approve'] and !$apd) ? ' border-left:2px solid #ff0000;' : '').'"';
+		$fields = '12378'.($set['xField1Rights'] == 1 ? '4' : '').($set['xField2Rights'] == 1 ? '5' : ''); //add xFields
+		$evtText = makeE($evt,$set['evtTemplGen'],'td','',$fields);
+		$msgBody = "
+	<h5>{$noteText}:</h5>
+	<br>
+	<table{$eBoxStyle}>
+		<tr><td>{$xx['evt_title']}:</td><td><b><span{$eStyle}>{$tit}</span></b></td></tr>
+		".($status ? "<tr><td>{$xx['evt_status']}:</td><td>{$status}</td></tr>" : '')."
+		<tr><td>{$xx['evt_date_time']}:</td><td>{$dateTime}</td></tr>
+		{$evtText}
+	</table>
+	";
+		$sender = $set['notSenderEml'] ? $uid : 0;
+
+
+
+		$linkLab="Indisponivel";
+
+		if ($aprova==1) {
+			$digits_needed=24;
+
+			$random_number=''; // set up a blank string
+
+			$countInt=0;
+
+			while ( $countInt < $digits_needed ) {
+			    $random_digit = mt_rand(0, 9);
+
+			    $random_number .= $random_digit;
+			    $countInt++;
+			}
+
+			//echo "The random $digits_needed digit number is $random_number";
+
+			$key=$random_number;
+			$linkLab="https://vlab.dc.ufscar.br/index.php?key=" . $key;
+
+			$uid=1;
+			//$ds="$sda" . " $sti";//"2020-01-01 17:00";
+			//$de="$sda" . " $eti";//"2020-01-01 18:00";
+			$ds="$sDate"." $sTime";
+			$de="$sDate"." $eTime"; 
+		$stH2 = stPrep("INSERT INTO `slots` (`akey`,`uid`,`start`,`end`,`catID`) VALUES (?,?,?,?,?)");
+		stExec($stH2,array($key,$uid,$ds,$de,$cid));
+
+
 	}
-	$subject = "{$noteText}: {$tit}";
-	$catColor = ($row['color'] ? "color:{$row['color']};" : "").($row['bgColor'] ? "background-color:{$row['bgColor']};" : "");
-	$eStyle = $catColor ? " style=\"{$catColor}\"" : "";
-	$eBoxStyle = ' style="padding-left:5px;'.(($row['approve'] and !$apd) ? ' border-left:2px solid #ff0000;' : '').'"';
-	$fields = '12378'.($set['xField1Rights'] == 1 ? '4' : '').($set['xField2Rights'] == 1 ? '5' : ''); //add xFields
-	$evtText = makeE($evt,$set['evtTemplGen'],'td','',$fields);
-	$msgBody = "
-<h5>{$noteText}:</h5>
-<br>
-<table{$eBoxStyle}>
-	<tr><td>{$xx['evt_title']}:</td><td><b><span{$eStyle}>{$tit}</span></b></td></tr>
-	".($status ? "<tr><td>{$xx['evt_status']}:</td><td>{$status}</td></tr>" : '')."
-	<tr><td>{$xx['evt_date_time']}:</td><td>{$dateTime}</td></tr>
-	{$evtText}
-</table>
-";
-	$sender = $set['notSenderEml'] ? $uid : 0;
+
+	$msgBody = $msgBody . "<br>Link de acesso: $linkLab<br>";
+
 	sendEml($subject,$msgBody,$addrList,0,$sender,$evD); //send email notification
 }
 
@@ -60,6 +108,8 @@ function notSmsNow($addrList,$evtID) { //notify event now by SMS
 	$smsMsg = $dateTime.': '.$tit; //SMS message
 	if ($ven) { $smsMsg .= "\n{$ven}"; }
 	$sender = $set['notSenderSms'] ? $uid : 0;
+
+
 	sendSms($smsMsg,$addrList,$sender,$evtID); //send SMS notification
 }
 

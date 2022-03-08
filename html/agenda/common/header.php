@@ -450,7 +450,7 @@ echo <<<TXT
 <meta name="robots" content="nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="{$set['calendarUrl']}">
-<link rel="icon" type="image/png" href="lcal.png">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
 <link rel="stylesheet" type="text/css" href="css/css.php?cal={$calID}&amp;v={$version}{$cssX}">
 <script src='common/toolbox.js?v={$version}'></script>
 <script>
