@@ -17,7 +17,8 @@ module top #(parameter VGA_BITS = 8) (
   output VGA_BLANK_N, VGA_SYNC_N);
 
   wire VGA_DA; // In display area
-  wire VGA_PIXEL, RESET;
+  wire VGA_QR; // Display QR code
+  wire VGA_PIXEL, QR_PIXEL, PIXEL, RESET;
   
     //http://tinyvga.com/vga-timing
 	 
@@ -49,14 +50,15 @@ module top #(parameter VGA_BITS = 8) (
   vga #(WIDTH, HEIGHT, 
         HFRONT, HSYNC, HBACK, HPULSEN, 
 		    VFRONT, VSYNC, VBACK, VPULSEN) 
-		    video(VGA_CLK, VGA_HS, VGA_VS, VGA_DA);
+		    video(VGA_CLK, VGA_HS, VGA_VS, VGA_DA, VGA_QR, QR_PIXEL);
 
   gol #(WIDTH, HEIGHT) 
         board(VGA_CLK, RESET, VGA_DA, VGA_PIXEL);
   
-  assign VGA_R = {VGA_BITS{VGA_DA ? SW[3] ^ VGA_PIXEL : 1'b0}};
-  assign VGA_G = {VGA_BITS{VGA_DA ? SW[2] ^ VGA_PIXEL : 1'b0}};
-  assign VGA_B = {VGA_BITS{VGA_DA ? SW[1] ^ VGA_PIXEL : 1'b0}};
+  assign PIXEL = VGA_QR ? QR_PIXEL : VGA_PIXEL;
+  assign VGA_R = {VGA_BITS{VGA_DA ? SW[3] ^ PIXEL : 1'b0}};
+  assign VGA_G = {VGA_BITS{VGA_DA ? SW[2] ^ PIXEL : 1'b0}};
+  assign VGA_B = {VGA_BITS{VGA_DA ? SW[1] ^ PIXEL : 1'b0}};
   assign VGA_BLANK_N = 1'b1;
   assign VGA_SYNC_N  = 1'b0;
 endmodule
@@ -79,12 +81,23 @@ module vga #(
   VFRONT = 10, VSYNC =  2, VBACK = 33, VPULSEN = 1
 ) (
   input clk,
-  output reg vga_HS, vga_VS, vga_DA);
+  output reg vga_HS, vga_VS, vga_DA, vga_QR, 
+  output QR_pixel);
 
+  localparam QR_SIZE = 108;
+
+  reg [26:0] QR_code [0:26];
   reg [9:0] CounterX, CounterY;
+  wire [26:0] QR_line;
   wire CounterXmaxed = (CounterX == (WIDTH + HFRONT + HSYNC + HBACK));
   wire CounterYmaxed = (CounterY == (HEIGHT + VFRONT + VSYNC + VBACK));
-  
+
+  initial 
+    $readmemb("qr_code.bin", QR_code);
+
+  assign QR_line = QR_code[CounterX>>2];
+  assign QR_pixel = QR_line[CounterY>>2];
+
   always @(posedge clk)
   begin
     if (CounterXmaxed)
@@ -101,6 +114,7 @@ module vga #(
     vga_HS <= HPULSEN[0] ^ (CounterX > ( WIDTH + HFRONT) && (CounterX < ( WIDTH + HFRONT + HSYNC)));
     vga_VS <= VPULSEN[0] ^ (CounterY > (HEIGHT + VFRONT) && (CounterY < (HEIGHT + VFRONT + VSYNC)));
     vga_DA <= (CounterX < WIDTH) && (CounterY < HEIGHT);
+    vga_QR <= (CounterX < QR_SIZE) && (CounterY < QR_SIZE);
   end
 endmodule
 
