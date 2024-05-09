@@ -25,14 +25,17 @@ Tested with Arduino and Zybo boards. It would be easy to use with mBed / STM32 b
 - Arduino makefile (https://github.com/sudar/Arduino-Makefile)
 - Arduino IDE
 - Motion (for webcam) (https://github.com/Motion-Project/motion)
-- Xilinx Vivado Suite
+- AMD/Xilinx Vivado Suite
+- Intel/Altera Quartus Prime Suite
 
 ## Installation
 1. On a Linux machine, install Apache + MySQL + PHP and Apache+PHP+MySQL modules, if you still don't have it
 2. Install luxcal (https://www.luxsoft.eu/index.php?pge=dload) on /var/www/html/agenda folder (tested with luxcal 479)
-3. Configure luxcal database and SMTP. Test your calendar install and if approved events are senging email
+3. Configure luxcal database and SMTP. Test your calendar install and if approved events are sending email
 4. Install and configure motion
 5. Download and copy CodeMirror (codemirror-5.58.1) to /var/www/html/codemirror-5.58.1
-6. Install and configura Xilinx tools  
+6. Install and configure FPGA tools  
 
 Thanks to Prof. Rafael Aroca for supporting the [original version](https://github.com/rafaelaroca/RemoteMicrocontrollerLab)!
+
+## [Pull resquests with examples are welcome!](html/examples/fpga/quartus)

@@ -7,11 +7,13 @@ function page() {
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lab. Remoto de L&oacute;gica Digital - DC/UFSCar</title>
+<title>Lab. Remoto de Embarcados - DC/UFSCar</title>
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 
 <style>
 body {background-color: #e0e0e0; color: #2b3856;}
+.github-fork-ribbon:before { background-color: #ff7f00; }
 </style>
         <script>
             function changeSrc(loc) {
@@ -26,11 +28,12 @@ body {background-color: #e0e0e0; color: #2b3856;}
       </script>
     </head>
     <body>
+<a class="github-fork-ribbon" href="https://github.com/menotti/RemoteMicrocontrollerLab" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 <center>
-<h1>Lab. Remoto de L&oacute;gica Digital - DC/UFSCar</h1>
-
-	   <BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>
-        <button onclick="window.open('http://vlab.dc.ufscar.br:8081/', 'camera');">Camera</button>
+<h1>Lab. Remoto de Embarcados - DC/UFSCar</h1>
+	<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>
+	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
+    <button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
     </body>
@@ -80,6 +83,9 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 				  break;
 				case 3:
 				  $editor = "arduino_uno";
+				  break;
+				case 4:
+				  $editor = "stm32";
 				  break;
 			} 
 		}
