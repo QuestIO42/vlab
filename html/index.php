@@ -28,7 +28,7 @@ body {background-color: #e0e0e0; color: #2b3856;}
       </script>
     </head>
     <body>
-<a class="github-fork-ribbon" href="https://github.com/menotti/RemoteMicrocontrollerLab" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+<a class="github-fork-ribbon" href="https://github.com/QuestIO42/vlab" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 <center>
 <h1>Lab. Remoto de Embarcados - DC/UFSCar</h1>
 	<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>
