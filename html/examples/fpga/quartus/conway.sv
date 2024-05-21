@@ -84,7 +84,7 @@ module vga #(
   output reg vga_HS, vga_VS, vga_DA, vga_QR, 
   output QR_pixel);
 
-  localparam QR_SIZE = 108;
+  localparam QR_SIZE = 54;
 
   reg [26:0] QR_code [0:26];
   reg [9:0] CounterX, CounterY;
@@ -95,8 +95,8 @@ module vga #(
   initial 
     $readmemb("qr_code.bin", QR_code);
 
-  assign QR_line = QR_code[CounterX>>2];
-  assign QR_pixel = QR_line[CounterY>>2];
+  assign QR_line = QR_code[CounterX>>1];
+  assign QR_pixel = QR_line[CounterY>>1];
 
   always @(posedge clk)
   begin
