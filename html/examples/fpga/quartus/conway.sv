@@ -85,9 +85,13 @@ module vga #(
   output QR_pixel);
 
   localparam QR_SIZE = 54;
+  localparam WAIT_TIME = 1350000;
 
   reg [26:0] QR_code [0:26];
   reg [9:0] CounterX, CounterY;
+  reg [9:0] qr_x, qr_y, top_left_x, top_left_y;
+  reg [23:0] clockCounter = 0;
+  reg visual_clk;
   wire [26:0] QR_line;
   wire CounterXmaxed = (CounterX == (WIDTH + HFRONT + HSYNC + HBACK));
   wire CounterYmaxed = (CounterY == (HEIGHT + VFRONT + VSYNC + VBACK));
@@ -95,8 +99,16 @@ module vga #(
   initial 
     $readmemb("qr_code.bin", QR_code);
 
-  assign QR_line = QR_code[CounterX>>1];
-  assign QR_pixel = QR_line[CounterY>>1];
+  assign QR_line = QR_code[top_left_x>>1];
+  assign QR_pixel = ~QR_line[top_left_y>>1];
+
+  always @(posedge clk) begin
+    clockCounter <= clockCounter + 1;
+    if (clockCounter == WAIT_TIME) begin
+      clockCounter <= 0;
+      visual_clk <= ~visual_clk;
+    end
+  end
 
   always @(posedge clk)
   begin
@@ -114,7 +126,70 @@ module vga #(
     vga_HS <= HPULSEN[0] ^ (CounterX > ( WIDTH + HFRONT) && (CounterX < ( WIDTH + HFRONT + HSYNC)));
     vga_VS <= VPULSEN[0] ^ (CounterY > (HEIGHT + VFRONT) && (CounterY < (HEIGHT + VFRONT + VSYNC)));
     vga_DA <= (CounterX < WIDTH) && (CounterY < HEIGHT);
-    vga_QR <= (CounterX < QR_SIZE) && (CounterY < QR_SIZE);
+    vga_QR <= (CounterX >= qr_x && CounterX <= QR_SIZE + qr_x) && 
+              (CounterY >= qr_y && CounterY <= QR_SIZE + qr_y);
+    top_left_x <= (CounterX-qr_x);
+    top_left_y <= (CounterY-qr_y);
+  end
+
+  bouncing_qr #(
+    .H_RESOLUTION(640),
+    .V_RESOLUTION(480),
+    .QR_CODE_SIZE(QR_SIZE)
+  ) qrcode (
+    .visual_clk(visual_clk),
+    .CounterX(CounterX),
+    .CounterY(CounterY), 
+    .x_ball(qr_x), 
+    .y_ball(qr_y)
+  );
+endmodule
+
+// Author: Gustavo de Macena Barreto
+module bouncing_qr #(
+  parameter H_RESOLUTION    = 640,
+  parameter V_RESOLUTION    = 480,
+  parameter QR_CODE_SIZE    = 54
+)(
+  input     visual_clk,
+  input  reg [9:0] CounterX , CounterY,
+  output reg [9:0] x_ball, y_ball);
+
+  localparam x_max = H_RESOLUTION - QR_CODE_SIZE; 
+  localparam x_min = 0;
+  
+  localparam y_max = V_RESOLUTION - QR_CODE_SIZE;
+  localparam y_min = 0;
+
+  reg incr_x, incr_y; // reg to hold the state (1 increment, 0 decrement)
+
+  reg [31:0] reg_x = 31'd0;
+  reg [31:0] reg_y = 31'd0;
+  
+  assign x_ball = reg_x;
+  assign y_ball = reg_y;
+
+  always @(posedge visual_clk) begin
+    if (incr_x) // Increment in H_RESOLUTION (Horizontal) 
+      if (reg_x >= x_max) 
+        incr_x <=0;
+      else
+        reg_x <= reg_x + 1;
+    else
+      if (reg_x <= x_min) 
+        incr_x <=1;
+      else 
+        reg_x <= reg_x - 1;    
+    if(incr_y) // Increment in V_RESOLUTION (Vertical)
+      if (reg_y >= y_max)  
+        incr_y <=0;
+      else 
+        reg_y <= reg_y + 1;
+    else      
+      if (reg_y <= y_min) 
+        incr_y <= 1;
+      else 
+        reg_y <= reg_y - 1;    
   end
 endmodule
 
