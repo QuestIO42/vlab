@@ -147,7 +147,6 @@ module vga #(parameter VGA_BITS = 8) (
     .visual_clk(visual_clk),
     .CounterX(CounterX),
     .CounterY(CounterY), 
-    .rgb(rgb_qr),
     .x_ball(qr_x), 
     .y_ball(qr_y)
   );
