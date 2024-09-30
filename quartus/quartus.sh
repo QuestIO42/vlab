@@ -17,7 +17,7 @@ export HOME=`pwd`
 D=`date +%Y-%m-%d-%H-%M-%S`
 
 cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/quartus
-cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/build_history/fpga/$D
+cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/quartus/build_history/$D
 cd /home/vlab/quartus
 
 make clean

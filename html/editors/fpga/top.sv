@@ -2,58 +2,212 @@
 // Company: UFSCar
 // Author: Ricardo Menotti
 // 
-// Create Date: 29.09.2021 18:36:28
+// Create Date: 94.07.2024 17:54:28
 // Project Name: Lab. Remoto de Lógica Digital - DC/UFSCar
-// Design Name: Hex Counter
-// Module Name: colors
-// Target Devices: xc7z020
-// Tool Versions: Vivado v2019.2 (64-bit)
+// Design Name: VGA Test
+// Module Name: vga
+// From: https://tinytapeout.github.io/vga-playground/
 //////////////////////////////////////////////////////////////////////////////////
 
-module top(
-  input sysclk,
-  output [3:0] jc, jd
-  );
+module top #(parameter VGA_BITS = 8) (
+  input CLOCK_50, // 50MHz
+  output [9:0] LEDR,
+  output [VGA_BITS-1:0] VGA_R, VGA_G, VGA_B,
+  output VGA_HS, VGA_VS,
+  output reg VGA_CLK,
+  output VGA_BLANK_N, VGA_SYNC_N);
 
-  integer count = 0;
-  integer clkdiv = 0;
-  wire [3:0] val;
-  
-  always@(posedge sysclk)
-    clkdiv = clkdiv + 1;
+  always@(posedge CLOCK_50)
+    VGA_CLK = ~VGA_CLK;
 
-  always@(posedge clkdiv[3])
-    count = count + 1;
+  vga video(VGA_CLK, VGA_R, VGA_G, VGA_B, VGA_HS, VGA_VS);
 
-  Display7seg dig(val, {jd[2:0],jc});
- 
-  assign val = clkdiv[5] ? count[31:28] : count[27:24];
-  assign jd[3] = clkdiv[5]; 
+  assign VGA_BLANK_N = 1'b1;
+  assign VGA_SYNC_N  = 1'b0;
 endmodule
 
-module Display7seg (
-    input  [3:0] bcd,
-    output reg [6:0] segs
-    );
-        
-    always @(bcd)        // gfedcba
-      case (bcd)         // 6543210
-        4'b0000 : segs = 7'b0111111; // 0
-        4'b0001 : segs = 7'b0000110; // 1
-        4'b0010 : segs = 7'b1011011; // 2
-        4'b0011 : segs = 7'b1001111; // 3
-        4'b0100 : segs = 7'b1100110; // 4
-        4'b0101 : segs = 7'b1101101; // 5
-        4'b0110 : segs = 7'b1111101; // 6
-        4'b0111 : segs = 7'b0000111; // 7
-        4'b1000 : segs = 7'b1111111; // 8
-        4'b1001 : segs = 7'b1101111; // 9
-        4'b1010 : segs = 7'b1110111; // A
-        4'b1011 : segs = 7'b1111100; // b
-        4'b1100 : segs = 7'b0111001; // C
-        4'b1101 : segs = 7'b1011110; // d
-        4'b1110 : segs = 7'b1111001; // E
-        4'b1111 : segs = 7'b1110001; // F
-      endcase
-		
+// Author: Gustavo de Macena Barreto
+module bouncing_qr #(
+  parameter H_RESOLUTION    = 640,
+  parameter V_RESOLUTION    = 480,
+  parameter QR_CODE_SIZE    = 54
+)(
+  input     visual_clk,
+  input  reg [9:0] CounterX , CounterY,
+  output reg [9:0] x_ball, y_ball);
+
+  localparam x_max = H_RESOLUTION - QR_CODE_SIZE; 
+  localparam x_min = 0;
+  
+  localparam y_max = V_RESOLUTION - QR_CODE_SIZE;
+  localparam y_min = 0;
+
+  reg incr_x, incr_y; // reg to hold the state (1 increment, 0 decrement)
+  reg [31:0] reg_x = 31'd0;
+  reg [31:0] reg_y = 31'd0;
+  
+  assign x_ball = reg_x;
+  assign y_ball = reg_y;
+
+  always @(posedge visual_clk) begin
+    if (incr_x) // Increment in H_RESOLUTION (Horizontal) 
+      if (reg_x >= x_max) 
+        incr_x <=0;
+      else
+        reg_x <= reg_x + 1;
+    else
+      if (reg_x <= x_min) 
+        incr_x <=1;
+      else 
+        reg_x <= reg_x - 1;    
+    if(incr_y) // Increment in V_RESOLUTION (Vertical)
+      if (reg_y >= y_max)  
+        incr_y <=0;
+      else 
+        reg_y <= reg_y + 1;
+    else      
+      if (reg_y <= y_min) 
+        incr_y <= 1;
+      else 
+        reg_y <= reg_y - 1;    
+  end
+endmodule
+
+module vga #(parameter VGA_BITS = 8) (
+  input clk, 
+  output [VGA_BITS-1:0] VGA_R, VGA_G, VGA_B, 
+  output VGA_HS_O, VGA_VS_O);
+
+  localparam QR_SIZE = 54;
+  localparam WAIT_TIME = 1350000;
+
+  reg [9:0] CounterX, CounterY;
+  reg inDisplayArea;
+  reg vga_HS, vga_VS;
+  reg [9:0] qr_x, qr_y, top_left_x, top_left_y;
+  reg [23:0] clockCounter = 0;
+  reg visual_clk;
+  
+  wire CounterXmaxed = (CounterX == 800); // 16 + 48 + 96 + 640
+  wire CounterYmaxed = (CounterY == 525); // 10 + 2 + 33 + 480       
+  
+  reg [26:0] QR_code [0:26];
+  wire [26:0] QR_line;
+  reg vga_QR;
+  
+  reg [19:0] tm;
+  reg [9:0] y_prv;
+  wire [7:0] noise_value;
+  
+  initial 
+    $readmemb("qr_code.bin", QR_code);
+
+  assign QR_line = QR_code[top_left_x>>1];
+  assign QR_pixel = ~QR_line[top_left_y>>1];
+
+  always @(posedge clk) begin
+    clockCounter <= clockCounter + 1;
+    if (clockCounter == WAIT_TIME) begin
+      clockCounter <= 0;
+      visual_clk <= ~visual_clk;
+    end
+  end
+
+  always @(posedge clk)
+    if (CounterXmaxed)
+      CounterX <= 0;
+    else
+      CounterX <= CounterX + 1;
+
+  always @(posedge clk)
+    if (CounterXmaxed)
+      if(CounterYmaxed)
+        CounterY <= 0;
+      else
+        CounterY <= CounterY + 1;
+
+  always @(posedge clk)
+  begin
+    vga_HS <= (CounterX > (640 + 16) && (CounterX < (640 + 16 + 96)));   // active for 96 clocks
+    vga_VS <= (CounterY > (480 + 10) && (CounterY < (480 + 10 + 2)));   // active for 2 clocks
+    inDisplayArea <= (CounterX < 640) && (CounterY < 480);
+    vga_QR <= (CounterX >= qr_x && CounterX <= QR_SIZE + qr_x) && 
+              (CounterY >= qr_y && CounterY <= QR_SIZE + qr_y);
+    top_left_x <= (CounterX-qr_x);
+    top_left_y <= (CounterY-qr_y);
+  end
+  
+  always @(posedge clk)
+	begin
+      y_prv <= CounterY;
+      if (CounterY == 0 && y_prv != CounterY) begin
+          tm <= tm + 1;
+      end
+    end
+
+  assign VGA_HS_O = ~vga_HS;
+  assign VGA_VS_O = ~vga_VS;  
+
+  assign VGA_R = vga_QR ? {VGA_BITS{QR_pixel}} : inDisplayArea ? { noise_value[7], noise_value[2], 6'b0 } : {VGA_BITS{1'b0}};
+  assign VGA_G = vga_QR ? {VGA_BITS{QR_pixel}} : inDisplayArea ? { noise_value[6], noise_value[3], 6'b0 } : {VGA_BITS{1'b0}};
+  assign VGA_B = vga_QR ? {VGA_BITS{QR_pixel}} : inDisplayArea ? { noise_value[5], noise_value[4], 6'b0 } : {VGA_BITS{1'b0}};
+  
+  bouncing_qr #(
+    .H_RESOLUTION(640),
+    .V_RESOLUTION(480),
+    .QR_CODE_SIZE(QR_SIZE)
+  ) qrcode (
+    .visual_clk(visual_clk),
+    .CounterX(CounterX),
+    .CounterY(CounterY), 
+    .x_ball(qr_x), 
+    .y_ball(qr_y)
+  );
+  
+    worley_noise_generator worley_inst (
+      .clk(clk),
+      .x(CounterX),
+      .y(CounterY),
+      .t(tm),
+      .noise(noise_value)
+  );
+endmodule
+
+module worley_noise_generator (
+    input wire clk,
+    input wire [9:0] x,
+    input wire [9:0] y,
+    input wire [19:0] t,
+    output reg [7:0] noise
+);
+
+  // Define a small fixed grid of points
+  reg [8:0] points_x[0:3];
+  reg [8:0] points_y[0:3];
+
+
+  assign points_x[0] = 100 + t;
+  assign points_y[0] = 100 - t;
+  assign points_x[1] = 300 - (t >> 1);
+  assign points_y[1] = 200 + (t >> 1);
+  assign points_x[2] = 500 + (t >> 1);
+  assign points_y[2] = 400 - (t >> 4);
+  assign points_x[3] = 100 - (t >> 3);
+  assign points_y[3] = 500 - (t >> 2);
+
+  wire [15:0] distance1 = (x - points_x[0]) * (x - points_x[0]) + (y - points_y[0]) * (y - points_y[0]);
+  wire [15:0] distance2 = (x - points_x[1]) * (x - points_x[1]) + (y - points_y[1]) * (y - points_y[1]);
+  wire [15:0] distance3 = (x - points_x[2]) * (x - points_x[2]) + (y - points_y[2]) * (y - points_y[2]);
+  wire [15:0] distance4 = (x - points_x[3]) * (x - points_x[3]) + (y - points_y[3]) * (y - points_y[3]);
+  wire [15:0] min_dist = 
+    (distance1 < distance2) ? 
+      (distance1 < distance3) ? 
+        (distance1 < distance4) ? distance1 : distance4 : 
+        (distance3 < distance4) ? distance3 : distance4 :
+      (distance2 < distance3) ?
+        (distance2 < distance4) ? distance2 : distance4 :
+        (distance3 < distance4) ? distance3 : distance4;
+
+  assign noise = ~min_dist[15:8];  // Scale down to 8-bit value
+  
 endmodule

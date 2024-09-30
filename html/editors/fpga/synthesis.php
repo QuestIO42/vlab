@@ -83,5 +83,5 @@ if (is_resource($process)) {
     }
 }
 echo "</pre>";
-echo "DONE!";
+echo "Command sent! Wait for the board to be programmed...";
 ?>
