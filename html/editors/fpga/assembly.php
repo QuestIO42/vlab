@@ -59,7 +59,11 @@ if (is_numeric($_GET['key'])) {
 ?>
 
 <?php
-ob_implicit_flush(true);ob_end_flush(); 
+ob_implicit_flush(true);
+
+if(ob_get_length() > 0) {
+    ob_end_flush();
+}
 
 $cmd = "/bin/bash /home/vlab/assembly.sh";
 
