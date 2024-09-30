@@ -4,10 +4,10 @@
 
 <?php
 
-$dbHost="localhost"; //MySQL server
-$dbUnam="reservas"; //database username
-$dbPwrd="*******"; //database password
-$dbName="reservas"; //database name
+$dbHost=$_ENV["MYSQL_HOST"];
+$dbUnam=$_ENV["MYSQL_USER"]; 
+$dbPwrd=$_ENV["MYSQL_PASSWORD"];
+$dbName=$_ENV["MYSQL_DATABASE"];
 
 global $con;
 $con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));
@@ -59,9 +59,14 @@ if (is_numeric($_GET['key'])) {
 ?>
 
 <?php
-ob_implicit_flush(true);ob_end_flush(); 
 
-$cmd = "/bin/bash /home/vlab/synthesis.sh";
+ob_implicit_flush(true); 
+
+if(ob_get_length() > 0) {
+    ob_end_flush();
+}
+
+$cmd = "mosquitto_pub -h 'localhost' -t 'quartus' -m 'quartus'";
 
 $descriptorspec = array(
    0 => array("pipe", "r"),   // stdin is a pipe that the child will read from

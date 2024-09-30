@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lab. Remoto de L&oacute;gica Digital - DC/UFSCar</title>
+<title>Laborat&oacute;rio Remoto de L&oacute;gica Digital - DC/UFSCar</title>
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
 <style>
@@ -21,15 +21,14 @@ body {background-color: #e0e0e0; color: #2b3856;}
     </head>
     <body>
 <center>
-<h1>Lab. Remoto de L&oacute;gica Digital - DC/UFSCar</h1>
+<h1>Laborat&oacute;rio Remoto de L&oacute;gica Digital - DC/UFSCar</h1>
 
 <?php
 
-$dbHost="localhost"; //MySQL server
-$dbUnam="reservas"; //database username
-$dbPwrd="*******"; //database password
-$dbName="reservas"; //database name
-
+$dbHost=$_ENV["MYSQL_HOST"];
+$dbUnam=$_ENV["MYSQL_USER"]; 
+$dbPwrd=$_ENV["MYSQL_PASSWORD"];
+$dbName=$_ENV["MYSQL_DATABASE"];
 
 global $con;
 $con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));
@@ -67,7 +66,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 			} else {
 				echo "<br><br>Esta chave so permite acesso no horário entre $s e $e - <a href=/agenda>agende um novo horário</a><br>";
 ?>
-	<button onclick="window.open('http://vlab.dc.ufscar.br:8081/', 'camera');">Camera</button>
+	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
 <?php
@@ -77,7 +76,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 	} else {
 	   echo "<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>";
 ?>   
-        <button onclick="window.open('http://vlab.dc.ufscar.br:8081/', 'camera');">Camera</button>
+	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
 <?php
@@ -87,7 +86,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 } else {
 	echo "<BR><center>Chave inválida - <a href=/agenda>agende um horário</a></center>";
 ?>
-	<button onclick="window.open('http://vlab.dc.ufscar.br:8081/', 'camera');">Camera</button>
+	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
 <?php
@@ -97,7 +96,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 ?>
 
 </center>
-	<button onclick="window.open('http://vlab.dc.ufscar.br:8081/', 'camera');">Camera</button>
+	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="changeSrc('synthesis.php?key=<?php echo $k;?>')">Sintetizar & Programar</button>
 	<button onclick="changeSrc('assembly.php?key=<?php echo $k;?>')">Assembly</button>

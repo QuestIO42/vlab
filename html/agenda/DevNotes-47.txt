@@ -1,0 +1,874 @@
+============================
+= LuxCal Development Notes =
+============================
+
+=== This file lists all changes since the start of LuxCal V4.7. It contains ===
+=== a short description of each change and the files affected by the change ===
+
+Change log - version 4.7.1
+==========================
+
+New features / improvements
+01. eventform1.php, event.php, retrieve.php, toolbox.php: Repeating events are 
+    now allowed when the event overlap check is enabled. If a repeating event 
+    has no end date, the overlap check will be performed for the next 24 months.
+02. messaging.php, toolbox.php, ui-{lang}.php: The recipients field for email 
+    and SMS messages in the Event window and recipients lists in the reciplists 
+    folder may now also contain user names. The calendar will automatically 
+    convert these user names to an email address or a mobile phone number. 
+    File names of recipients lists in the recipients field in the Event window 
+    must now be put between square brackets, to avoid confusion with user names.
+03. dtpicker.js, css.php: Cosmetic change: The forward and backward buttons in 
+    the date picker header have been replaced by the same symbols (black 
+    triangle) as used in the calendar.
+04. eventform1.php, header.php, database.php, search.php, changes.php, 
+    exportICS.php, importICS.php, css.php: Cosmetic change: In the calendar 
+    views the left arrows to open the date picker and time picker have been 
+    replaced by calendar and clock symbols.
+
+Technical Issues
+01. toolboxx.php: When upgrading the calendar, existing user groups will get the 
+    following thumbnail privileges:
+    - Admin: Manage all
+    - Manager: Manage all
+    - Post all: Manage own / view all
+    - Post own: Manage own
+    - Read access: None
+    - No access: None
+02. upgradexxx.php: MySQL version only: When upgrading, when testing if the 
+    database credentials are present the test on password is removed, because 
+    installations on a local server may have an empty password.
+03. toolboxx.php: In the database table definitions the default thumbnail 
+    privileges is set to '00'. The previous value '01' was wrong and caused a 
+    PHP notice message.
+04. toolbox.js: The three sidebars could be moved outside the display area. If 
+    the left mouse button was released when the top of the sidebar was outside 
+    the viewport, the side bar could not be picked up again. Solved by allowing 
+    the sidebar to be moved within the viewport only.
+05. dtpicker.js, css.php: When on the Settings page the start time was set to 0 
+    and the time format was set to AM/PM, the time picker was showing "00:00 
+    00:15 00:30 00:45" on the first line, which is not correct. From midnight to 
+    01:00, the times are "12:00AM 12:15AM 12:30AM 12:45AM". Furthermore the 
+    font-family has been changed to mono-space, to better align the columns in 
+    the time picker.
+06. login.php: Due to an error in the user name validation regex, existing users 
+    could change their user name in any name, including characters like '<' and 
+    '>'. Regex corrected.
+07. index.php, toolbox.php, login.php: When two or more individual calendars 
+    were installed in separate folders on the same domain, users logged in in 
+    one calendar were sometimes automatically logged in in the other calendar(s) 
+    as well. The same kind of interference problems could occur with a single 
+    calendar installation with multiple calendars. The full session and cookie 
+    mechanism has been revised to fix this problem.
+08. toolbox.php: In email reminder messages the links to possible attachments 
+    were relative links and therefore attachments could not be opened from email 
+    messages. To solve this anomaly, we've changed the relative attachment links 
+    to absolute links.
+09. various.php: To simplify the code, at various places the PHP mktime function 
+    has been replaced by the strtotime function.
+10. installxxx.php, upgradexxx.php, toolboxx.php: The installation and upgrade 
+    script will check for a .htaccess file which blocks browser access to .cdb, 
+    .log and .txt files. If not found, a .htaccess file will be created or an 
+    existing .htaccess file will be updated.
+11. toolbox.php: To cope with local installations, the regex for validating the 
+    calendar URL now also accepts host name *host, where * can be 2 - 10 alpha-
+    numeric characters or _, or -.
+12. toolboxd.php (MySQL and SQLite): The function "logError" has been removed 
+    from both toolboxd.php files and has been replaced by the general function 
+    "logMessage" in the toolbox.php file. 
+
+Bugs
+01. event.php, eventform1.php: Editing or deleting one occurrence of a repeating 
+    or multi-day event was not treated as an occurrence and resulted in updating 
+    or deleting the main event.
+02. notify.php: When checking if dates are due for a notification message, a 
+    check for excluded dates produced a PHP notice. Excluded dates however, are 
+    already skipped by the retrieve function, so this check in notify.php was 
+    redundant and has been removed.
+03. toolboxx.php: MySQL version only: In the database's categories table the 
+    default time slot field defslot was of type TINYINT. Because of this the 
+    default event duration was limited to 127 minutes (2 hours and 7 minutes). 
+    We changed the field type to SMALLINT, which can hold 32767 minutes.
+04. event.php: When on the Settings page, under General "Send notification of 
+    calendar changes" is enabled, no notification was sent when deleting events. 
+    This has been corrected.
+
+Change log - version 4.7.2
+==========================
+
+Bug:
+01. index.php, css.php: The styles produced by css.php were not properly loaded 
+    in Safari (iPad and iPhone), Edge and IE.
+
+Change log - version 4.7.3
+==========================
+
+New features / improvements:
+01. settings.php, ai-{lang}.php: On the admin's Settings page the validation of 
+    the recipients list for calendar change notifications has been removed, so 
+    that now email addresses, user names, mobile numbers and recipients lists 
+    can be used. The Settings page help text has been updated accordingly.
+02. eventform1.php, eventform.php, toolbox.php, toolboxx.php, settings.php, 
+    dtpicker.php, ai-{lang}.php: To better facilitate adding/editing of rather 
+    simple events (title, venue, category, date and time), the admin can specify 
+    on the Settings page to initially show an add/edit event window with only 
+    the minimum required fields. The user can expand this reduced event window 
+    by selecting a plus-sign in the left lower corner.
+
+Technical Issues:
+01. settings, toolboxx.php, event, sendchg.php, ai-{lang}: Setting names 
+    recipList and chgEmailList changed to chgRecipList and chgSumRecips 
+    respectively (the lists can contain email address, SMS numbers, user names 
+    and recipients list names).
+02. installxxx.php, upgradexxx.php: To avoid PHP warnings, the default timezone 
+    is now set at the start of the installation script.
+03. database.php, toolboxx.php, ai-{lang}.php: The backup and restore functions 
+    have been made more versatile and better interchangeable between MySQL and 
+    SQLite.
+04. event.php: The check to determine if a user is allowed to edit the event has 
+    been simplified and is now done at one location.
+05. installxxx.php: In the installation script, the '_' character was allowed in 
+    the calendar name/title pairs. This character however causes problems when 
+    it is used as PHP session ID suffix. So now the allowed characters for the 
+    calendar name are A-Z, a-z, 0-9 and -.
+06. settings, ai-{lang}.php: When sending a test mail from the Settings page 
+    failed, this was not reported in the feed-back line at the top of the page.
+
+Bugs:
+01. toolboxd.php: MySQL calendar only. The way to find the calendars in use, 
+    based on finding the intersection of MySQL database tables names in the 
+    format xxxx_groups and xxxx_styles has been changed to xxxx_events and 
+    xxxx_settings. The tables groups and styles are not present in earlier 
+    calendar versions.  
+02. checkevt.php, detach.php: The Ajax scripts to toggle the check mark of to-do 
+    events and to remove event attachments did not work anymore after the PHP 
+    session cookie mechanism has been improved. Solved.
+03. users.php: On the Users page, when adding a new user, in the user interface 
+    language drop-down menu, the default selected language was not set to the 
+    calendar's default language. Solved.
+04. ai-{lang}.php: The text "event overlap; select an other time" in the files 
+    ai{lang}.php has been replaced by "event overlap - select an other time". On 
+    some servers the semicolon (;) in this text corrupted the Add New Category 
+    form. In the field "Error message, if overlap" semicolons are now replaced 
+    automatically by a space followed by a hyphen.
+05. toolbox.php: When adding or editing an event, in the Event window adding a 
+    mailto link directly after an image link resulted in a corrupted mailto 
+    link. Solved.
+06. toolboxx.php: When upgrading from LuxCal 3.2 an SQL error occurred because 
+    the a_datetime and m_datetime fields were not truncated to 16 characters 
+    (dd-mm-yyyy hh:mm) when they are copied to the new aDateTime and mDateTime 
+    fields.
+07. checkevt.php, detach.php, header.php toolbox.js, eventform1.php, search.php, 
+    month.php, upcoming.php, dw-functions.php, lcsbar.php: A problem in the 
+    evtcheck.php and detach.php scripts when retrieving the ID of the active 
+    calendar blocked the checking/unchecking of the check box of Todo events, 
+    after the PHP session expired.
+08. header.php, search.php, month.php, upcoming.php, dw-functions.php: Users in 
+    the user group "Post All" could edit all events, but could not check/uncheck 
+    the Todo check box of events created by other users. Solved.
+
+Change log - version 4.7.4
+==========================
+
+New features / improvements:
+01. settings.php, toolbox.js, eventform1.php, ai-{lang}.php, toolboxx.php, 
+    month.php: To make the life of calendar visitors easier, in Month view the 
+    position of the hover boxes with additional event details is now fixed just
+    over the right side of the event title and the boxes can be hovered with 
+    the cursor. An important advantage is that URL-links, Mailto-links and 
+    Address buttons (see below) can now be clicked in the hover box, without 
+    opening the Event Report window. Since URL-links and Mailto-links can now 
+    easily be selected in the hover box, these links have been removed from the 
+    day cells, which saves precious space in the day cells.
+02. toolbox.php, notify.php, expical.php, exportICS.php, messaging.php: If in 
+    the venue field the address is placed between exclamation marks (!), in the 
+    calendar views the address will be replaced by an "Address button". When 
+    hovering the Address button, the address will be shown and when clicking the 
+    button, a map viewer window will open, showing the specified address. On the 
+    Settings page the administrator can disable/enable this feature and can 
+    specify the map viewer to be used. The default map viewer is Google Maps.
+    The exclamation marks will not be visible to the calendar visitors.
+03. dw_functions.php: In day and week view on a device with a small display it 
+    is now possible to open the edit event window by clicking the event title.
+04. month.php, ai-{lang}.php: The display of thumbnails in Month view has 
+    changed as follows: When on the Settings page "Show images in month view" is 
+    enabled, thumbnails will be shown in the day cells and when disabled, 
+    thumbnails will be shown in the on-mouse-over boxes instead. So thumbnails 
+    will not be displayed in both at the same time.
+05. header.php: In the previous calendar versions, the Search page can only be 
+    opened via the side menu; because this function is often used, a magnifying 
+    glass has been added to the right side of the navigation bar.
+06. event.php, ui-{lang}.php: When an event that needs approval is approved by 
+    a user with manager rights, the event owner will receive a notification by 
+    email.
+07. users.php: On the Users page, when adding a new user, the default access 
+    rights will be the rights set for self-registrations.
+08. displayX.php: All 'displays' (upcoming events listings) have been upgraded 
+    and are more flexible with more settings. Displays will not be included in 
+    the zip-file of new calendar versions anymore. Instead they can be viewed 
+    and downloaded directly on the LuxCal Displays page of the LuxSoft website.
+
+Technical Issues:
+01. week.php: When used on a small-screen mobile device, the header of the page 
+    (date range) will be shown without week number, so that the header will fit 
+    on one line.
+02. index.php, toolbox.php, alert.php (new): Error messages related to 
+    validating URL GET and POST parameters are now presented on a special 
+    'calendar-style' page.
+03. index.php, header.php, alert.php (new), toolbox.js: The logic to deal with 
+    an expired PHP session has been completely revised. If the calendar is left 
+    open in the browser without using it, the user will get a warning alert 
+    after 25 minutes of calendar inactivity. In case of more than 30 minutes of 
+    calendar inactivity, the PHP session will expire and when starting to use
+    the calendar again the user will get a "PHP session expired" alert page and 
+    will be asked to restart the calendar.
+04. index.php, header.php, toolbox.php, toolbox.js, all scripts with a form: The 
+    protection against spoofed form submission, cross-site scripting and other 
+    vulnerabilities has been improved.
+05. index.php, css.php, detach.php, checkevt.php: The separate PHP session to 
+    store the current calendar ID has been abandoned. The implementation was 
+    unnecessary complex. The scrips detach.php and checkevt.php do not need 
+    a PHP session at all anymore. Code simplification.
+06. index.php, toolbox.js, toolbox.php, header.php, week.php: The way to find if 
+    the user is using a small display or window has been simplified and is now 
+    100% accurate. This opens the way to make the calendar more responsive.
+07. toolbox.js, categories.php, groups.php, users.php: To guarantee identical 
+    behavior of the delete functions which ask user confirmation, the three 
+    separate functions have been combined in one delConfirm function.
+08. styling.php, toolbox.js: The 'reload' function has been combined with the
+    'done' function, which made the reload function redundant. Code 
+    simplification.
+09. eventform0.php: On the Event page to select 'edit the series or this 
+    occurrence', the start of the form was at the wrong point, which conflicted 
+    with the display of the Google map if the address was put in between 
+    exclamation marks.
+10. toolbox.php: URL and image regexes and the processing to add URL-links and 
+    images to the event description fields improved. No extra spaces are added 
+    anymore in the description fields.
+11. toolbox.js, dtpicker.js, dw_functions.php: Changed the JavaScript code to 
+    using 'strict' mode, which forces the use of variable declarations and 
+    therefore results in better code quality.
+12. dw_functions.php, toolbox.js, week.php, day.php: The JavaScript code for the 
+    drag functions moved from the dw-function.php file to the toolbox.js file.
+    The code has been improved and is now running in strict mode too.
+13. settings.php: The validation regex for Send notification of calendar changes 
+    on the settings page, under General, did not allow for recipients lists 
+    between square brackets.
+14. eventform0.php: On the Event page to select 'edit the series or this 
+    occurrence', the background color of the event title continued until the end 
+    of the line, whilst it should end at the end of the title text.
+15. groups.php, header.php, search.php, toolbox.js: More logic has been added to 
+    the check boxes in the Edit User Group form. When a user can add events in a 
+    certain category, he can automatically view this category.
+
+Bugs:
+01. toolbox.js: Removed the default function parameter in the 'pop' function.
+    Default function parameters are not supported by Internet Explorer and older 
+    versions of Safari and cause errors.
+02. dtpicker: In the date picker, the text color style in the header with week 
+    days (Mo, Tu, etc.) was not set properly, resulting in illegible week days 
+    when on the User Interface Styling page dark backgrounds have been selected 
+    for bars, headers and lines.
+03. css.php: In year view events represented by a symbol (specified in the event 
+    category) were hiding (overlapping) events represented by a mini square.
+04. eventform1.php: When a user was part of a user group for which posting 
+    repeating event was disabled, the Event window layout was corrupted.
+05. eventform1.php: When an event needs approval, the user could already send an 
+    email/sms "now", before the event was approved. This should not be possible 
+    and has been solved by not displaying the "notify now" check box as long as 
+    the event has not been approved.
+06. month.php: If on the Settings page, under Views, "Weeks to show in Month 
+    view" is set to 1 (display one full month) and the "First day of the week" 
+    is set to 1 (Monday), then when the first day of the month is Sunday, the 
+    first week, with the first day of the month on Sunday, was not shown.
+07. toolbox.php: When specifying the repeat parameters in the Event window, an 
+    invalid end date format could result in a PHP error message.
+08. dtpicker.php: An invalid source date could corrupt the display of the date 
+    picker.
+09. toolboxx.php: Due to an error in the upgrade function when upgrading from 
+    V4.5 to a greater version the category symbol (if specified) and the sub-
+    category ID (if a sub-category was specified) were not copied from the 
+    v4.5.2 database to the upgraded database.
+
+Change log - version 4.7.5
+==========================
+
+New features / improvements:
+01. year.php, month.php, matrixX.php, ug-{lang}.php: In Year, Month and Matrix 
+    view, if a user has post rights, rather than clicking the top bar of a day 
+    cell, any free space of the day cell can now be clicked to add a new event 
+    for the selected day. At the same time the hover box with event details has 
+    been slightly moved downwards to make the event title more visible.
+02. year.php, month.php, matrixX.php, upcoming.php, changes.php, 
+    dw_functions.php: A <title> tag has been added to the event title hyperlinks 
+    showing "Edit event", "See event details" or nothing, depending on what is 
+    applicable.
+03. alert.php: On the Alert page, when the message "Session expired, please 
+    restart the Calendar" is displayed, a Restart button has been added to 
+    restart the calendar and, if on the admin's Settings page a "Link to parent 
+    page" has been defined, also a Back button will be shown.
+04. header.php, login,php, account.php, css.php: The way to log in, log out and 
+    to change the user account credentials have changed. When the user is not 
+    logged in, at the right upper corner, a Log-in link is displayed, replacing 
+    the log in button on the navigation bar. Once logged in, in the right upper 
+    corner the user name is displayed as a hyper link. When clicking on the user 
+    name, two options drop down: 1) Log out, which replaces the log out button 
+    on the navigation bar, and 2) User profile. When selecting User profile, a 
+    new page will open where the user can change his/her profile data.
+05. index.php: When a user logs out and on the Settings page a link to a parent 
+    page has been specified, the user will be automatically redirected to the 
+    parent page.
+06. toolbox.php, messaging.php, lcalcron.php: Whenever relevant, the calendar ID 
+    has been added to the messages logged in the luxcal.log and sql.log files. 
+    This is in particular useful in case of multiple calendars.
+07. footer.php, logvisit.php: In the past, in case of multiple calendars, the 
+    visitors counter and the visitors data log files were combined for all 
+    calendars. In this version the visitors counter and the visitors data log 
+    files are kept for each individual calendar.
+08. index.php, messaging.php: When the calendar is opened via the hyper-link at 
+    the bottom of a reminder email message, the day cell at the date of the 
+    event concerned has a slightly contrasted background color and border.
+09. header.php, css.php: The date hyper-link in the calendar's top bar did not 
+    show the same shadow as the other text hyper-links.
+10. thumbnails.php: There was a backslash character displayed just under the 
+    text Manage Thumbnails in the left upper corner.
+11. settings.php, toolboxx.php, ai-{lang}.php: A new setting has been added to 
+    the admin's settings page to enable/disable the display of the end time (if 
+    specified) in the day cells of Month view following the event start time.
+
+Technical issues:
+01. index.php, css.php: The implementation of the Single Sign On (SSO) feature 
+    in combination with calendar-specific PHP sessions was too complicated and 
+    caused too many problems. Therefore the system with one individual PHP 
+    session per calendar has been replaced by a more straightforward system with 
+    one PHP session per user, where calendar-specific data is store in the 
+    session variables using an array with the calendar ID as index.
+02. toolbox.php, messaging.php: The regexes $rxCalURL, $rxPhone and $rxIMGTags 
+    and the regexes used in messaging to check for user names contained one or 
+    more un-escaped hyphens (-) in a square bracket list of characters, which is 
+    considered a regex error by the latest PCRE library (V10.32 2018-09-10), 
+    which is normally used by PHP 7.3.
+03. alert.php: In the footer of the alert page, when hovering powered by LuxCal, 
+    it showed V4.7.2 (hard coded). This has been changed to dynamically showing 
+    the current calendar version.
+04. week.php, day.php: The drag-able area in the week and day views was always 
+    active, even if the user had no post rights. This resulted in an Event 
+    window with the message "You are not authorized to perform this action". 
+    This has been changed, the area is now only active if the user has post 
+    rights.
+05. .htaccess, installxxx.php, upgradexxx.php, eventform1.php, toolbox.php, 
+    toolboxx.php, footer.php, dloader.php: FOR APACHE SERVERS ONLY! 
+    The protection of the calendar folders against unauthorized direct browser 
+    access has been revisited and where possible access has been restricted via 
+    .htaccess files. For the "db", "files", "attachments", logs and reciplists 
+    folders all direct access is denied. Authorized access, via the calendar's 
+    user interface, is performed indirect.
+06. event.php: When deleting an event the "editor" field was not set to the 
+    current user, resulting in a wrong "edited by" name in the Changes view. 
+    This has been rectified and now deleting an event is treated similar to 
+    editing an event, as far as the "edited by" and "date/time edited" fields.
+07. importICS.php, ai-{lang}.php: The text "Check all ignore boxes" was still 
+    hard-coded and has been moved to the language files.
+08. index.php: In the installation_guide section "Single Sign On (SSO) it is 
+    specified that SSO can be achieved by saving the user email address or the 
+    user name in the session variable lcUser, in the code however, only the user 
+    email address was accepted. This has been corrected, either email address or 
+    user name will be accepted.
+09. settings.php: The setting to select to show the event owner in front of the 
+    event title has been moved from the section "Events" to the section "Views".
+
+Bugs:
+01. toolboxx.php: When upgrading from v4.6 the row "symbol" in the categories 
+    table was not copied, so after the upgrade symbols specified for certain 
+    categories in V4.6 were lost.
+02. header.php, retrieve.php: Users with manager rights were not able to chose 
+    the "to be approved" list from the side menu (hamburger button) and event 
+    owners could still edit events that already had been approved, which should 
+    not be possible.
+03. toolbox.js: When hovering an event in a narrow window or on a narrow screen 
+    (< 500px), the hover box with event details was not displayed at the correct 
+    location and was too wide.
+04. month.php: When on the Settings page, under Views, "Show images in month 
+    view" is not checked, then in the hover box with event details, thumbnails 
+    are shown next to each other. However, if "Show images in month view" has 
+    been checked, in the day cells in Month view the images are shown under each 
+    other. Solved.
+05. footer.php: When on the admin's Settings page the logging of visitors data 
+    has been enabled, in the left lower corner of the calendar a hit counter is 
+    displayed. When a user has at least manager rights this counter becomes a 
+    hyper-link to the visitors data details. However, due to direct file access 
+    restrictions, the hyper link was blocked. When revisiting the unauthorized 
+    direct browser access of files and folders, this has been solved.
+06. event.php: In the Event window the "Edited" date/time and name were not 
+    updated when the event repetition was changed or when the Save (without 
+    close) button was clicked.
+07. event.php: When on the categories page a fixed event duration was selected 
+    with an event duration of 0 hours and 0 minutes, then the events in this 
+    category were shown in the various views with an identical start and end
+    time.
+08. toolbox.php: An error in the regex ($rxEML) to find email addresses in the 
+    event description fields, caused email addresses without dot to be accepted.
+09. css.php: The text color of admin page titles on the navigation bar and the 
+    hit counter and RSS feeds link on the footer bar was not set properly, 
+    making it hard to see on a dark navigation and footer bar background.
+10. events.php, eventform1.php, toolbox.js, detach.php (deleted): When editing 
+    one occurrence of a repeating or multi-day event and deleting an attachment 
+    from the event, resulted in the attachment file to be deleted from the 
+    "attachment" folder, leaving the remaining events of the series without 
+    attachment. This has been solved by never deleting the attachment files from 
+    the attachment folder.
+11. toolbox.php: In the "validGets" function, there was an error in the regex to 
+    validate the GET variable "cal".
+12. rssfeed.php: The RSS feeds were not working due to a call to a name change 
+    of the toolbox.php function to validate possible GET variables.
+13. events.php, thumbnails.php: Uploaded attachment or thumbnail files with 
+    spaces in the file name caused problems when using these files. Solved by 
+    replacing all spaces in file names by underscore characters during the 
+    upload process.
+14. toolbox.php: Thumbnails in the event description fields were not shown in 
+    (reminder) email messages. The reason was that the URI to the thumbnails 
+    folder was used, instead of the URL.
+15. eventform1.php: When specifying a recurring event every xth weekday of a 
+    specific month, this resulted in every xth weekday of "each month". This 
+    problem was introduced when enhancing the overlap check to include 
+    recurring events.
+16. importICS.php: When uploading an iCal file on the admin's iCal File Import 
+    page with the Timezone adjustment check box checked, for events with an end 
+    time this resulted in a call to an undefined function 'strotime' (typo).
+17. importICS.php: When in the uploaded iCal file no events were found occurring 
+    as of the specified date, this resulted in PHP errors.
+18. toolbox.js: The printNice function did not work. (querySelectorAll does not 
+    return an array, but a NodeList).
+
+Change log - version 4.7.6
+==========================
+
+New features / improvements:
+01. settings.php, retrieve.php, toolboxx.php, ai-{lang}.php: A setting has been 
+    added to the admin's Settings page to specify the sorting criteria of events 
+    in the various views. The possible sorting criteria can be: 1) the event 
+    times, 2) the event category sequence number.
+02. settings.php, index.php, ai-{lang}.php, toolboxx.php: On the administrator's 
+    Settings page the default view can now be set for users with a large display 
+    and users with a small display respectively.
+03. settings.php, event.php, ai-{lang}.php, toolboxx.php: On the administrator's 
+    Settings page a default venue can be specified, which will be copied to the 
+    Venue field of the event form when adding a new event.
+04. settings.php, toolbox.php, toolboxx.php, event.php, month.php, search.php, 
+    eventform1.php, ai-{lang}.php notify.php, expical.php, rssfeed.php: On the 
+    admin's Settings page for each of the extra fields it can now be specified 
+    as of which user rights the field is visible. If a user has less rights than 
+    the specified rights, the user will not see the field. Extra fields with 
+    user rights > "View right" will not be part of emails, RSS feeds, 
+    periodically exported iCal files or the side bar (when installed).
+05. toolbox.js, css.php, lcsbar.php, css_sbar.php: If the event's description 
+    field contains a lot of text, in some views (month view, display0, stand-
+    alone side bar) part of the hover-box with event details may fall outside 
+    the viewport. This has now been solved by giving the hover-box a maximum 
+    height and a scrollbar, if the content is higher than the box.
+06. event.php, eventform1.php, css.php: In the event window the extra fields 1 
+    and 2 can now be resized vertically and may contain crlf characters.
+07. exportUsr.php, importUsr.php, header.php, index.php, ai-{lang}.php: Two new 
+    pages have been added to the side menu for users with at least "Manager" 
+    rights. One to export and another to import user account data. These pages 
+    can for instance be used to quickly copy user accounts from one calendar to 
+    an other calendar, or to prepare user accounts of-line and import them into 
+    the calendar.
+08. settings.php: On the Settings page, under File Uploads, the "Maximum file 
+    upload size" has changed from 6Mb to 200Mb to allow for uploading of larger 
+    attachment files. Note: PHP also restricts the maximum file upload size; it 
+    may therefore be necessary to also increase the maximum file upload size in 
+    php.ini file.
+09. settings.php, login.php, toolboxx.php, ai{lang}.php: Self-registration more 
+    secure: If self-registration has been enabled on the Settings page, any user 
+    could register. To make self-registrations more secure, on the Settings page 
+    an option has been added to specify a question and corresponding answer. 
+    During self-registration, for the registration to be accepted, the user will 
+    have to answer the question correctly. When a users answers incorrectly 4 
+    times in a row, the user will be told to try again in 30 minutes and the 
+    self-registration button will be hidden until the PHP session expires.
+10. header.php: The subdivision of the items in the side menu has been improved 
+    and made more logical.
+
+Technical issues:
+01. toolbox.js: In month view the lower border of the hover box could just pass 
+    the bottom of the screen, causing a vertical scrollbar to appear. Solved.
+02. messaging.php: The regex to validate user names in the recipient list didn't 
+    accept accents and umlauts. The regex has been updated to cope with Unicode 
+    special characters (\U00C0 - \U01FF).
+03. toolboxx.php: When fields in the database tables have no default value, e.g. 
+    an empty string, and MySQL runs in 'strict' mode, then the following SQL 
+    error can occur: General error: 1364 Field 'editor' doesn't have a default 
+    value. Solved by giving all empty field the value NULL.
+04. heading.php, eventform0.php, eventform1.php, changes.php, thumbnails.php, 
+    search.php: Some forms contained "action='index.php'", which was redundant.
+05. css.php, header.php, all-pages.php: Redundancy removed in CSS-styles.
+06. lcsbar.php, css_sbar.php: The styles have been simplified.
+07. installxxx.php: The line "session_set_cookie_params" removed, because this 
+    made the PHP session test fail when installing the calendar using Edge and 
+    Safari.
+08. index.php, settings.php, toolbox.php, toolboxx.php, ai-{lang}php: On the 
+    settings page maintenance mode can be enabled or disabled for the calendar. 
+    When in maintenance mode, special technical information will be displayed in 
+    the footer bar of the calendar.
+09. importIcs.php: When uploading events from .ics files, events in the uploaded 
+    .ics file without title (SUMMARY) are now accepted and flagged as error in 
+    the displayed event list.
+10. footer.php, alert.php, css.php: The HTML code of the "powered by" footer has 
+    been simplified.
+11. event.php: When changing the event category sequence numbers, still the "no 
+    cat" category remained the default in the Add Event window. Changed so that
+    the category with the lowest sequence number is the default.
+12. toolbox.js: In IE and Edge the JavaScript forEach method cannot be used on 
+    nodelists and therefore the selection of check boxes, for instance in the 
+    Options Panel, didn't work correctly. Solved by converting nodelists to 
+    arrays. (Sigh . . . Please, can we all switch to Firefox or Chrome!).
+13. settings.php, sendchg.php, ai-{lang}.php: On the Settings page, in section 
+    Periodic Functions, the layout of the form to specify the parameters for the 
+    calendar changes summary has been aligned with the rest of the page. Error 
+    checking has been added for the calendar changes recipients list.
+
+Bugs:
+01. month.php: Clicking the Todo checkbox in Month view also resulted in opening 
+    the Add Event window. Forgot to add "event.stopPropagation();". Solved.
+02. header.php: When the User profile page (Change my data) was displayed, the 
+    User Menu in the top bar could not be opened anymore. Solved.
+03. users.php: When editing a user profile, it was possible to change the user 
+    name or email address to a user name or email address already existing in 
+    the database.
+04. toolbox.php: A bug in the time formatting prevented the display of leading 
+    zeros for Am/pm times. Solved.
+05. login.php: When users self-registered, in the SQL query there was a mismatch 
+    between the number of parameters to insert and the number of ?-marks. 
+    (because in V 4.7.5 the user number was removed from the query).
+06. event.php, eventform1.php: When on the settings page, in the section events, 
+    posting of private events was set to "default", in the Add Event window the 
+    "Private event" check box could not be unchecked anymore.
+
+Change log - version 4.7.7
+==========================
+
+New features / improvements:
+01. month.php, week.php, day.php, toolboxx.php, settings.php, ai-{lang}.php, 
+    css.php: In Month, Week and Day view optionally a side panel can be shown 
+    right next to the main calendar. This side panel can contain one or several 
+    of the following elements:
+    1) a mini calendar, which can be used to look back or ahead in the calendar 
+    without changing the date of the main calendar.
+    2) a decoration image per month. The image file names should start with a 
+    2-digit month number, followed by a free name and with file type .jpg, .gif 
+    or .png. Example file names: 01photo.jpg, 02image.png . . . 12xmas.gif. The 
+    image is shown with a fixed width of 292 pixels.
+    3) an information area with an optional message per month. The message file 
+    names should start with a 2-digit month number, followed by a free name and 
+    with file type .txt, .htm or .html. Example file names: 01msg.txt, 02xx.html 
+    . . . 12wishes.htm.
+    The files should be present in the folder specified on the settings page. 
+    The side panel will not be shown if no side panel items are selected on the 
+    settings page or when the calendar is viewed on a narrow width display.
+02. gantt.php, css.php, settings.php, header.php, toolboxx.php, ai-{lang}.php, 
+    ui-{lang}.php: A new "Gantt Chart" view has been added to the calendar, 
+    showing a graphical presentation of all events during a certain period in 
+    sequential order. Gantt Charts are particularly useful for project activity 
+    planning.
+03. messaging.php, settings.php, toolboxx.php, ai-{lang}.php: Normally ISPs only 
+    allow a maximum number of recipients per email. On the admin's Settings 
+    page the maximum number of recipients can now be specified. If the number of 
+    recipients is greater than the specified maximum number, the calendar will 
+    split the email in multiple emails, each with the maximum specified number 
+    of recipients.
+04. settings.php: On the Settings page, in the section Periodic Functions, when 
+    selecting Daily calendar changes summary, an empty Recipients list was not 
+    flagged as an error. The default Daily calendar changes summary setting for 
+    new installations is now set to 0 (disabled).
+05. header.php, css.php: To distinguish the Options button from possible other 
+    buttons right of the options button, the caption is printed in bold and the 
+    margin on the right side has been slightly enlarged.
+06. dw_functions.php: When on the admin's Settings page, in the Views section, 
+    event sorting was set to category sequence nr, in Week and Day view for some 
+    events the width of the event rectangle was not maximized. Solved and code 
+    optimized.
+07. matrixc.php, matrixu.php, css.php: In both Matrix views the dates that were 
+    shown in each day cell have been removed and replaced by a date in the 
+    column header and footer. This creates more space for events and gives the 
+    Matrix views a much less crowded impression.
+08. matrixu.php: In Matrix view "users" a user with post rights could click the 
+    day cells in any row - so also in the rows of other users - to open the Add 
+    Event window. When saving the event it would appear in the row of the user 
+    who added the event, which may be confusing. To avoid this behavior, in the 
+    new version a user with post rights can only click a day cell in his own row 
+    to open the Add Event window.
+09. toolbox.php,css.php: For events that need approval but have not yet been 
+    approved the hover box with event details now shows a "still to be approved" 
+    bar (red bar) in the left margin. This means that now also in calendar views 
+    with only a mini-square or symbol per event (Year and Matrix views) the user 
+    can see that an event still needs approval.
+10. settings.php, heading.php, toolbox.js: A new setting has been added to the 
+    General section of the settings page to specify the upper limit in pixels of 
+    a small display. If the calendar is visited from a small display, it will 
+    run in responsive mode, which means that certain not-essential elements are 
+    left out to better fit the calendar on a narrow width display.
+
+Technical issues:
+01. header.php, logvisit.php: The variable $_SERVER['HTTP_USER_AGENT'] is not 
+    always provided by every web server, so before using it, its existence must 
+    be checked.
+02. group.php, ai-{lang}.php: On the Edit User Group page, a note has been added 
+    that the event categories that can be viewed and added/edited are subject to 
+    the selected user rights.
+03. header.php: In the navigation bar the trailing semicolon of the magnifier 
+    glass symbol was missing, which resulted in an HTML error.
+04. header.php: In the side menu there were two different class tags in the same 
+    div, which is incorrect HTML. Both classes have now been merged.
+05. toolbox.php: When the event duration is all day, the function that makes the 
+    hover box time now returns the text "All day" (from language file), rather 
+    than an empty string.
+06. toolbox.php: In the function that makes the hover box time the "break"s were  
+    missing in the switch statement. Performance improvement.
+07. toolbox.php, year.php, month.php, dw-functions.php, upcoming.php, 
+    matrixc.php, matrixu.php: A function has been added to the toolbox file 
+    which produces the HTML code content of the event title hover-box. The 
+    hover-box content is now identical in all calendar views.
+08. dw_functions.php: In week and day view the code to display the events and 
+    the event hover boxes with event details has been scrutinized and optimized.
+09. header.php, toolboxx.php: For links to the calendar server, like the RSS 
+    feeds URL and the URL of the calendar itself, the HTTP protocol is now set 
+    to "https" if the calendar was queried through the HTTPS protocol.
+10. messaging.php: For all messages sent, the meta-tag <meta charset="UTF-8"> 
+    has been added to the message's <head> section.
+11. index.php, dloader.php: Users with 'assigned' admin rights (uid != 2) could 
+    open the database page and backup the database, but could not download the 
+    created backup file.
+12. upgrade477.php (L & M version): When present, the upgrade script will show 
+    release notes at the end of a successful upgrade. The release notes should 
+    be present in the calendar root in file relnotes.html. This feature can be 
+    used to notify the admin of important issues when upgrading the calendar.
+13. search.php: If on the search page the end date < the start date an error 
+    message will be displayed.
+
+Bugs:
+01. index.php: When a user with no access rights used the cP URL parameter, the 
+    selected page with events was shown. This should not be possible.
+02. alert.php: In case of an invalid URL parameter (validGetVars function), the 
+    alert page is started while the calendar ID is not known yet, resulting in 
+    a PHP error message.
+03. upcoming.php: On the Upcoming Events page, for events with an end time, in 
+    the hover box title the end time was displayed twice.
+04. toolbox.php: The function to detect event overlaps didn't work correctly 
+    when the time of the new event ended on '9'. Problem solved and script 
+    simplified.
+05. index.php, toolbox.js, header.php, eventform0.php, eventform1.php: When an 
+    event had been added without closing the Add Event window and thereafter the 
+    same event was added as a new event (Save as New), resulting in a page 
+    number change from 30 to 31, this caused a Session Expired message because 
+    there was no token for page 31. Solved by reverting to one single Event page 
+    number and using the mode to set the Event window title to either "Event - 
+    Add" or "Event - Edit".
+06. toolboxx.php: During the calendar upgrade procedure, when the calendar db is 
+    V4.7.7 the upgrade function returned V4.7.6, which is incorrect.
+07. toolboxx.php: In V4.7.3, on the Settings page, the change summary recipients 
+    field was renamed from "chgEmailList" to "chgRecipList". During the upgrade 
+    process the old field was copied to the new database, but not renamed, which 
+    resulted in the field content being lost.
+08. search.php: In the search SQL statement the category name and group name 
+    were not 'escaped' resulting in an SQL error when one of the two contained a 
+    single quote (like: don't forget).
+
+Change log - version 4.7.8
+==========================
+
+New features / improvements:
+01. header.php, toolbox.js, css.php, pdfprint.php, lcpdf1.php, fpdf.php, 
+    helveticaX.php, ui-{lang}.php: A new PDF file printing facility has been 
+    added. When selecting the "PDF File" option in the calendar's side menu, a 
+    dialog box will appear where the user can select an A4 or A5 PDF file layout 
+    and can specify a start and end date; when clicking "OK", a PDF file with 
+    the events in the specified date bracket will be produced and offered for 
+    download. The printed content of the PDF file (fields to be printed, colors, 
+    etc.) is configurable to a high degree by the administrator. 
+    To avoid overwriting the configuration settings of the PDF prints, when 
+    upgrading to a new calendar version, the PDF configuration files reside in a 
+    new "configs" folder. Example PDF configuration files are available in the 
+    "samples" sub-folder.
+02. month.php, dw_functions.php, toolbox.php, ai-{lang}.php: Two new templates 
+    have been added to the settings page, which are used to specify the fields 
+    and layout of the events to be displayed in Month view and Week/Day view 
+    respectively. Possible fields are: start time, start and end time, event 
+    owner, event title, venue, category, extra field 1 and extra field 2. For 
+    each of these fields a unique placeholder can be specified in the templates. 
+    In addition a special "new line" placeholder is available, so that the event 
+    fields can cover several lines. This new feature supersedes the "Show end 
+    time in Month view" setting, which therefore has been removed.
+03. matrixc.php, matrixu.php, gantt.php, css.php: When enabled on the Settings 
+    page, week numbers will be added to the matrix and gantt chart views. The 
+    colors of the week days and dates have been aligned with all other headers 
+    and the column widths has been increased to make the weekday and date fit 
+    for all languages.
+04. toolbox.php, toolbox.js, css.php, display0.php: The positioning of the hover 
+    box with event details has been improved for the mini calendar and matrix 
+    views with event squares or symbols. Before it was difficult to move the 
+    mouse from the mini square to the hover box.
+05. login.php, css.php: The layout of the Log In form has been improved. In the 
+    previous version it could easily happen that when logging in the user 
+    clicked the "Send new password" button instead of the "Log in" button.
+06. displayX.php: All displays have been upgraded. Display0 - display3 have now 
+    a login option and display0, display1 and display2 have a PDF print option. 
+    The displays are distributed again with each new calendar version. This will 
+    ensure the compatibility of displays with the calendar.
+07. displayX.php, *.cnf: To avoid overwriting the configuration settings of 
+    displays, when upgrading to a new calendar version, the way to tailor the 
+    configuration settings of the displays has changed. The displayX.php scripts 
+    reside in the calendar's root folder, whilst the configuration files reside 
+    in a new "configs" folder. Example configuration files are available in a 
+    "samples" sub-folder.
+08. settings.php, header.php, toolbox.php, ai-{lang}.php, all-views.php: On the 
+    Settings page the setting "Event colors based on category / user group" has 
+    moved from the Event section to the Views section and an option "no color" 
+    has been added.
+
+Technical issues:
+01. header.php: To avoid the need for a manual page refresh (Ctrl-F5) after a 
+    calendar upgrade, a toolbox.js and css.php reload is forced after a calendar 
+    upgrade by adding the calendar version number to the respective tags in the 
+    HTML head section.
+02. css.php: The color of the file selection input dialog text was not aligned 
+    with the color for buttons selected when styling the calendar and was with 
+    dark background colors difficult to read.
+03. eventform1.php, css.php: There were several problems with the table columns 
+    in the event window, which could lead to problems with long event category 
+    names. Tables simplified and number of columns reduced. Dates were in some 
+    browsers not fully visible and have been given more space.
+04. header.php: iOS - mobile safari bug fix removed. This bug fix was required 
+    for old Safari versions. It was a meta name="viewport" tag sent before 
+    <!DOCTYPE html> which is not proper HTML.
+05. css.php: Style iframe.csHelp deleted. Style was not used anymore.
+06. header.php, css.php: PHP code for the top bar simplified and current date 
+    centered independent of calendar title length.
+07. toolboxx.php, lctools.php: In the backupDatabase function the INSERT INTO 
+    statement now includes a column list before VALUES, which makes the function 
+    less prone to SQL errors when using the .sql file to restore the database.
+    The importSqlFile function has been improved to cope with large backup files 
+    with several INSERT queries per table. The counting of imported rows is now 
+    accurate.
+08. dloader.php: Measures have been taken to allow the lctools.php script to 
+    download calendar back up files.
+09. settings.php, toolboxx.php, ai-{lang}.php, day.php, week.php, month.php: The 
+    folder for the side panel image files and info area files is now always the 
+    "sidepanel" folder and cannot be specified anymore on the Settings page. The 
+    files will not be overwritten with a calendar upgrade, because the example 
+    files are now stored in the "samples" sub-folder of the sidepanel folder.
+10. css.php: To accommodate narrow screens, like smart phones, the width of the 
+    date range at the top of the Month view has been reduced.
+
+Bug fixes:
+01. css.php, display0.php: The scrolling in the hover box with event details did 
+    not work.
+02. event.php: The variable $cat with the category parameters of the current 
+    event was not set correctly, which resulted in PHP notices, when using PHP 
+    7.4.
+03. header.php.login.php: The color of the text on the Log In page took the 
+    color of the navigation bar; so if in the UI styling a light text color on 
+    the navigation bar was chosen, the text on the Log In page was hard to read.
+04. install478.php (L & M), toolboxx.php: When installing the calendar, at the 
+    moment of initializing the styles table, the calendar title (assigned to the 
+    row "THEME") was not yet available in the settings ($set), which cause a PHP 
+    notice message when running PHP 7.4.
+05. toolbox.php: In the makeE function, when producing the address button in the 
+    venue field, the full address was also show on narrow displays. This should 
+    be the other way around; the full address should be shown on wide displays 
+    only.
+    
+
+Change log - version 4.7.9
+==========================
+
+New features / improvements:
+01. display1,2,3.php, display1,2,3.cnf: More flexible styling possibilities. 
+    1) The margins of the event container, containing the event head and body, 
+    can now be specified separately. 2) The font attributes of the "No events" 
+    text can be specified separately and the text has no background color 
+    anymore.
+02. display1,2,3.php, display1,2,3.cnf: The possibility to filter events on 
+    event subcategories has been added.
+03. toolbox.php, ai-{lang}.php: The event layout template for Month, Week and 
+    Day view has been improved. It now accepts separators (|-characters) to 
+    split the template in different sections. If in a section with a #-parameter 
+    this parameter results in an empty string, then the whole section will be 
+    omitted and not be displayed. The template may also contain HTML tags; e.g. 
+    <b>#e</b>.
+04. header.php: On the Log-in page and the admin pages a Help button has been 
+    added on the right side of the Navigation Bar. On these pages it is not so 
+    obvious to open the side menu and select Help to get to the User Guide.
+05. matrixc.php, matrixu.php: When the matrix views are loaded, the focus is 
+    given to the matrix part of the page, so that the left/right arrow keys can 
+    directly be used to scroll the matrix left and right.
+06. display0,1,2,3.php, display0,1,2,3.cnf: For all displays a new configuration 
+    parameter has been added to specify a favicon.
+07. month.php, week.php, day.php, admin_guide: The information messages for each 
+    month have been grouped together in one file called info.txt, rather than 12 
+    individual files. It is now possible to define messages to be displayed 
+    during one single month or during several months.
+08. retrieve.php, toolbox.php: In the calendar URL, when using the cC parameter, 
+    it is now possible to specify negative event category sequence numbers for 
+    event categories that should be excluded from the calendar (e.g. ?cC[]=-2, 
+    &cC[]=-4).
+09. toolbox.js, css.php: Drag functions to drag the side bars have improved. The 
+    sidebars can not be moved out of the window anymore, they moves smoother and 
+    the text in the header cannot unintentionally be selected anymore.
+10. toolbox.php, ai-{lang}.php: An option has been added for month, week and day 
+    view to add for birthdays the age of a person to the event title. On the 
+    settings page you can add the key #a to the Event layout templates. If an 
+    event in an event category with "Repeat" set to "every year" has a year of 
+		birth in parentheses, e.g. (1982), specified somewhere in it's description 
+		field, the key #a in the event layout template will be replaced by the age 
+    of the person, which is the difference between the year of birth and the 
+    year of the calendar date. E.g. "Harry Potter (18)".
+11. display1-3.php, displays.html, displays1-3.cnf, retrieve.php: An option has 
+    been added for displays to show for birthdays the age of a person in the 
+    event title. E.g. "Harry Potter (18)".
+12. upcoming.php, changes.php, toolbox.php, retrievec.php: In the views Upcoming 
+    Events and Changes, if an event in an event category with "Repeat" set to 
+    "every year" has a year of birth in parentheses, e.g. (1982), specified 
+    somewhere in it's description field, the age of that person will be shown  
+    in parentheses at the end of the event title.
+13. settings.php, toolboxx.php: For the Todo list it is now possible to specify 
+    on the settings page the number of days to look back.
+
+Technical issues:
+01. settings.php, styling.php, css.php: On the settings page, the width of the 
+    center box with the field sets was fixed 900px, but is now variable, which 
+		avoids fieldset lines to be wrapped when using languages with longer texts.
+
+Bug fixes:
+01. pdfclass1.php, pdfclass2.php: If in the configuration settings for the pdf 
+    print layout no event body fields were specified, then the starting position 
+    of the event time(s) was always reset to the left margin.
+02. pdf.php: The connection to the calendar database was established before a 
+    possible pdf.cnf file was included and therefore the $calID setting from the 
+    pdf.cnf file did not overrule the default setting.
+03. header.php: The red X in the right upper corner of the User Guide window did 
+    not work anymore (since V4.7.7). Solved.
+04. toolboxx.php, users.php: In the past for new calendar installations the user 
+    interface language for the Public User was set to English, fixed. From now 
+    on the language for the Public user is left blank, which means the default 
+    language specified on the Settings page is taken.
+05. display0,1,2,3.php: The user interface language file used in the displays 
+    was the one corresponding to the default language on the admin's settings 
+    page. However, since the option to login has been added to the displays, the 
+    language file should correspond to the language specified in the account of 
+    the user.
+06. week.php, day.php: When the side panel was enabled, in week and day view the 
+    mini calendar in the side bar always showed the work days only, also when 
+		the main week view showed the full week.
+07. messaging.php: When validating the user name in email and sms recipients 
+    lists, "\u" was used to specify the range of accented characters. However 
+    "\u" is not supported by PCRE. Changed to "\x{}".
+08. importEvt.php: When separating fields of an imported file, if a separator 
+    character is escaped by a backslash, the backslash character was not removed 
+    from the the field. Solved by using the PHP str_getcsv function, rather than 
+    the preg_split function.
+09. display0.php: In display0 (the mini-calendar) one could just move one month 
+    forward or backward, a next click on the arrows showed the  message 'not 
+    permitted (display0)'. Solved by replacing REQUEST_URI by PHP_SELF.
+10. toolbox.php: In the event description it is now possible to use image with 
+    more than one dot in the file name, for example: pink.2020.png.

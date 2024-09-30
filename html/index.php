@@ -7,7 +7,7 @@ function page() {
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lab. Remoto de Embarcados - DC/UFSCar</title>
+<title>Lab. Remoto de Embarcados - DC/UFSCar🍌</title>
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 
@@ -30,7 +30,7 @@ body {background-color: #e0e0e0; color: #2b3856;}
     <body>
 <a class="github-fork-ribbon" href="https://github.com/QuestIO42/vlab" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 <center>
-<h1>Lab. Remoto de Embarcados - DC/UFSCar</h1>
+<h1>Lab. Remoto de Embarcados - DC/UFSCar🍌</h1>
 	<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>
 	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
     <button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
@@ -43,12 +43,10 @@ body {background-color: #e0e0e0; color: #2b3856;}
 <?php
 }
 
-
-$dbHost="localhost"; //MySQL server
-$dbUnam="reservas"; //database username
-$dbPwrd="*******"; //database password
-$dbName="reservas"; //database name
-
+$dbHost=$_ENV["MYSQL_HOST"];
+$dbUnam=$_ENV["MYSQL_USER"]; 
+$dbPwrd=$_ENV["MYSQL_PASSWORD"];
+$dbName=$_ENV["MYSQL_DATABASE"];
 
 global $con;
 $con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));

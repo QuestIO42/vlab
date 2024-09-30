@@ -1,0 +1,13 @@
+[Unit]
+Description=Quartus II MQTT Compilation Service
+After=network.target
+
+[Service]
+Type=simple
+User=vlab
+WorkingDirectory=/home/vlab/quartus
+ExecStart=/usr/bin/python3 /home/vlab/quartus/quartus.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

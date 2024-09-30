@@ -4,10 +4,10 @@
 
 <?php
 
-$dbHost="localhost"; //MySQL server
-$dbUnam="reservas"; //database username
-$dbPwrd="*******"; //database password
-$dbName="reservas"; //database name
+$dbHost=$_ENV["MYSQL_HOST"];
+$dbUnam=$_ENV["MYSQL_USER"]; 
+$dbPwrd=$_ENV["MYSQL_PASSWORD"];
+$dbName=$_ENV["MYSQL_DATABASE"];
 
 global $con;
 $con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));

@@ -198,7 +198,7 @@ function processEvent($from, $till, $eStart, $eEnd, &$row) {
 	for($i=$sTs;$i<=$eTs;$i+=86400) { //increment 1 day
 		$evt = array();
 		$curD = date('Y-m-d', $i);
-		if (strpos($row['xda'], $curD) !== false) { continue; } //exception: skip
+		if ($row['xda'] and strpos($row['xda'], $curD) !== false) { continue; } //exception: skip
 		$curDD = IDtoDD($curD); //current display date
 		$curdm = substr($curD,5);
 		if ($row['eda'][0] != '9' and $row['sda'] < $row['eda']) { //multi-day event; mde -> 1:first, 2:in between ,3:last day

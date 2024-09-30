@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LuxCal Administration Guide</title>
+<meta name="description" content="LuxCal web calendar - a LuxSoft product">
+<meta name="keywords" content="LuxSoft, LuxCal, LuxCal web calendar">
+<meta name="author" content="Roel Buining">
+<meta name="robots" content="nofollow">
+<link rel="icon" href="lcal.ico">
+<style type="text/css">
+* {padding:0; margin:0;}
+body {font:14px arial, sans-serif; background:#FFFFFF; color:#304050;}
+a {text-decoration:none; cursor:pointer;}
+h1 {font-size:1.5em; text-shadow:grey 0.2em 0.3em 0.2em;}
+h3 {margin:20px 0 10px 0; font-size:1.4em;}
+h4 {margin:40px 0 0 0; font-size:1.3em;}
+h5 {margin:20px 0 0 0; font-size:1.2em;}
+h6 {margin:10px 0 0 0; font-size:1.0em; text-decoration:underline;}
+p { margin:6px 0; text-align:justify; }
+ul, ol {margin:0 20px;}
+li ol {list-style-type:lower-alpha;}
+li {margin:6px 0;}
+code {display:table; line-height:1.5; background:#FFFFFF;}
+.floatR {float:right;}
+.center {text-align:center;}
+.redFlag {color:#DD3300;}
+header {padding:10px; background:#F2F2F2;}
+div.totop {position:fixed; bottom:40px; right:30px; font-size:3.0em;}
+div.totop a {color:#7777CC}
+div.totop a:hover {color:#DD3300;}
+div.navBar {
+	position:absolute; top:48px; left:0; right:0;
+	padding:0 1%;
+	background:#90FFFF;
+	padding:2px 10px;
+	border:1px #A0A0A0;
+	border-style:solid none;
+	line-height:20px;
+	vertical-align:middle;
+	text-align:center;
+	font:bold 1.4em arial,sans-serif;
+}
+div.content {
+	position:absolute; top:100px; right:0px; bottom:50px; left:0px;
+	padding:0 4%;
+	overflow:auto;
+}
+div.endBar {
+	position:absolute; left:0; right:0; bottom:10px;
+	padding:0 1%;
+	background:#90FFFF;
+	text-align:right;
+	border:1px #A0A0A0;
+	border-style:solid none;
+	font-size:0.8em;
+}
+.LuxSoft {font:italic bold 1.1em arial,sans-serif; color:#AA0066;}
+</style>
+</head>
+
+<body>
+<header>
+<h1 class="floatR">a LuxSoft product</h1>
+<h1>LuxCal Event calendar</h1>
+</header>
+<div class="navBar">Administrator's Guide</div>
+<div class="content">
+
+<!--
+<br>
+<center><h4 class="redFlag">THIS IS NOT THE LATEST VERSION OF LUXCAL</h4></center>
+<center><h4 class="redFlag">FOR THE LATEST VERSION GO TO <a href="http://www.luxsoft.eu">LUXSOFT</a></h4></center>
+<br>
+-->
+<a id="top"></a><div class="totop"><a href="#top">▲</a></div>
+<h4>Table of Content</h4>
+<ol style="margin:0 40px">
+<li><p><a href="#lbl-1">Introduction</a></p></li>
+<li><p><a href="#lbl-2">Managing the Calendar</a></p>
+<ol>
+<li><p><a href="#lbl-2a">Calendar Settings</a></p></li>
+<li><p><a href="#lbl-2b">Event Categories</a></p></li>
+<li><p><a href="#lbl-2c">Calendar User Groups</a></p></li>
+<li><p><a href="#lbl-2d">Calendar Users</a></p></li>
+<li><p><a href="#lbl-2e">Thumbnail Images</a></p></li>
+<li><p><a href="#lbl-2f">Calendar Database</a></p></li>
+<li><p><a href="#lbl-2g">User Import/Export (CSV File)</a></p></li>
+<li><p><a href="#lbl-2h">Event Import/Export (iCal File)</a></p></li>
+<li><p><a href="#lbl-2i">Event Import (CSV File)</a></p></li>
+<li><p><a href="#lbl-2j">User Interface Styling</a></p></li>
+<li><p><a href="#lbl-2k">Adding Your Logo to the Calendar</a></p></li>
+<li><p><a href="#lbl-2l">Side Panel in Month, Week and Day View</a></p></li>
+<li><p><a href="#lbl-2m">Logging Calendar Data</a></p></li>
+</ol></li>
+<li><p><a href="#lbl-3">Advanced Functions</a></p>
+<ol>
+<li><p><a href="#lbl-3a">Changing the Lay-out of Events</a></p></li>
+<li><p><a href="#lbl-3b">Adding Attachments to Events</a></p></li>
+<li><p><a href="#lbl-3c">Event Check Mark and To Do List</a></p></li>
+<li><p><a href="#lbl-3d">Proposing / Approving Events</a></p></li>
+<li><p><a href="#lbl-3e">Private Events</a></p></li>
+<li><p><a href="#lbl-3f">Using the Calendar to Book Events</a></p></li>
+<li><p><a href="#lbl-3g">Sending Event Reminder Messages</a></p></li>
+<li><p><a href="#lbl-3h">Sidebar with Upcoming Events or Todo List</a></p></li>
+<li><p><a href="#lbl-3i">Color-coding of Events and Subcategories</a></p></li>
+<li><p><a href="#lbl-3j">Importing Data of Previous LuxCal Versions</a></p></li>
+</ol></li>
+<li><p><a href="#lbl-4">LuxCal Toolbox</a></p>
+<ol>
+<li><p><a href="#lbl-4a">PHP Installation Details</a></p></li>
+<li><p><a href="#lbl-4b">General Toolbox - lctools.php</a></p></li>
+<li><p><a href="#lbl-4c">SMTP Mail Test Utility - smtptest.php</a></p></li>
+<li><p><a href="#lbl-4d">Database administration with phpLiteAdmin</a></p></li>
+</ol></li>
+<li><p><a href="#lbl-5">Calendar Settings - Description</a></p></li>
+</ol>
+<br>
+
+<a id="lbl-1"></a><h4>1. Introduction</h4>
+<p>After the LuxCal calendar has been installed or upgraded, using the <kbd>installation_guide.html</kbd>, 
+this Administrator's Guide is meant to help the calendar administrator to set up the more advanced functions 
+of the LuxCal calendar and to maintain the calendar so that it's functionality meets the needs of the users 
+in the best suitable way.</p>
+<p>When logged in as administrator, the administrator functions can be accessed via the side menu (hamburger 
+button) in the right upper corner of the calendar.</p>
+<p>A good place to start in managing your calendar is to . . .</p>
+<ul>
+<li>customize the calendar settings via the admin's Settings page</li>
+<li>create a number of categories for your events</li> 
+<li>edit the default user groups created during the installation or add new user groups</li>
+</ul>
+<p>To familiarize yourself with the LuxCal calendar's capabilities, it is important to take note of the 
+	other function and possibilities described in this section.</p>
+
+<a id="lbl-2"></a><h4>2. Managing the Calendar</h4>
+<p>Managing the LuxCal calendar is the responsibility of the calendar administrator, who has all calendar
+		access rights.</p>
+<p>Managing event categories, user profiles and user groups can be done by either the calendar administrator, 
+		or users with 'manager' rights.</p>
+<p>In order to change configuration settings, or use other administration functions, you must select Log In 
+		on the navigation bar at the top right corner of the screen. Enter the administrator name or email 
+		address and the password you specified during the installation, and log in. In the side menu (hamburger 
+		button top right) the administration functions will appear.</p>
+
+<a id="lbl-2a"></a><h5>a. Calendar Settings</h5>
+<p>The Settings page in the administrator side menu (hamburger button top right) can be used to easily 
+		change the calendar's configuration settings which are stored in the <kbd>settings</kbd> table of the 
+		database.
+		These settings, for instance, define the calendar title, the time zone, the language file to be used for
+		the user interface, the default initial view when the calendar is started, the number of weeks/months
+		displayed in the various views, the date and time format, etc.</p>
+<p>IMPORTANT: Currently the TimeZone is set to &quot;Europe/Amsterdam&quot;. If you are in a different time
+		zone, change the TimeZone to your local time zone. See the
+		<a href="http://us3.php.net/manual/en/timezones.php" target="_blank">PHP Supported Time Zones</a> for 
+		possible values.</p>
+
+<a id="lbl-2b"></a><h5>b. Event Categories</h5>
+<p>It is recommended to create a number of categories for your events, each with its own color. Adding 
+		categories with different colors - though not required - will greatly enhance the views of the calendar. 
+		Categories can be for example: meeting, important, holiday, birthday, etc.</p>
+<p>The initial installation has only one category which is named "no cat". To manage categories, select
+		Categories in the administrator side menu (hamburger button top right). This takes you to a page with 
+		a list of all categories where you can add new categories and edit or delete current categories.</p>
+<p>When adding / editing events the defined categories can be selected from a pull down list. The order in
+		which categories are displayed in the pull down list is determined by the Sequence field on the
+		Categories page.</p>
+<p>The field "Repeat" can be used to pre-define recurring events. A category "birthday" or "anniversary" can
+		be set to repeat every year. If a repeat value is specified, all events defined in this category will
+		repeat as specified. The repeat value specified here will overrule possible user 'repeat' settings.
+		If the repeat field is set to "every year" then for events in this event category, which have a birthday 
+		year between parentheses specified in their description field, the age will be specified at the end of 
+		the event title.</p>
+<p>If the "No overlap allowed" check box is checked, events within this category may not overlap. If a user 
+		tries to create an event in this category which overlaps with an existing event, an error message 
+		with the specified error text will be displayed. This feature can be used when you want to use this 
+		event category for booking events. For details on how to create a booking calendar, see Advanced 
+		Functions hereafter.</p>
+<p>With the field "Default time period" you can specify the default duration of an event in case the user 
+		specifies a start time without an end time. This can be useful for instance when using this category 
+		for "booking" events which may not overlap (see above).</p>
+<p>When the checkbox "Day color" has been checked, the full day cell in the calendar views will get the 
+		background color specified below. This may be useful to clearly mark for example holidays, birthdays, 
+		or other special days.</p>
+<p>The field "Event needs approval" will activate the propose/approve feature for events in this category. 
+		For a detailed description, see "Proposing / Approving Events" in section 3 below.</p>
+<p>A check mark can be activated which will be displayed in front of the event title for all events in this 
+		category. The user can use this check mark to flag events, for example, as "completed". Events in this 
+		category will appear in the ToDo list, which can be opened from the calendars navigation bar.</p>
+<p>The fields "Text color" and "Background" define the colors used to display events in the calendar assigned
+		to this category.</p>
+<p>The field "Sequence" defines the location of this event category in the category drop-down menus.</p>
+
+<a id="lbl-2c"></a><h5>c. Calendar User Groups</h5>
+<p>The initial installation has a User Group defined for each possible type of user permission. Each 
+		calendar user is assigned to one of the existing user groups. User groups can be edited, and new user 
+		groups can be added, by users with administrator or manager rights.
+		Adding and editing user groups is done via the administrator side menu (hamburger button top right). 
+		A user group defines the user access rights of the users assigned to this group and the event 
+		categories available to the users in the group. Furthermore a number of check boxes are available to 
+		specify whether users in this group may upload event attachments and may enter repeating events, 
+		multi-day events and private events. 
+		Via a color palette a background color can be selected for each group. On the admin's Settings 
+		page the administrator can specify whether calendar events should be displayed with the color of the 
+		event category or the color of the group to which the creator of the event belongs.</p>
+<p>Possible access rights:</p>
+<ul>
+<li><p>None</p>
+<p>The user - normally the Public User - has no access rights and has to log in to use the calendar.</p></li>
+<li><p>View</p>
+<p>The user can view the calendar, but has has no rights to add or edit events.</p></li>
+<li><p>Post/Edit Own</p>
+<p>The user can view the calendar and can add events. The user can only edit his/her own events.</p></li>
+<li><p>Post/Edit All</p>
+<p>The user can view the calendar and can add events. The user can edit his/her own events as well as  
+events of other users.</p></li>
+<li><p>Post/Edit + Manager</p>
+<p>A user with 'Manager' rights can do the same as a user with 'Post All' rights and in addition:</p>
+<p>- Can change the owner of an event (in the Event window). So for instance a manager can create events for 
+other users by creating an event and then assign an owner to it.</p>
+<p>- Can approve events created by other users. See Advanced Functions hereafter.</p>
+<p>- Has access, via the administrator side menu (hamburger button top right), to the Categories, Users and 
+		User Groups pages and consequently can manage event categories, user profiles and user groups.</p></li>
+<li><p>Administrator</p>
+<p>The administrator has all right described above and in addition has access to all technical, user-interface 
+and database related settings and functions.</p></li>
+</ul>
+		
+<a id="lbl-2d"></a><h5>d. Calendar Users</h5>
+<p>Via the administrator side menu (hamburger button top right) users with manager rights or the calendar 
+		administrator can add and edit user profiles. Per user the name, e-mail address, password and the user 
+		group can be specified. As described above, the group determines the access rights and the available 
+		event categories. It is important to specify a valid email address for the user to be able to receive 
+		email notifications of due dates of events. When defined users log in to the calendar they can specify 
+		their default user interface language. Thereafter, when a user logs in, the user-interface will be 
+		displayed in the specified language.</p>
+<p>The initial installation has two users defined. One is the Public Access user, who initially is assigned 
+		to the "Read access" user group and the other is the calendar administrator, who is assigned to the 
+		"Admin" user group and has all access rights.</p>
+<p>Unless the calendar administrator has given &quot;View&quot; access (via the "Read access" user group) 
+		to Public Access users, users must log in to use the calendar using their name or email address and 
+		password. Depending on the group to which a user has been assigned, a user can have different access 
+		rights.</p>
+<p>If the administrator has enabled user self-registration on the Settings page, users can register
+		themselves via the Login page. Self-registered users will automatically be assigned to the user group 
+		for self registered users specified by the administrator on the admin's Settings page and consequently 
+		will have the access rights specified for that user group.</p>
+
+<a id="lbl-2e"></a><h5>e. Thumbnail Images</h5>
+<p>By adding an image file name to the event's description field or one of the extra fields, a user can
+add thumbnail images to events. These thumbnail images must be located in the thumbnails folder and can 
+be managed on the Thumbnails page. Thumbnails are shown in the calendar views and in email reminders.</p>
+<p>On the Settings page, in the section Views, the administrator can enable / disable the thumbnails in the 
+calendar's month view and in the section File Uploads the administrator can specify various settings related 
+to the use of thumbnails. On the User Groups page the administrator can specify what rights calendar users 
+have to use, upload and delete thumbnails. The allowed thumbnail size in particular is important. Thumbnails 
+which are too high will for instance stretch the day cells in month view and can cause undesired effects. 
+And the use of many large thumbnails with a big file size may slow down the loading of the calendar pages.</p>
+
+<a id="lbl-2f"></a><h5>f. Calendar Database</h5>
+<p>The Database option in the administrator side menu (hamburger button top right) allows the calendar 
+administrator to start the following functions:</p>
+<ul>
+<li><p>Compact database</p>
+<p>During normal use of the calendar, when deleting events, the event records are not physically deleted from
+the database, but are marked as 'deleted'. They can still be used in views and reports; for example in the
+Changes view.
+The compact database function permanently removes events from the database which have been marked as
+'deleted' more than 30 days ago. Thereafter all tables are compressed to free unused space and to reduce
+database overhead. This action can also be done automatically if a cron job has been created and on the admin's 
+Settings page, under Periodic Functions, the number of Event expiry days has been specified.</p></li>
+<li><p>Backup database</p>
+<p>This function creates a backup file in the <kbd>files/</kbd> folder of the structure and contents of 
+all database tables. The file name is <kbd>dump-cal-lcv-yyyymmdd-hhmmss.sql</kbd> (where 'cal' = calendar ID, 
+lcv = calendar version and 'yyyymmdd-hhmmss' = year, month, day, hour, minutes and seconds). The file type is 
+<kbd>.sql</kbd> and the created file can be downloaded and used to re-create the database tables structure 
+and contents, for instance by using the Restore database function (see hereafter) or by importing the file a 
+database management tool which is available on the server of most web hosts.</p></li>
+<li><p>Restore database</p>
+<p>This function uploads the database backup file specified by the administrator and uses this file to 
+recreate the calendar database. The database backup file must be of the same calendar version as the 
+currently running calendar. The restore function accepts back up files from the MySQL version as well as 
+the SQLite version of the calendar, as long as the version number matches the current calendar.</p>
+<p> The database will be recreated from scratch, which means that, before recreating a table, the existing 
+table and its data will be deleted. For each recreated table the corresponding records from the back-up file 
+will be restored to the newly created table.</p>
+<p>To restore backup files of older LuxCal versions the "lctool.php" file from the toolbox should be uploaded
+to the calendar root and launched via the browser.</p></li>
+<li><p>delete / undelete events</p>
+<p>With this function the administrator can delete or undelete all events in a specified date range. Deleted 
+events will be marked 'deleted', but are not yet physically deleted from the database. When the administrator 
+runs the 'compact database' function, described above, events which are physically deleted from the database 
+cannot be undeleted anymore.</p>
+<p>When selecting this function and a date in the date range is not specified, the default will be 'unlimited'. 
+This means that if both start and end date are not specified, all events will be (marked as) deleted / 
+undeleted.</p></li>
+</ul>
+
+<a id="lbl-2g"></a><h5>g. User Import/Export (CSV File)</h5>
+<p>CSV (Comma Separated Values) text files with user account data can be imported into the LuxCal calendar. This
+		function can for instance be used to import a CSV file with user account data created by the 
+		administrator or exported from a different LuxCal calendar. The LuxCal calendar can also export user 
+		account date into a CSV file, which can be downloaded by the calendar administrator. The dialogue to 
+		import/export user profile files is opened by selecting User Import (iCal file) / User export (iCal file) 
+		from the administrator side menu (hamburger button at the top right).</p>
+<p>The CSV file contains one line per user profile and each line contains a number of fields each separated by 
+		a comma (or any other unique character). The order of the fields in each line of the CSV file is: user group ID, 
+		user name, email address, phone number, language and password".</p>
+<p> When exporting user profiles, the password field will contain the md5-encrypted password as stored in the 
+		calendar database. This password can not be decrypted!
+<p> When importing user profiles, the user name and email address fields are mandatory. If the user group ID 
+		field is left blank, the specified default user group ID is taken. If the language field is left blank, 
+		the default language specified on the Settings page will be taken. If the password field is left blank or 
+		is omitted, the specified default password is taken. 
+		Password fields may contain a legible password (e.g. "CathyD-42") or an md5-encrypted password (e.g. from an
+		exported user profile file). 
+		User names and email addresses must be unique, so when importing, the calendar will check if user names and 
+		email addresses in the CSV file are already present in the calendar and if so, highlight the user name and 
+		email addresses concerned.
+		When the "Replace existing users" check box has been checked, all users, except the public user and the 
+		administrator, will be deleted before importing the users from the selected file.
+		When importing, the first line of the CSV file can be used for column descriptions and if so, this line is 
+		ignored by the import function.</p>
+<p>Sample User profile CSV files can be found in the <kbd>files/</kbd> folder of the LuxCal Calendar 
+		installation and has the file extension ".csv".</p>
+
+<a id="lbl-2h"></a><h5>h. Event Import/Export (iCal File)</h5>
+<p>Events from iCalendar files can be imported into the LuxCal calendar. The content of the iCal file to be
+		imported must meet the [<u><a href='http://tools.ietf.org/html/rfc5545' target='_blank'>RFC5545
+		standard</a></u>] of the Internet Engineering Task Force. The LuxCal calendar can also export events
+		into an iCal file which can be downloaded by the calendar administrator. The dialogue to import/export
+		iCal files is opened by selecting Event Import / iCal export (iCal file) from the administrator side menu 
+		(hamburger button top right).</p>
+		<p>This function can for instance be used to back up the events of your LuxCal calendar, or to exchange
+		events with other calendars, e.g. to import public holidays available in iCalendar format on the internet.
+		Please note that some LuxCal event fields are not supported in the iCalendar format (e.g. private event, notify,
+		email addresses) and consequently are not copied to the iCal file. Some iCal event repetition rules are not
+		supported by the LuxCal calendar; these events will be displayed and earmarked as such, but will not be
+		added to the calendar.</p>
+<p>Various sample iCal files can be found in the <kbd>files/</kbd> folder of the LuxCal Calendar
+		installation and have the file extension ".ics".</p>
+
+<a id="lbl-2i"></a><h5>i. Event Import (CSV File)</h5>
+<p>CSV (Comma Separated Values) text files with event data can be imported into the LuxCal calendar. This
+		function can for instance be used to import a CSV file with event data exported by MS Outlook. The dialogue
+		to import CSV files is opened by selecting Event Import (CSV file) from the administrator side menu (hamburger 
+		button top right).</p>
+<p>The CSV file contains one line per event and each line contains a number of fields each separated by a comma
+		(or any other unique character). The order of the fields in each line of the CSV file is: title, venue,
+		category id, date, end date, start time, end time and description. The first line of the CSV file is ignored
+		by the import function and can be used for column descriptions (default in MS Outlook exports).</p>
+<p>Sample CSV files - with different date/time formats - can be found in the <kbd>files/</kbd> folder of the
+		LuxCal Calendar installation and have the file extension ".csv".</p>
+
+<a id="lbl-2j"></a><h5>j. User Interface Styling</h5>
+<p>The UI Styling page in the administrator side menu (hamburger button top right) allows the calendar 
+		administrator to tailor the styles (text and background colors, fonts family and sizes, etc.) of most 
+		elements of the calendar's user interface.</p>
+<p>The Styling page opens in a separate window, which makes it possible to preview style changes in the 
+		calendar pages, by browsing the calendar, while the Styling page remains open.</p>
+<div>Buttons and drop-down menu at the top of the page:</div>
+<ul>
+<li><b>Preview Theme</b>: When pressed, the currently displayed theme will be temporary activated for the 
+		calendar and a Stop Preview button will be displayed. The calendar can now be browsed with these styles, 
+		until the Stop Preview button is selected.</li>
+<li><b>Save Theme</b>: The displayed theme will be saved to the database and from now on this theme will be 
+		used by this calendar. The previous theme in the database will be overwritten. When the theme is saved 
+		for the first time since the Styling page is opened, prior to overwriting the theme in the database, 
+		an automatic backup will be stored in a file in the css folder; the file extension will be "abak".</li>
+<li><b>Backup Theme</b>: The theme from the database will be stored in a file in the css folder. The name 
+		given to the file will be shown in the information line at the top of the window. The file extension 
+		will be "mbak".</li>
+<li><b>Restore Theme</b>: This drop-down menu will show the LuxCal default theme and all backup files 
+		(".abak" and ".mbak") in the css folder. When an entry is selected the theme from the selected file 
+		will be displayed in the Styling page. This theme can then be previewed, modified and saved.</li>
+<li><b>Close Window</b>: Close the Styling window. If there are unsaved changes, a warning will be 
+		displayed.</li>
+<li><b>Theme title</b>: Optional theme title which will be stored along with the styles in the database 
+		and in backup files. If left blank, this field will default to the calendar title.</li>
+</ul>
+<p>Since calendar styles are saved in the calendar database, in case of multiple calendars, each calendar 
+has its own styles.</p>
+
+<a id="lbl-2k"></a><h5>k. Adding Your Logo to the Calendar</h5>
+<p>On the administrator's Settings page, in the section General, you can specify a path and name of a logo 
+	image. Once the image has been uploaded to the server and the path and name have been specified on the 
+	Settings page, the logo will be displayed in the left upper corner of the calendar pages. The buttons on 
+	the navigation bar will shift right the required number of pixels to make place for the logo. The logo 
+	will also be displayed in the left upper corner of possible email messages sent by the calendar</p>
+<p>If on the Settings page, in the section General, also a link to a parent page has been specified, then 
+	the logo will become the hyperlink to the parent page.</p>
+<p>The maximum logo image width and/or height is 70 x 70 pixels.</p>
+
+<a id="lbl-2l"></a><h5>l. Side Panel in Month, Week and Day View</h5>
+<p>On the administrator's Settings page, in the section Views, with the setting "Side panel in Month, Week 
+and Day view" you can select to show a side panel right next to the main calendar with one or more of the 
+following items:</p>
+<ul>
+<li><b>a mini calendar</b> which can be used to look back or ahead without changing the date of the main 
+calendar. When hovering the event squares in the mini calendar an overly with event details will be shown.</li>
+<li><b>a decoration image</b> corresponding to the current month. Each calendar month can have its own 
+image. The image files should be present in the folder specified on the Settings page. The image file 
+names must start with a 2-digit month number followed by a free name and should have extension .jpg, .gif 
+or .png. Examples of image file names: 01photo.jpg, 02animate.gif, 12xmas.png. The images are displayed 
+with a fixed width of 292 pixels; to keep page loading times to a minimum, the image widths should 
+preferably be close to 292 pixels and their heights may vary. If for a month no image file is found, no 
+image will be displayed in the side panel.</li>
+<li><b>an info area</b> to post textual information, which can be used to show messages or announcements 
+to calendar users. All messages should be stored in the info.txt file in the calendar's "sidepanel" folder.
+Info messages can be displayed during one month or during several months. Each message must be preceded 
+by a line with the month number or a range of month numbers between ~ characters in the following format: 
+~4~ (one month: April) or ~8-10~ (range of months: August, September and October).
+These text messages may contain HTML tags. If for a month no message is found, no info area will be 
+displayed in the side panel. An example info.txt file can be found in the 'sidepanel/samples' folder</li>
+</ul>
+<p>The side panel will not be shown if no side panel items are selected on the settings page or when the 
+calendar is viewed on a narrow width display.</p>
+<p>The sub-folder "samples" of the sidepanel folder contains several sample images and info files. 
+To see the effect of side panel images and info messages, these files should be copied from the samples 
+folder to the sidepanel folder and should be activated on the Settings page.</p>
+
+<a id="lbl-2m"></a><h5>m. Logging Calendar Data</h5>
+<p>On the administrator's Settings page, in the section General, you can specify which data shall be logged 
+by the calendar. Logged data is stored in text files in the calendar's "logs" folder. The calendar can log 
+the following data:</p>
+<ul>
+<li>Error messages: Error messages related to SQL database queries are stored in the file sql.log and other 
+error messages are logged in the file luxcal.log. Error messages are always logged! Note: Messages produced 
+by the PHP language processor are stored in a different place on the server which is defined by your 
+service provider (ISP).</li>
+<li>Cronjob start/end messages: When a cronjob has been defined to start the calendar's periodic functions 
+(for instance event reminders), the start and the end of the cronjob will be logged in the luxcal.log file. 
+Cronjob start/end messages are always logged!</li>
+<li>Warning messages: Warning messages are logged in the luxcal.log file. The logging of warning messages 
+can be switched on and off.</li>
+<li>Notice messages: Notice messages are logged in the luxcal.log file. The logging of notice messages can 
+be switched on and off.</li>
+<li>Visitors data: The following visitors data is logged:
+<ul>
+<li>Date, time, host, browser and visited pages of calendar users are logged in the file hitlog.log. Data of 
+calendar users with administrator or manager rights are not logged.</li>
+<li>Date, time, host, browser and visited pages of web bots are logged in the file botlog.log.</li>
+<li>A counter with the number of visits of calendar users is logged in the file hitcnt.log.</li>
+<li>A counter with the number of visits of web bots is logged in the file botcnt.log.</li>
+</ul>
+The logging of visitors data can be enabled/disabled. When logging of visitors data is switched on, a visits 
+counter will be shown in the left lower corner of the calendar. For users with manager or administrator 
+rights the counter is a hyper-link and when clicked will show the contents of the hitlog.log file in a new 
+window.
+</li>
+</ul>
+<p>IMPORTANT:</p>
+<ul>
+<li>From time to time the calendar administrator should scan the logs folder and files for any 
+peculiarities and purge long log files.</li>
+<li>The "logs" folder is web accessible and the files in this folder can be read by anyone.</li>
+</ul>
+
+		
+<a id="lbl-3"></a><h4>3. Advanced Functions</h4>
+<p>The normal day-to-day use of the calendar is explained in the help file which can be viewed by opening 
+	the side menu (hamburger button top right) and selecting 'Help'. There are however a number of more 
+	advanced functions which can be enabled / configured by users with manager rights or by the calendar 
+	administrator.</p>
+<p> These advanced functions are described hereafter.</p>
+
+<a id="lbl-3a"></a><h5>a. Changing the Lay-out of Events</h5>
+<p>On the Settings page, the admin can specify which fields of the event body are in use and in which order 
+they will be displayed in the various views. This can be done via the 'Event template' under <kbd>Events</kbd> 
+by specifying a sequence of numbers in the range 1 - 7, where each number represents an event field.</p>
+<p>Possible fields in the event body:</p>
+<ul>
+<li>1: Venue field</li>
+<li>2: Event category field</li>
+<li>3: Description field</li>
+<li>4: Extra field 1</li>
+<li>5: Extra field 2</li>
+<li>6: Email notification data (only if an email notification has been requested</li>
+<li>7: Date/time added/edited and the associated users</li>
+</ul>
+<p>Fields (numbers) which are not specified, will not be visible in the calendar views. Extra fields 1 and 2 
+are extra fields for which the admin can specify a dedicated label on the same Settings page under Events. 
+If the these fields have been specified, the field label as well as the content will be displayed. In the 
+calendar views active fields which are empty will not be shown. The Event window will of course always 
+show all active fields, including the empty fields.</p>
+<p>Example: Event template "43126", with the label for Extra field 1 set to "Department", will for instance result 
+in the following event body lay-out (explanation between brackets):</p>
+<p>&nbsp;<i>Department: Sales</i> (extra field 1 with label "Department")<br>
+&nbsp;<i>Emmett Brown will be working on-site for the BTTF project.</i> (description)<br>
+&nbsp;<i>Venue: Hill Valley</i> (venue)<br>
+&nbsp;<i>Category: Absent</i> (event category)<br>
+&nbsp;(<i>Notify: 4 day(s)</i>) (This line is not displayed, because no email notification was requested)
+</p>
+<p>On the Settings page, the fields 'Event fields - general hover box' under Events, 'Event fields - mini 
+calendar hover box' under Mini Calendar and 'Event fields - sidebar hover box' under Stand-Alone Sidebar 
+can be used by the admin to specify the event fields to be displayed in the various hover boxes. The 
+sequence of the fields in the hover boxes depend on the event template described before.</p>
+
+<a id="lbl-3b"></a><h5>b. Adding Attachments to Events</h5>
+<p>Users belonging to a User group for which File Upload is enabled, can add pdf, image and video attachments 
+to events. Adding and removing attachments to events can be done in the Event window when adding or 
+editing events. The actual attachment file is stored in the calendar's subfolder "attachments" and the 
+link from the event to the file is saved in the event record in the calendar database. 
+Uploaded attachments will be shown as hyperlinks in the event data in the various calendar views. When 
+clicking these hyperlinks, the attachment will open in a new window.</p>
+<p>When an attachment file is stored in the attachment folder, its file name is prefixed with the 
+current date and time. E.g 20200127203557Agenda.pdf.</p>
+<p>On the administrators Settings page, under Views, in the Event templates it can be specified if and 
+at what position within the event data hyperlinks to attachments should be displayed in the various 
+calendar views.</p>
+
+<a id="lbl-3c"></a><h5>c. Event Check Mark and To Do List</h5>
+<p>On the admin's Categories page, when adding/editing an event category, if you select "Check mark" and 
+specify a label and a check mark, events in this category will have a check mark displayed just in front 
+of the event title in the various views. For the owner of the event and users with "manager" rights this 
+check mark is a hyperlink and, when clicked, will result in checking/unchecking the check mark. This 
+feature can be used for instance to mark an event as "complete" or "done". Events with a check mark will 
+show up in the To Do list, which - when enabled by the administrator - can be selected from the 
+calendar's side menu (hamburger button top right).</p>
+
+<a id="lbl-3d"></a><h5>d. Proposing / Approving Events</h5>
+<p>On the admin's Categories page, when adding/editing an event category, if you select "Events need 
+approval", users with post rights can - in this category - create events which are not visible to other 
+users until a user with at least "manager" rights has approved the event. Until the event has been 
+approved, no user other than the event owner and users with manager rights will see the event. The owner 
+and users with manager rights will see the proposed event in the various views displayed with a red bar 
+in the left margin. Once a user with "manager" rights has approved the event, the event owner will 
+receive a confirmation email and the event will become visible to all users. Thereafter the event will 
+be locked and cannot be edited anymore by the originator. A user with at least manager rights can still 
+edit the event. Of course, if you don't like the words "proposing" and "approving", you change them in 
+the language files.</p>
+
+<a id="lbl-3e"></a><h5>e. Private Events</h5>
+<p>When adding/editing events, if the "Private" check box is checked, the event will only be visible 
+to the user who created the event and to the administrator. For obvious reasons private events can 
+only be created by logged in users.</p>
+<p>On the Settings page, under Events, the administrator can set "posting of private events to 
+disabled, enabled, default and always with the following meaning:</p>
+<ul>
+<li>disabled: The "Private" check box will not be visible in the Event window, so no private events can
+ be created.</li>
+<li>enabled: The "Private" check box will be visible in the Event window and will initially be 
+unchecked.</li>
+<li>default: The "Private" check box will be visible in the Event window and will initially be 
+checked.</li>
+<li>always: The "Private" check box will not be visible in the Event window and all created events 
+will be private.</li>
+</ul>
+<p>The creation of private events can also be enabled/disabled per individual user group (see 
+Calendar User Groups above). If for a calendar user group private events have been disabled, this 
+will overrule the "Posting of private events = always" setting on the admin's Settings page.</p>
+
+<a id="lbl-3f"></a><h5>f. Using the Calendar to Book Events</h5>
+<p>Event categories of the calendar can be set up for booking events with event overlap checking. 
+The idea is to let users create events which may not overlap with already existing events in the 
+same event category or with events in any category. If a user tries to create an event which overlaps, 
+an error message will be displayed. Single-day, multi-day and recurring events are checked. 
+Private events are not checked. The overlap check is performed when a new event is added to the 
+calendar or an existing event is edited. The overlap check starts from the first date until the 
+end date of the event and for recurring events without end date, the check will continue until 
+two years after the actual date. Optionally a minimum time gap which should be respected between two 
+events can be specified.</p>
+<p>How to set up a booking system, is illustrated by the following example.</p>
+<h6>Billiard table booking example:</h6>
+<p>In this example we will set up a booking system for three billiard tables.</p>
+<p>Create a new event category and give it the name "Billiard table 1", check the "No overlap 
+allowed" check box for the same category, specify a time gap required between two bookings and 
+specify the error text that will be displayed when trying to create an event which overlaps with 
+an existing event; e.g."Billiard table 1 in use, choose an other time or table". If desired, a 
+default or fixed event duration can be specified, which - when creating / editing an event - 
+will automatically be added to the start time of an event. Give this category a color 
+(text/background) which belongs to table 1.
+<br>
+Create two more categories for the other two billiard tables in a similar way but with a 
+different name, error text and color.
+<br>
+Now a user group can be created, for instance with the name "Billiards" for those users who can 
+book one of the three billiard tables. For this user group the three categories created for the 
+billiard tables should be selected and the check box "May post private events" should be unchecked. 
+Because the billiard tables can only be booked for a limited time, the check box "May post 
+multi-day events" can also be unchecked. So now if a user in this group add/edits an event, 
+the Event window will be simplified and will contain no "Private" check box, no "End date" field 
+and no "Repeat" feature.
+<br>
+On the Settings page, under User Accounts, "Self registration" can be enabled and the "Self 
+registration user group" should be set to the user group "Billiards" created in the step above.
+</p>
+<p>In the above example, users can register themselves and will be part of the "billiard" user 
+group; they will have access to the three categories "Billiard table 1", "Billiard table 2" and 
+"Billiard table 3" and will only be able to book a billiard table which is free.</p>
+<p>Note: For a booking system for chalets for instance, in the user group the check box "May post 
+multi-day events" should remain checked, to allow for booking the chalets for several days.</p>
+
+<a id="lbl-3g"></a><h5>g. Sending Event Reminder Messages</h5>
+<p>The calendar has an email event reminder service and an SMS event reminder service. For the SMS 
+reminder service a subscription with a mail-to-SMS provider will be needed. The settings related 
+to these services can be set on the administrator's Settings page in the Reminders section. Both 
+services can be enabled/disabled individually.</p>
+<p>To be able to send reminders a specified number of days before the start of an event, a cronjob 
+must be defined, which starts the script lcalcron.php in the calendar root daily at approx. 2am</p>
+<p>Users belonging to a user group with edit rights, can ask to send email reminders when adding or 
+editing events. Users can also ask to send SMS reminders, provided the user group the user belongs 
+to has the rights to send SMS reminders.</p>
+<p>A user can ask the calendar to send an email or SMS reminder, directly or a number of days before 
+the start of an event. If the user selects to send an email and/or an SMS directly, the email and/or 
+SMS is sent as soon as the event is saved. If the user ask to send an email and/or SMS x days 
+before the start of the event, an email and/or SMS will be sent x days before the start of the 
+event and another one will be sent on the day of the event. If the user specifies to send an email 
+and/or SMS 0 (zero) days before the start of the event, an email and/or SMS will be sent on the 
+day of the start of the event only. For recurring events (e.g. birthdays) an email/SMS notification 
+will be sent to the recipients the selected number of days before each occurrence of the event.</p>
+<p>Email as well as SMS reminders are sent to the recipients specified in the recipients list. 
+Recipients can be specified by means of an email address or a mobile phone number. 
+For email reminders to a recipient with a mobile phone number, the calendar will use the phone 
+number to search the user accounts in the database for a matching email address. If not found, 
+no email reminder will be sent. For SMS reminders to a recipient with an email address, the 
+calendar will use the email address to search the user accounts in the database for a matching 
+phone number. If not found, no SMS reminder will be sent.<br>If the email address or the phone 
+number is followed by a $-sign, the calendar will not look for a matching phone number or mail 
+address.</p>
+<p>Scheduled reminders and/or SMSes are always sent early in the morning, when the cronjob runs.</p>
+
+<a id="lbl-3h"></a><h5>h. Sidebar with Upcoming Events or Todo List</h5>
+<p>A stand-alone sidebar with upcoming events or a Todo list (see above) can be integrated in your 
+web page. An advantage of the sidebar, compared to embedding the calendar in an html iframe, is 
+that the sidebar is displayed in a &lt;div&gt; container and can be freely styled to match the style 
+of your web page. A second advantage is that the hoverbox with many event details is not clipped 
+by iframe boundaries.
+Further detail on how to add one or more stand-alone sidebars to your web page can be found in the 
+<kbd>installation_guide.html</kbd>. Examples of what a sidebar can look like can be found on the 
+LuxSoft <a href="http://www.luxsoft.eu/index.php?pge=demo" target="_blank"><b><i>Demo page</i></b></a>.
+</p>
+
+<a id="lbl-3i"></a><h5>i. Color-coding of Events and Subcategories</h5>
+<p>When defining user groups, for each group a background color can be specified and when defining event 
+categories, a text color and a background color can be specified for each category. On the admin's 
+Settings page, under Events, the admin can select whether on the calendar pages the color of the event 
+titles in the various views should correspond to the color of the user group to which the originator 
+of the event belongs or to the event category to which the event belongs.</p>
+<p>When adding/editing event categories a check box "Day color" can be checked. If this check box is 
+checked, in the various calendar views, if an event in this category is displayed for a certain day, 
+the background of the whole day will take the color of the event. This can for instance be useful to 
+make special events, like holidays or birthdays, more visible.</p>
+<p>On the categories page, for each event category up to four subcategories can be specified. Each 
+subcategory has a name and optionally the text color and background color can be specified. If one or 
+more subcategories have been specified, in the event add/edit window a drop-down menu will be displayed 
+from which the user can select a subcategory. When the subcategory has been selected, in all calendar 
+views the event concerned will take the text and background color of the selected subcategory and the 
+subcategory name will be added to the event details. When specifying subcategories on the categories 
+page, the text/background color fields can also be left blank; in this case the events in this category 
+will take the normal category colors. It may be useful for instance to specify a subcategory "None" 
+without colors, which - when selected in the event add/edit window - will behave as if no subcategory 
+has been selected.</p>
+
+<a id="lbl-3j"></a><h5>j. Importing Data of Previous LuxCal Versions</h5>
+<p>There are different ways to import calendar data of previous LuxCal versions, back to LuxCal version 
+2.7.2. If you want to import data of a LuxCal version less than 2.7.2, read the Upgrade Instructions 
+in the Release Notes (release_notes_xxx.html, where xxx = the LuxCal version).</p>
+<ul>
+<li>Upgrading the calendar</li>
+<p>When upgrading the calendar to a newer version, following the upgrade steps in the Release Notes, 
+the calendar(s) in the database will automatically be upgraded to the new Calendar version.</p>
+<li>Importing data via the LuxCal Toolbox (see section 4 below)</li>
+<p>The lctools.php file from the calendar toolbox can be uploaded to the calendar root folder and 
+launched via the browser. Via these tools a database back up files of a previous LuxCal version (as 
+of LuxCal 2.7.2) can be imported. At the end of the import process, the database schema will be 
+upgraded to the current calendar version without loss of data. Thereafter the calendar can be started.</p>
+<li>Importing data via an external tool</li>
+<p>You can use an external tool on your server, e.g. phpMyAdmin or phpLiteAdmin, to import database 
+back up files of previous LuxCal versions directly into the database. Before starting the calendar, 
+the upgradexxx.php file should be uploaded to the calendar root folder on your server and be launched 
+via your browser. Thereafter the calendar can be started.</p>
+</ul>
+<p>When in doubt if the calendar data in your database is up to date, you can at any time upload the 
+upgradexxx.php file to the calendar root folder on your server and launch it. The script will verify, 
+and if necessary upgrade, the database schema of your calendar(s).</p>
+
+<a id="lbl-4"></a><h4>4. LuxCal Toolbox</h4>
+<p>The toolbox contains several tools and utilities, which can help you set up and manage your calendar. 
+Below you will find a short description of each of the tools / utilities.</p>
+
+<a id="lbl-4a"></a><h5>4a. PHP Installation Details</h5>
+<p>On the admin's Settings page, in the General section, under Versions, just after the PHP version, 
+there is a "Show info" link. Clicking this link will display all details of the PHP installation on 
+your server in a new window. The PHP installation details can be useful when a PHP related problem is 
+encountered.</p>
+
+<a id="lbl-4b"></a><h5>4b. General Toolbox - lctools.php</h5>
+<p>The lctool.php file should be uploaded to the calendar's root folder and launched via your browser.
+This toolbox is particularly useful when managing multiple calendars. It contains tools to perform 
+the following actions:</p>
+<ul>
+<li>Test the configuration</li>
+<li>Create new calendars</li>
+<li>Set the default calendar</li>
+<li>Delete calendars</li>
+<li>Replicate data and/or settings from file</li>
+<li>Back up calendars</li>
+<li>Download a backup file from the 'files' folder</li>
+<li>Import a calendar backup file of a previous LuxCal version</li>
+</ul>
+<p>Most actions should be used with caution. Always carefully read the displayed instruction!</p>
+
+<a id="lbl-4c"></a><h5>4c. SMTP Mail Test Utility - smtptest.php</h5>
+<p>When you prefer to use SMTP mail, rather than PHP mail, for your email reminders and cron job 
+reports, you can select SMTP mail on the admin's Settings page of your calendar. Before doing so you 
+can use the SMTP Mail Test Utility "smtptest.php", in the smtpmail folder, to test your SMTP mail and 
+its parameters. The smtptest.php file should be uploaded to the calendar's root folder on your 
+server. Before launching it via your browser, you should start the calendar and specify the SMTP 
+parameters on the admin's Settings page, under Reminders.</p>
+
+<a id="lbl-4d"></a><h5>4d. Database Administration with phpLiteAdmin</h5>
+<p>In the phpliteadmin folder you will find phpLiteAdmin, an easy to use web-based SQLite database admin 
+tool written in PHP. details on how to use this free tool can be found 
+<a href="https://code.google.com/p/phpliteadmin/" target="_blank">here</a>.</p>
+<p>In the associated phpliteadmin.config.php file, you should at least set the following variables:</p>
+<ul>
+<li>$password - password to gain access</li>
+<li>$directory - directory of the database file(s) (default for LuxCal: "../db/")</li>
+<li>$allowed_extensions - array with allowed database file extensions (for LuxCal: ".cdb")</li>
+</ul>
+
+<a id="lbl-5"></a><h4>5. Calendar Settings - Description</h4>
+<p>The calendar settings which are automatically generated during the installation process are stored in
+the <kbd>settings</kbd> table of the database. All settings can be changed by the calendar administrator 
+via the Settings page in the administrator side menu (hamburger button top right).</p>
+<p>For those interested in technical details: The following are explanations of the PHP variables stored
+in the <kbd>settings</kbd> table of the database:</p>
+<ul>
+<li><p><kbd>calendarTitle</kbd>: The title of the LuxCal calendar that is displayed in the header
+		of the various calendar views.</p></li>
+<li><p><kbd>calendarUrl</kbd>: The full URL address of the calendar, used for notification purposes, 
+		E.g. http://www.mysite.xxx/calendar/index.php.</p></li>
+<li><p><kbd>backLinkUrl</kbd>: URL of parent page. If specified, a Back button will be displayed on 
+		the left side of the Navigation Bar which links to this URL. For instance to link back to the 
+		parent page from which the calendar was started.</p></li>
+<li><p><kbd>timeZone</kbd>: Your local time zone. See the <a href="http://us3.php.net/manual/en/timezones.php" target="_blank">
+		PHP Supported Time Zones</a> for possible values. Setting the correct time zone is important for the
+		"today" indication in the various views and when the "notification" feature is used.</p></li>
+<li><p><kbd>notifChange</kbd>: If checked, when a user adds, edits or deletes an event, an email 
+		notification message will be sent to the specified recipient email addresses.</p></li>
+<li><p><kbd>chgRecipList</kbd>: Recipient list for calendar changes. The list can contain a semicolon 
+		separated list of mail addresses, SMS numbers, user names and names of files with recipients. Files 
+		with recipients with one recipient per line should be located in the folder 'reciplists'. 
+		When omitted, the default file name extension of a file with email addresses is .txt</p></li>
+<li><p><kbd>maxXsWidth</kbd>: Upper limit in pixels of narrow displays. Display with a width under 
+		this limit will trigger responsive calendar mode.</p></li>
+<li><p><kbd>rssFeed</kbd>: If enabled: RSS feed links will be displayed in the calendar footer and will
+		be included in the HTML head section.</p></li>
+<li><p><kbd>logWarnings</kbd>: Log calendar warning messages (0: no, 1: yes).</p></li>
+<li><p><kbd>logNotices</kbd>: Log calendar notice messages (0: no, 1: yes).</p></li>
+<li><p><kbd>logVisitors</kbd>: Log calendar visitors data (0: no, 1: yes).</p></li>
+<li><p><kbd>maintMode</kbd>: Run calendar in maintenance mode (0: no, 1: yes).</p></li>
+<li><p><kbd>viewMenu</kbd>: Specifies whether the view menu is displayed in the calendar's options 
+		panel. Possible values: 0 = disabled, 1 = enabled.</p></li>
+<li><p><kbd>groupMenu</kbd>: Specifies whether the user group filter is displayed in the calendar's 
+		options panel. Possible values: 0 = disabled, 1 = enabled.</p></li>
+<li><p><kbd>userMenu</kbd>: Specifies whether the user filter is displayed in the calendar's options
+		panel. Possible values: 0 = disabled, 1 = enabled.</p></li>
+<li><p><kbd>catMenu</kbd>: Specifies whether the event category filter is displayed in the calendar's
+		options panel. Possible values: 0 = don't display the category filter menu, 1 = display
+		the category filter menu.</p></li>
+<li><p><kbd>langMenu</kbd>: Specifies whether the calendar users are allowed to select their preferred
+		user interface language the calendar's options panel. Possible values: 0 = don't display the
+		language selection menu, 1 = display the language selection menu.</p></li>
+<li><p><kbd>viewsPublic</kbd>: Specifies which calendar views are available to the public users. The 
+		available views are specified by means of a comma-separated list with view numbers.</p></li>
+<li><p><kbd>viewsLogged</kbd>: Specifies which calendar views are available to the logged in users. The 
+		available views are specified by means of a comma-separated list with view numbers.</p></li>
+<li><p><kbd>viewButsPub</kbd>: View buttons to be displayed on the navigation bar for public users 
+		(1:year, 2:month, 3:work month, 4:week, 5:work week 6:day, 7:upcoming, 8:changes, 9:matrix)</p></li>
+<li><p><kbd>viewButsLog</kbd>: View buttons to be displayed on the navigation bar for logged in users 
+		(1:year, 2:month, 3:work month, 4:week, 5:work week 6:day, 7:upcoming, 8:changes, 9:matrix)</p></li>
+<li><p><kbd>defViewPubL</kbd>: The initial calendar view for public users with a large display to be 
+		displayed when the LuxCal Calendar is started. Possible values/views: 1: Year, 2: Full Month, 
+		3: Work Month, 4: Full Week, 5: Work Week, 6: Day (today), 7: Upcoming events, 8: Changes and 
+		9: matrix.</p></li>
+<li><p><kbd>defViewPubS</kbd>: The initial calendar view for public users with a small display to be 
+		displayed when the LuxCal Calendar is started. Possible values/views: See previous setting.</p></li>
+<li><p><kbd>defViewLogL</kbd>: The initial calendar view for logged in users with a large display  
+		to be displayed when the LuxCal Calendar is started. Possible values/views: 1: Year, 2: Full Month,  
+		3: Work Month,4: Full Week, 5: Work Week, 6: Day (today), 7: Upcoming events, 8: Changes and 
+		9: matrix.</p></li>
+<li><p><kbd>defViewLogS</kbd>: The initial calendar view for logged in users with a small display  
+		to be displayed when the LuxCal Calendar is started. Possible values/views:  See previous setting.</p></li>
+<li><p><kbd>language</kbd>: The default user interface language. Only installed languages can be
+		specified.</p></li>
+<li><p><kbd>privEvents</kbd>: Can be disabled, enabled or default. If enabled: The user can choose to 
+		create private events, which are hidden from other users. If default: All events entered by a 
+		logged in user will default to private.</p></li>
+<li><p><kbd>aldDefault</kbd>: When selected, all-day event will be the default in the Event window 
+		when adding new events (0:no 1:yes).</p></li>
+<li><p><kbd>details4All</kbd>: If disabled: event details will only be visible to the owner of the 
+		event and to users with 'post all' rights. If enabled: event details will be visible to the owner 
+		of the event and to all other users. If "for logged-in users": Event details will only be visible 
+		to logged-in users.</p></li>
+<li><p><kbd>evtDelButton</kbd>: If disabled: the Delete button in the Event window will not be visible.
+		If enabled: the Delete button in the Event window will be visible, so all users with sufficient 
+		rights can delete events. If manager: the Delete button in the Event window will only be visible
+		to users with "manager" rights.</p></li>
+<li><p><kbd>eventColor</kbd>: Specifies whether events should be displayed with the event owner color,
+		or with the event category color (0: owner color, 1: category color)</p></li>
+<li><p><kbd>defVenue</kbd>: Default venue in the venue field of the event form</p></li>
+<li><p><kbd>xField1Label / xField2Label</kbd>: The name of two optional free format text fields, which 
+		can be added to the Event window form and in all calendar views and pages. The specified name can 
+		be max. 15 characters long. E.g. 'Email address', 'Website', 'Phone number'.</p></li>
+<li><p><kbd>xField1Rights / xField2Rights</kbd>: Specifies if the minimum required user rights to be 
+		able to see the extra field. Possible values: 1 = view, 2 = post own, 3 = post all, 4 = manager, 
+		5 = administrator.</p></li>
+<li><p><kbd>selfReg</kbd>: Indicates whether users can register themselves via the Log-in page.
+		Possible values: 0 = self-registration disabled, 1 = self-registration enabled.</p></li>
+<li><p><kbd>selfRegGrp</kbd>: The ID of the group to which self-registered users are automatically 
+		assigned.</p></li>
+<li><p><kbd>selfRegQ</kbd>: When specified and self-registration enabled, the question to answer 
+		when self registering.</p></li>
+<li><p><kbd>selfRegA</kbd>: When selfRegQ specified and self-registration enabled, this is the correct 
+		answer.</p></li>
+<li><p><kbd>selfRegNot</kbd>: Indicates whether a notification should be sent to the admin when a user
+		has self-registered. Possible values: 0 = disabled, 1 = enabled.
+<li><p><kbd>restLastSel</kbd>: Indicates whether the last user selections (the Option Panel settings) 
+		should be restored. When the user revisits the calendar at a later moment, these values will be 
+		restored. Possible values: 0 = not set, 1 = set</p></li>
+<li><p><kbd>cookieExp</kbd>: Number of days before a 'Remember me' cookie - set during Login - expires</p></li>
+<li><p><kbd>evtTemplGen</kbd>: Specifies which event fields should be displayed and in which order, 
+		on the general calendar views and pages.</p></li>
+<li><p><kbd>evtTemplUpc</kbd>: Specifies which event fields should be displayed and in which order 
+		in the Upcoming Events view.</p></li>
+<li><p><kbd>evtTemplPop</kbd>: Specifies which event fields should be displayed in the pop-up box 
+		when hovering events.</p></li>
+<li><p><kbd>evtSorting</kbd>: Sort events on times or category seq. nr. (0:times, 1:cat seq nr).</p></li>
+<li><p><kbd>yearStart</kbd>: The start month in year view (1-12 or 0, 0: current month).</p></li>
+<li><p><kbd>YvColsToShow</kbd>: The number of months to show per row in year view.</p></li>
+<li><p><kbd>YvRowsToShow</kbd>: The number of 4-months rows to show in year view. The default value is
+		4.</p></li>
+<li><p><kbd>MvWeeksToShow</kbd>: The number of weeks to show in month view. The value 0 (zero) has a
+		special meaning and will result in the display of just one single full month. The default value
+		is 10.</p></li>
+<li><p><kbd>XvWeeksToShow</kbd>: The number of weeks to show in matrix view. The default value is 8.
+		</p></li>
+<li><p><kbd>GvWeeksToShow</kbd>: The number of weeks to show in gantt view. The default value is 8.
+		</p></li>
+<li><p><kbd>workWeekDays</kbd>: A string of numbers which specify the days of the week to show in
+		work month view and work week view. Valid day numbers are: 0 = Sunday, 1 = Monday, ... , 6 =
+		Saturday.</p></li>
+<li><p><kbd>weekStart</kbd>: The first day of the week. Possible values: 0 = Sunday, 1 = Monday.
+<li><p><kbd>lookbackDays</kbd>: The number of days to look back in the Todo list. The default value 
+		is 30 (one month).</p></li>
+<li><p><kbd>lookaheadDays</kbd>: The number of days to look ahead in upcoming view, todo list and RSS
+		feeds. The default value is 14 (two weeks).</p></li>
+<li><p><kbd>dwStartHour</kbd>: The start of the full time block on the day and week views. The default
+		value is 6 (corresponding to 6:00am). This parameter helps to avoid wasting space for the nightly
+		hours, where normally no, or very few, events are planned.</p></li>
+<li><p><kbd>dwEndHour</kbd>: The end of the full time block on the day and week views. The default
+		value is 18 (corresponding to 18.00/6:00pm). This parameter helps to avoid wasting space for the
+		nightly hours, where maybe no, or very few, events are planned.</p></li>
+<li><p><kbd>dwTimeSlot</kbd>: The time slot size (in minutes) in day/week view. Together with the
+		<kbd>dwStartHour</kbd> (see above) this value determines the number of rows in day/week view.</p></li>
+<li><p><kbd>dwTsHeight</kbd>: The time slot display height (in number of pixels) in day/week view.
+		</p></li>
+<li><p><kbd>evtHeadM</kbd>: Event fields / layout of events shown in month view.</p></li>
+<li><p><kbd>evtHeadM</kbd>: Event fields / layout of events shown in week and day view.</p></li>
+<li><p><kbd>ownerTitle</kbd>: When enabled, the event owner's name will be shown in front of the event 
+		title in the various calendar views (0:disabled 1:enabled).</p></li>
+<li><p><kbd>spMinical</kbd>: Show a mini calendar right next to the main calendar in Month, Week and 
+		Day view. (0:disabled 1:enabled).</p></li>
+<li><p><kbd>spImages</kbd>: Show a monthly decoration image right next to the main calendar in Month, 
+		DWeek and ay view. (0:disabled 1:enabled).</p></li>
+<li><p><kbd>spInfoArea</kbd>: Show a monthly information area right next to the main calendar in Month, 
+		Week and Day view. (0:disabled 1:enabled).</p></li>
+<li><p><kbd>spMinical</kbd>: Path to Month view images to be displayed under the mini calendar. These 
+		images will be displayed only when the the mini calendar (see above) is enabled.</p></li>
+<li><p><kbd>showImgInMV</kbd>: Specifies whether thumbnail images, specified in the description field 
+		or one of the extra fields (see xField1 and xField2 above) of the events, should be shown in month 
+		view (0: no, 1: yes)</p></li>
+<li><p><kbd>monthInDCell</kbd>: Specifies whether in month view in each day cell the three-letter 
+		month abbreviation should be displayed (0: no, 1: yes)</p></li>
+<li><p><kbd>evtWinSmall</kbd>: Specifies whether the default Event window should be reduced (0: no, 
+		1: yes), if reduced, the user can click a + sign to open the full Event window.</p></li>
+<li><p><kbd>dateFormat</kbd>: Text string defining the format of dates in dd, mm and yyyy.
+		Possible characters: y: yyyy, m: mm, d: dd and any non-alphanumeric as separator.</p></li>
+<li><p><kbd>MdFormat</kbd>: Text string defining the format of dates in dd and month.
+		Possible characters: d: dd, M: month in letters and any non-alphanumeric as separator.</p></li>
+<li><p><kbd>MdyFormat</kbd>: Text string defining the format of dates in dd, month and yyyy.
+		Possible characters: d: dd, M: month in letters, y: yyyy and any non-alphanumeric as separator.</p></li>
+<li><p><kbd>MyFormat</kbd>: Text string defining the format of dates in month and yyyy.
+		Possible characters: M: month in letters, y: yyyy and any non-alphanumeric as separator.</p></li>
+<li><p><kbd>DMdFormat</kbd>: Text string defining the format of dates in weekday, dd and month.
+		Possible characters: WD: weekday in text, d: dd, M: month in letters and any non-alphanumeric
+		as separator.</p></li>
+<li><p><kbd>DMdyFormat</kbd>: Text string defining the format of dates in weekday, dd, month and yyyy.
+		Possible characters: WD: weekday in text, d: dd, M: month in letters, y: yyyy and
+		any non-alphanumeric as separator.</p></li>
+<li><p><kbd>timeFormat</kbd>: Text string defining the format of times in hh and mm.
+		Possible characters: h: hours, m: minutes, a: am/pm (optional), A: AM/PM (optional) and
+		any non-alphanumeric as separator.</p></li>
+<li><p><kbd>weekNumber</kbd>: Specifies whether week numbers should be displayed in the various
+		calendar views. Possible values: 0 = disabled, 1 = enabled. The default value is 1.</p></li>
+<li><p><kbd>emlService</kbd>: Specifies whether the mail service is active (0 = no, 1 = yes). 
+		The default value is 1.</p></li>
+<li><p><kbd>smsService</kbd>: Specifies whether the SMS service is active (0 = no, 1 = yes). 
+		The default value is 0.</p></li>
+<li><p><kbd>defRecips</kbd>: If specified, this will be the default recipients list for email and/or 
+		SMS notifications in the Event window. If this field is left blank, the default recipient will be 
+		the event owner.</p></li>
+<li><p><kbd>maxEmlCc</kbd>: Maximum number or recipients in the email Cc field. If there are more 
+		recipients than this number, the email will be split in multiple emails.</p></li>
+<li><p><kbd>notSenderEml</kbd>: When the calendar sends reminder emails, the sender ID of the email
+    can be either the calendar email address, or the email address of the user who created the event. 
+		In case of the user email address, the receiver can reply to the email.</p></li>
+<li><p><kbd>calendarEmail</kbd>: The sender's e-mail address ("From") in emails sent by the calendar.
+		E.g. reminders, cron job summary reports. See also <kbd>notSenderEml</kbd>.</p></li>
+<li><p><kbd>mailServer</kbd>: Specifies whether PHP mail or SMTP mail should be used for email reminders 
+		and periodic reports. Possible values: 1 = PHP mail, 2 = SMTP mail. The default value is 1.</p></li>
+<li><p><kbd>smtpServer</kbd>: Text string specifying the name of the SMTP server. For gmail this is for 
+		instance 'smtp.gmail.com'.</p></li>
+<li><p><kbd>smtpPort</kbd>: Specifies the SMTP port number. For example 25, 465, 587. Gmail for example 
+		uses port number 465.</p></li>
+<li><p><kbd>smtpSsl</kbd>: Specifies whether Secure Sockets Layer (SSL) should be used. Possible values: 
+		0 = no, 1 = yes. Gmail for instance uses SSL. The default value is 1.</p></li>
+<li><p><kbd>smtpAuth</kbd>: Specifies whether authentication should be used when sending SMTP mail. 
+		Possible values: 0 = no, 1 = yes. Gmail for instance uses authentication. The default value is 1.</p></li>
+<li><p><kbd>smtpUser</kbd>: Text string specifying the SMTP user name. Required when SMTP authentication
+		should be used.</p></li>
+<li><p><kbd>smtpPass</kbd>: Text string specifying the SMTP password. Required when SMTP authentication
+		should be used.</p></li>
+<li><p><kbd>notSenderSms</kbd>: When the calendar sends reminder SMSes, the sender ID of the SMS
+    can be either the calendar phone number, or the phone number of the user who created the event. 
+		If 'user' is selected and a user account has no phone number specified, the calendar phone number 
+		will be taken. In case of the user phone number, the receiver can reply to the SMS.</p></li>
+<li><p><kbd>calendarPhone</kbd>: The sender's phone number ("From") in SMSes sent by the calendar.
+		E.g. reminders. See also <kbd>notSenderSms</kbd> below.</p></li>
+<li><p><kbd>smsCarrier</kbd>: The SMS carrier template, where # = mob. phone number.</p></li>
+<li><p><kbd>smsCountry</kbd>: The SMS country code, needed when the SMS gateway is located abroad.</p></li>
+<li><p><kbd>cCodePrefix</kbd>: Add the international access code '+' or '00' to international numbers.</p></li>
+<li><p><kbd>smsSubject</kbd>:If specified, the text in this template will be copied in the subject field 
+		of the SMS email messages sent to the carrier. The text may contain the character #, which will be 
+		replaced by the phone number of the calendar or the event owner (depending on the setting above). 
+		Example: \'FROMFHONENUMBER=#\'.</p></li>
+<li><p><kbd>maxLenSms</kbd>: Maximum length of SMS messages (bytes).</p></li>
+<li><p><kbd>smsAddLink</kbd>: Add event report link to SMS (0:no, 1:yes).</p></li>
+<li><p><kbd>cronHost</kbd>: Specifies where the cron service, used for the periodic functios, is 
+		hosted. Possible values: 0 = local (on the same server as the calendar), 1 = the cron service of 
+		a remote server is used, or lcalcron.php is started manually via the browser (for testing purposes), 
+		2 = the cron service of an external server with a specified IP address is used.</p></li>
+<li><p><kbd>cronIpAddr</kbd>: A text string with the IP address of the remote cron server. IP address 
+		format: xxx.xxx.xxx.xxx, where xxx is a figure in the range 0 - 255</p></li>
+<li><p><kbd>adminCronSum</kbd>: Specifies whether the calendar administrator will receive a summary
+    report after the periodic functions have been executed. Automatic periodic functions should be
+		installed (see below) and emailing cron job output should be enabled on the server.</p></li>
+<li><p><kbd>chgSumRecips</kbd>: A semicolon-separated list with recipients for calendar changes sent by 
+    the <kbd>sendchg.php</kbd> script. Automatic periodic functions should be installed (see below).</p></li>
+<li><p><kbd>chgNofDays</kbd>: The number of days the <kbd>sendchg.php script</kbd> (see previous variable)
+    should look back for calendar changes. If the automatic periodic functions have been installed
+		(see below), this variable could be set to 1 (one day)</p></li>
+<li><p><kbd>icsExport</kbd>: Export events in iCalendar format to a .ics file in the 'files' folder.
+		The file name is the calendar name with blanks replaced by a underscore. This function works via 
+		a cron job.</p></li>
+<li><p><kbd>eventExp</kbd>: The number of days after the event's due date when an event expires and
+		will be automatically deleted (0:never). This function works via a cron job.</p></li>
+<li><p><kbd>maxNoLogin</kbd>: Indicates after how many 'no-login' days a user account should be
+		automatically deleted. Possible values: 0 = never delete a user account, 1 - 365 = number of days.
+		Automatic periodic functions should be installed (see below).</p></li>
+<li><p><kbd>popFieldsSbar</kbd>: Specifies which event fields should be displayed in the hover box 
+		with event details in the stand-alone sidebar. Only fields which are also defined in the setting 
+		"evtTemplGen" will be displayed. If no fields are specified, no hover box will be displayed.</p></li>
+<li><p><kbd>showLinkInSB</kbd>: Specifies whether URL-links, from the description field of the events,
+		should be shown in the sidebar (0: no, 1: yes).</p></li>
+<li><p><kbd>sideBarDays</kbd>: The number of days to look ahead in the sidebar. The
+		default value is 14 (two weeks).</p></li>
+</ul>
+<br><h5>&nbsp;- End of Administrator's Guide -</h5>
+<br>
+</div>
+<div class="endBar">
+	&copy; 2020 - powered by <a href="http://www.luxsoft.eu"><span class="LuxSoft">LuxSoft</span></a>
+</div>
+<br>&nbsp;
+</body>
+</html>

@@ -1,0 +1,31 @@
+CONTENT:
+=======
+In this zip-file you will find the following files and folders:
+Files:
+- MUST_READ.txt: This file.
+- DevNotes-xy.txt: a concise list of all implemented changes and bug fixes since the previous calendar version.
+- release_notes_x.y.z.html: Release notes. WHEN UPGRADING DON'T FORGET TO READ THE RED TEXT!
+- installation_guide.html: Describes how to install the calendar, how to configure the calendar and how to integrate / embed the calendar in your own web page.
+- admin_guide.html: Describes how to manage the calendar, how to use the advanced features and how to use the toolbox tools.
+
+Folders:
+- luxcalxyzX-calendar.zip: All files and folders needed for an initial LuxCal calendar installation or upgrade.
+- luxcalxyzX-toolbox.zip: Special tools which can be used by the administrator. These tools should only be uploaded when needed.
+
+IMPORTANT WHEN UPGRADING:
+========================
+- Read the release_notes_x.y.z.html, in particular the red text!
+- Before upgrading, always backup the calendar database content to a .sql file and backup all calendar files and folders.
+
+DISPLAYS:
+========
+In addition to the normal calendar, LuxCal also has a number of so-called "displays", which are single-file programs meant to create a dedicated events listing of for instance the upcoming events in your calendar for public visitors and/or logged in visitors. Displays are especially suitable for narrow-width screens. Displays work out-of-the-box and are highly configurable in an easy way.
+Have a look at the LuxSoft website (www.luxsoft.eu) and go to the LuxCal Displays page, where you can see the currently available displays in action.
+
+NEW SIDE PANEL (since V4.7.7):
+=============================
+Since LuxCal version 4.7.7 a new Side Panel is available for Month, Week and Day view, optionally containing 1) a mini calendar, 2) a decoration image and 3) an information area.
+For new installations this Side Panel is enabled and showing a mini calendar. For a demonstration of the demo image and a demo information message for each month, copy the files from the "samples" sub-folder to the parent "sidepanel" folder. If you like the Side panel, you should replace the demo images and messages by your own images and messages (if any).
+When upgrading an existing calendar with version < V4.7.7, the Side Panel will be disabled by default.
+The Side Panel elements can be enabled/disabled on the Settings page in the section Views.
+See admin_guide.html section 2 for a detailed description.

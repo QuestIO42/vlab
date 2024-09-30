@@ -7,39 +7,65 @@ import random
 import subprocess
 from paho.mqtt import client as mqtt_client
 
-broker = 'localhost'
-port = 1883
-topic = "quartus/mqtt"
-# Generate a Client ID with the subscribe prefix.
-client_id = f'subscribe-{random.randint(0, 100)}'
-# username = 'emqx'
-# password = 'public'
+BROKER = 'localhost'
+PORT = 1883
+TOPIC = "quartus"
+CLIENT_ID = f'subscriber-{random.randint(0, 100)}'
+
+FIRST_RECONNECT_DELAY = 1
+MAX_RECONNECT_COUNT = 12
+MAX_RECONNECT_DELAY = 60
+RECONNECT_RATE = 2
+FLAG_EXIT = False
 
 def connect_mqtt() -> mqtt_client:
+
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
-            print("Connected to MQTT Broker!")
+            print("Connected to MQTT broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
 
-    client = mqtt_client.Client(client_id)
-    # client.username_pw_set(username, password)
+    def on_disconnect(client, userdata, rc):
+        print("Disconnected with result code: %s", rc)
+        reconnect_count, reconnect_delay = 0, FIRST_RECONNECT_DELAY
+        while reconnect_count < MAX_RECONNECT_COUNT:
+            print("Reconnecting in %d seconds...", reconnect_delay)
+            time.sleep(reconnect_delay)
+            try:
+                client.reconnect()
+                print("Reconnected successfully!")
+                return
+            except Exception as err:
+                print("%s. Reconnect failed. Retrying...", err)
+            reconnect_delay *= RECONNECT_RATE
+            reconnect_delay = min(reconnect_delay, MAX_RECONNECT_DELAY)
+            reconnect_count += 1
+        print("Reconnect failed after %s attempts. Exiting...", reconnect_count)
+        global FLAG_EXIT
+        FLAG_EXIT = True
+
+    client = mqtt_client.Client(CLIENT_ID)
     client.on_connect = on_connect
-    client.connect(broker, port)
+    client.on_disconnect = on_disconnect
+    client.connect(BROKER, PORT)
     return client
 
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-        make_command = msg.payload.decode().split()
-        make_proc = subprocess.Popen(make_command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        stdout, stderr = make_proc.communicate()
-        print("stdout: {}".format(stdout))
-        print("stderr: {}".format(stderr))
-        print("Return code: {}".format(make_proc.returncode))
+        command = msg.payload.decode()
+        if command == 'quartus':
+            make_proc = subprocess.Popen(["./quartus.sh"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            stdout, stderr = make_proc.communicate()
+            print("stdout: {}".format(stdout))
+            print("stderr: {}".format(stderr))
+            print("Return code: {}".format(make_proc.returncode))
+        else:
+            print("Invalid command!")
 
-    client.subscribe(topic)
+    client.subscribe(TOPIC)
     client.on_message = on_message
 
 def run():

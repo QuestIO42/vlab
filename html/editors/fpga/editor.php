@@ -27,7 +27,7 @@ function loadExample(file, sw = false) {
         editor.getDoc().setValue(this.responseText);
     }
     document.getElementById("ASMeditor").style.visibility = sw ? "visible" : "hidden";
-    var filePath = "https://vlab.dc.ufscar.br/examples/fpga/" + file + ".txt";
+    var filePath = "https://vlab.dc.ufscar.br/examples/fpga/quartus/" + file + ".sv";
     var oReq = new XMLHttpRequest();
     oReq.onload = reqListener;
     oReq.open("get", filePath, true);
@@ -40,14 +40,22 @@ function loadExample(file, sw = false) {
 
 <button id="save" onclick="savefiles(editorTA, editorTB)">Save</button>
 Exemplos:
-<button onclick="loadExample('alert');">Alert</button>
-<button onclick="loadExample('colors');">Colors</button>
-<button onclick="loadExample('traffic_light');">Traffic Light</button>
-<button onclick="loadExample('vga');">VGA 640x480</button>
-<button onclick="loadExample('up1', true);">uP1 + VGA 7.5x10</button>
-<button onclick="loadExample('vgamem');">VGA 20x15 + RAM</button>
-<button onclick="loadExample('hexcount');">Hex Count</button>
-
+  <select id="examples" onchange="loadExample(document.getElementById('examples').value, document.getElementById('examples').value == 'up1');">
+    <optgroup label="Basic">
+      <option value="LEDs">LEDs</option>
+      <option value="hexcount">Hex Count</option>
+    </optgroup>
+    <optgroup label="VGA">
+      <option value="vga">VGA 640x480</option>
+      <option value="vgamem8">VGA 20x15 + RAM (8 bits)</option>
+      <option value="vgamem32">VGA 20x15 + RAM (32 bits)</option>
+      <option value="conway">Conway's Game of Life</option>
+      <option value="worley">Balls</option>
+    </optgroup>
+    <optgroup label="uP1">
+      <option value="up1">VGA</option>
+    </optgroup>
+  </select>
 
 <table>
   <tr>
