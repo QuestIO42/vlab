@@ -59,6 +59,8 @@ def subscribe(client: mqtt_client):
         if command == 'quartus':
             make_proc = subprocess.Popen(["./quartus.sh"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             stdout, stderr = make_proc.communicate()
+            client.publish(TOPIC+'/output', stdout)
+            client.publish(TOPIC+'/output', stderr)
             print("stdout: {}".format(stdout))
             print("stderr: {}".format(stderr))
             print("Return code: {}".format(make_proc.returncode))
