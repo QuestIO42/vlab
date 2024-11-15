@@ -36,6 +36,11 @@ Tested with Arduino and Zybo boards. It would be easy to use with mBed / STM32 b
 5. Download and copy CodeMirror (codemirror-5.58.1) to /var/www/html/codemirror-5.58.1
 6. Install and configure FPGA tools  
 
+## Configuration Tricks
+1. The email password is set in the calendar setting using the administrator account.
+
+## Acknowledgements
+
 Thanks to Prof. Rafael Aroca for supporting the [original version](https://github.com/rafaelaroca/RemoteMicrocontrollerLab)!
 
 ## [Pull resquests with examples are welcome!](html/examples/fpga/quartus)
