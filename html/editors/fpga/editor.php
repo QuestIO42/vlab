@@ -27,7 +27,7 @@ function loadExample(file, sw = false) {
         editor.getDoc().setValue(this.responseText);
     }
     document.getElementById("ASMeditor").style.visibility = sw ? "visible" : "hidden";
-    var filePath = "https://vlab.dc.ufscar.br/examples/fpga/quartus/" + file + ".sv";
+    var filePath = "https://legacy.vlab.dc.ufscar.br/examples/fpga/quartus/" + file + ".sv";
     var oReq = new XMLHttpRequest();
     oReq.onload = reqListener;
     oReq.open("get", filePath, true);
