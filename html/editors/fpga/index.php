@@ -76,7 +76,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 	} else {
 	   echo "<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>";
 ?>   
-	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
+	<button onclick="window.open('/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
 <?php
