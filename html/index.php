@@ -33,7 +33,7 @@ body {background-color: #e0e0e0; color: #2b3856;}
 <h1>Lab. Remoto de Embarcados - DC/UFSCar🍌</h1>
 	<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>
 	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
-    <button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
+    <button onclick="window.open('/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
     </body>

@@ -83,7 +83,7 @@ The LuxCal Web Calendar is distributed WITHOUT ANY WARRANTY.
 			//echo "The random $digits_needed digit number is $random_number";
 
 			$key=$random_number;
-			$linkLab="https://vlab.dc.ufscar.br/index.php?key=" . $key;
+			$linkLab="https://legacy.vlab.dc.ufscar.br/index.php?key=" . $key;
 
 			$uid=1;
 			//$ds="$sda" . " $sti";//"2020-01-01 17:00";
