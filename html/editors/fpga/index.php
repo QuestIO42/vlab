@@ -66,7 +66,8 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 			} else {
 				echo "<br><br>Esta chave so permite acesso no horário entre $s e $e - <a href=/agenda>agende um novo horário</a><br>";
 ?>
-	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
+	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
+	<button onclick="window.open('/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
 <?php
@@ -76,6 +77,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 	} else {
 	   echo "<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>";
 ?>   
+	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
 	<button onclick="window.open('/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
@@ -86,7 +88,8 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 } else {
 	echo "<BR><center>Chave inválida - <a href=/agenda>agende um horário</a></center>";
 ?>
-	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
+	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
+	<button onclick="window.open('/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="window.location.href='/about'">Sobre</button>
 <?php
@@ -96,7 +99,8 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 ?>
 
 </center>
-	<button onclick="window.open('https://vlab.dc.ufscar.br/camera.html', 'camera');">Camera</button>
+	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
+	<button onclick="window.open('/camera.html', 'camera');">Camera</button>
 	<button onclick="window.location.href='/agenda'">Agenda</button>
 	<button onclick="changeSrc('synthesis.php?key=<?php echo $k;?>')">Sintetizar & Programar</button>
 	<button onclick="changeSrc('assembly.php?key=<?php echo $k;?>')">Assembly</button>
