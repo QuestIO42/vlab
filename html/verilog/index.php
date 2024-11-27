@@ -34,7 +34,7 @@ function loadExample(file) {
     function reqListener () {
         editor.getDoc().setValue(this.responseText);
     }
-    var filePath = "https://vlab.dc.ufscar.br/verilog/" + file + ".txt";
+    var filePath = "https://legacy.vlab.dc.ufscar.br/verilog/" + file + ".txt";
     var oReq = new XMLHttpRequest();
     oReq.onload = reqListener;
     oReq.open("get", filePath, true);
@@ -50,8 +50,6 @@ function loadExample(file) {
         Exemplos:
         <button onclick="loadExample('basic');">Basic</button>
         <button onclick="loadExample('counter');">Counter</button> 
-        <button onclick="loadExample('vga');">VGA</button>
-        <button onclick="loadExample('up1');">uP1</button>
         <p>
             <textarea id=editor name=code rows=22>
 <?php readfile("basic.v.original"); ?>

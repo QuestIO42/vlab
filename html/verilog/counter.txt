@@ -1,0 +1,23 @@
+module tb_counter;
+  reg clk, rst;
+  wire integer count;
+  counter dut(clk, rst, count);
+  initial begin
+    $dumpvars(0);
+    #10 rst = 1'b1;
+    #10 rst = 1'b0;
+    #500 $finish;
+  end
+  always begin
+    clk = 1'b0; #5 clk = 1'b1; #5;
+  end
+endmodule
+module counter(
+  input sysclk, reset,
+  output reg [31:0] count);
+  always@(posedge sysclk)
+    if (reset)
+      count = 31'b0;
+    else
+      count = count + 1;
+endmodule
