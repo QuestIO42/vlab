@@ -2,10 +2,11 @@
 
 # https://github.com/emqx/MQTT-Client-Examples/blob/master/mqtt-client-Python3/pub_sub_tcp.py
 
-import sys
 import random
 import subprocess
+from time import sleep
 from paho.mqtt import client as mqtt_client
+from light import turn_on_switch, turn_off_switch
 
 BROKER = 'localhost'
 PORT = 1883
@@ -51,12 +52,12 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
-
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         command = msg.payload.decode()
         if command == 'quartus':
+            turn_on_switch("switch.vlabpixar")
             make_proc = subprocess.Popen(["./quartus.sh"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             stdout, stderr = make_proc.communicate()
             client.publish(TOPIC+'/output', stdout)
@@ -64,6 +65,8 @@ def subscribe(client: mqtt_client):
             print("stdout: {}".format(stdout))
             print("stderr: {}".format(stderr))
             print("Return code: {}".format(make_proc.returncode))
+            sleep(300)
+            turn_off_switch("switch.vlabpixar")
         else:
             print("Invalid command!")
 
@@ -75,7 +78,5 @@ def run():
     subscribe(client)
     client.loop_forever()
 
-
 if __name__ == '__main__':
     run()
-
