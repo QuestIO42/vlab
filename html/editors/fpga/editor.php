@@ -51,6 +51,7 @@ Exemplos:
       <option value="vgamem32">VGA 20x15 + RAM (32 bits)</option>
       <option value="conway">Conway's Game of Life</option>
       <option value="worley">Balls</option>
+      <option value="starfield">Starfield</option>
     </optgroup>
     <optgroup label="uP1">
       <option value="up1">VGA</option>

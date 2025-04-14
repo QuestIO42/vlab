@@ -87,7 +87,7 @@ if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
 				  break;
 			} 
 		}
-		header("Location: https://vlab.dc.ufscar.br/editors/$editor/index.php?key=$k");
+		header("Location: https://legacy.vlab.dc.ufscar.br/editors/$editor/index.php?key=$k");
 		exit;
 	} else {
 		page();

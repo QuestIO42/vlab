@@ -56,7 +56,11 @@ def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         command = msg.payload.decode()
-        if command == 'quartus':
+        if command == 'light':
+            turn_on_switch("switch.vlabpixar")
+            sleep(300)
+            turn_off_switch("switch.vlabpixar")
+        elif command == 'quartus':
             turn_on_switch("switch.vlabpixar")
             make_proc = subprocess.Popen(["./quartus.sh"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             stdout, stderr = make_proc.communicate()
