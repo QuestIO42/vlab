@@ -24,7 +24,7 @@ D=`date +%d-%m-%Y-%H-%M-%S`
 #cp /var/www/html/editors/fpga/top.sv /home/vlab/build_history/fpga/$D
 cd /home/vlab/gowin
 
-gw_sh flow.tcl
+gw_sh flow.tcl && openFPGALoader -b tangprimer20k impl/pnr/project.fs
 
 date 
 exit
