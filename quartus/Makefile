@@ -89,7 +89,7 @@ smart: smart.log
 #               Commented out so it may be set from environment.
 ###################################################################
 
-QUARTUS_PATH = /opt/intelFPGA_lite/23.1std/quartus/bin/
+QUARTUS_PATH = /var/local/intelFPGA_lite/23.1std/quartus/bin/
 
 QUARTUS_MAP  = $(QUARTUS_PATH)quartus_map
 QUARTUS_FIT  = $(QUARTUS_PATH)quartus_fit
