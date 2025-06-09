@@ -5,7 +5,7 @@ function page() {
     <!DOCTYPE html>
     <html lang="pt-br">
     <head>
-        <title>Lab. Remoto de Embarcados - DC/UFSCar🍌</title>
+        <title>Lab. Remoto de Embarcados - DC/UFSCar</title>
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
         <link rel="stylesheet" href="styles.css">
@@ -39,7 +39,12 @@ function page() {
             </div>
 
             <div class="option-container">
-                <button class="option-questio" onclick="window.location.href='https://questio42.github.io/'">
+                <button class="option-home" onclick="window.location.href='https://questio42.github.io/'">
+                    <img src="./assets/home.png" alt="QuestIO" class="icon">
+                    Home
+                </button>
+
+                <button class="option-questio" onclick="window.location.href='https://questio.vlab.dc.ufscar.br/'">
                     <img src="./assets/questio.png" alt="QuestIO" class="icon">
                     QuestI0
                 </button>

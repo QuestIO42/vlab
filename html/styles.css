@@ -91,6 +91,7 @@ main {
 }
 
 .option,
+.option-home,
 .option-questio {
     display: flex;
     flex-direction: row;
@@ -112,6 +113,12 @@ main {
     box-shadow: var(--box-shadow-default-roxo-500);
 }
 
+.option-home {
+    color: #6b3605; 
+    background-color: var(--laranja); 
+    box-shadow: var(--box-shadow-default-laranja);
+}
+
 .option-questio {
     color: #2f6e4e; 
     background-color: var(--verde-300); 
@@ -119,6 +126,7 @@ main {
 }
 
 .option:hover,
+.option-home:hover,
 .option-questio:hover {
     transform: scale(1.05);
 }
