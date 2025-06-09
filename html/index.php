@@ -6,9 +6,9 @@ function page() {
     <html lang="pt-br">
     <head>
         <title>Lab. Remoto de Embarcados - DC/UFSCar🍌</title>
-        <link rel="stylesheet" href="styles.css">
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+        <link rel="stylesheet" href="styles.css">
 
         <script>
             function changeSrc(loc) {

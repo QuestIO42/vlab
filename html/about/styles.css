@@ -32,10 +32,13 @@
   }
 
 body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
     margin: 0;
     font-family: var(--fonte);
-    background-image: url('./assets/grid.svg');
+    background-image: url('../assets/grid.svg');
     background-size: cover; 
     background-repeat: no-repeat;
     background-position: center;
@@ -43,6 +46,8 @@ body {
 }
 
 main {
+    width: 90%;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     padding: 40px 20px 40px 20px;
@@ -64,68 +69,70 @@ main {
     font-size: 36px;
 }
 
+.container-topic {
+    width: 100%;
+    margin: 24px 0px 0px 0px;
+    display: flex;
+    align-items: start;
+    box-sizing: border-box; 
+}
+
+.topic {
+    width: fit-content;
+    padding: 12px 24px;
+    color: #bab1fc; 
+    background-color: var(--roxo-300); 
+    box-shadow: var(--box-shadow-default-roxo-500);
+    font-size: 20px;
+}
+
 .message {
-    width: 55%;
-    margin: 36px 0px;
-    padding: 24px;
+    width: 100%;
+    margin: 8px;
+    padding: 12px 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #FCFCFC;
+    background-color: #fdfdfd;
     border: 1px solid var(--cinzaClaro);
+    box-sizing: border-box; 
 }
 
-.message h3 {
-    margin: 8px 0px;
-}
-
-.message p {
-    text-align: center;
-    color: var(--cinza);
-}
-
-.option-container {
+.images {
+    width: max-content;
+    margin: 24px;
     display: flex;
-    gap: 20px;
-}
-
-.option,
-.option-questio {
-    display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 12px 16px;
-    font-family: var(--fonte);
+    gap:28px;
+    box-sizing: border-box;
+}
+
+img {
+    flex: 1;
+    max-width: 460px;
+    padding: 12px;
+    background-color: #DDD;
+    box-shadow: 0 0 0 0px #FFFFFF, 8px 8px #BBBBBB;;
+}
+
+iframe {
+    margin: 36px 8px;
+    padding: 12px;
+    background-color: #DDD;
+    box-shadow: 0 0 0 0px #FFFFFF, 8px 8px #BBBBBB;;
+}
+
+p {
+    width: 100%;
+    color: var(--cinza);
     font-size: 16px;
-    font-weight: 600;
-    border: none;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
 }
 
-.option {
-    color: #bab1fc; 
-    background-color: var(--roxo-300); 
-    box-shadow: var(--box-shadow-default-roxo-500);
-}
-
-.option-questio {
-    color: #2f6e4e; 
-    background-color: var(--verde-300); 
-    box-shadow: var(--box-shadow-default-verde-900);
-}
-
-.option:hover,
-.option-questio:hover {
-    transform: scale(1.05);
-}
-
-.icon {
-    width: 36px;
-    height: 36px;
+a {
+    color: #333;
 }
 
 .github-fork-ribbon:before {
