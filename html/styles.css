@@ -29,7 +29,7 @@
     --box-shadow-default-preto: 0 0 0 0px #FFFFFF, 6px 6px #1E1E1E;
     --box-shadow-default-preto-900: 0 0 0 0px #FFFFFF, 6px 6px #000000;
     --box-shadow-default-laranja: 0 0 0 0px #FFFFFF, 6px 6px #97581F;
-  }
+}
 
 body {
     min-height: 100vh;

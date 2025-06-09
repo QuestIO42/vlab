@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    /* font-family */
+    --fonte: 'Space Mono', monospace;
+
+    /* colors */
+    --roxo-300: #5a4ac2;
+    --roxo-500: #877dbf;
+    --roxo-900: #3e347b;
+    --amarelo: #f2db3f;
+    --verde-300: #3ff29b;
+    --verde-900: #5d9d7e;
+    --cinza: #888;
+    --cinzaClaro: #DDD;
+    --preto-texto: rgba(0, 0, 0, 0.75);
+    --branco: #ffffff;
+    --laranja: #f2953f;
+    --preto: #1e1e1e;
+
+    /* shadow */
+    --box-shadow-default-roxo-300: 0 0 0 0px #FFFFFF, 6px 6px #5A4AC2;
+    --box-shadow-default-roxo-500: 0 0 0 0px #FFFFFF, 6px 6px #3E347B;
+    --box-shadow-default-roxo-900: 0 0 0 0px #FFFFFF, 6px 6px #3E347B;
+    --box-shadow-default-verde-300: 0 0 0 0px #FFFFFF, 6px 6px #3FF29B;
+    --box-shadow-default-verde-900: 0 0 0 0px #FFFFFF, 6px 6px #5D9D7E;
+    --box-shadow-default-cinza-300: 0 0 0 0px #FFFFFF, 6px 6px #DDDDDD;
+    --box-shadow-default-cinza: 0 0 0 0px #FFFFFF, 6px 6px #BBBBBB;
+    --box-shadow-default-preto: 0 0 0 0px #FFFFFF, 6px 6px #1E1E1E;
+    --box-shadow-default-preto-900: 0 0 0 0px #FFFFFF, 6px 6px #000000;
+    --box-shadow-default-laranja: 0 0 0 0px #FFFFFF, 6px 6px #97581F;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    font-family: var(--fonte);
+    background-image: url('./assets/grid.svg');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
