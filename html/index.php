@@ -3,7 +3,7 @@
 function page() {
     ?>
     <!DOCTYPE html>
-    <html>
+    <html lang="pt-br">
     <head>
         <title>Lab. Remoto de Embarcados - DC/UFSCar🍌</title>
         <link rel="stylesheet" href="styles.css">
