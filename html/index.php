@@ -1,102 +1,120 @@
 <?php
 
 function page() {
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Lab. Remoto de Embarcados - DC/UFSCar🍌</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Lab. Remoto de Embarcados - DC/UFSCar🍌</title>
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
-
-<style>
-body {background-color: #e0e0e0; color: #2b3856;}
-.github-fork-ribbon:before { background-color: #ff7f00; }
-</style>
         <script>
             function changeSrc(loc) {
-			//document.getElementById('iframeId').save();
                 document.getElementById('iframeId').src = loc;
             }
 
-	function openInNewTab(url) {
-	  var win = window.open(url, '_blank');
-	  win.focus();
-	}
-      </script>
+            function openInNewTab(url) {
+                var win = window.open(url, '_blank');
+                win.focus();
+            }
+        </script>
     </head>
     <body>
-<a class="github-fork-ribbon" href="https://github.com/QuestIO42/vlab" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
-<center>
-<h1>Lab. Remoto de Embarcados - DC/UFSCar🍌</h1>
-	<BR><center>Chave não encontrada - <a href=/agenda>agende um horário</a></center>
-	<button onclick="window.location.href='https://questio42.github.io/'">QuestI0</button>
-    <button onclick="window.open('/camera.html', 'camera');">Camera</button>
-	<button onclick="window.location.href='/agenda'">Agenda</button>
-	<button onclick="window.location.href='/about'">Sobre</button>
+        <a class="github-fork-ribbon" href="https://github.com/QuestIO42/vlab" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">
+            Fork me on GitHub
+        </a>
+        <main>
+            <h2 class="subtitle">DC/UFSCar</h2>
+            <h1 class="title">Lab. Remoto de Embarcados</h1>
+
+            <div class="message">
+                <h3> Bem-vindo ao nosso Laboratório! </h3>
+                <p> 
+                    Este espaço foi criado para oferecer suporte ao desenvolvimento de projetos com a plataforma Terasic DE10-Standard (Cyclone V SoC). 
+                    Agora localizado no <strong>Espaço Maker do DC/UFSCar</strong>, o laboratório conta com uma estrutura aprimorada, incluindo iluminação auxiliar para 
+                    uso noturno. 
+                </p>
+            </div>
+
+            <div class="option-container">
+                <button class="option-questio" onclick="window.location.href='https://questio42.github.io/'">
+                    <img src="./assets/questio.png" alt="QuestIO" class="icon">
+                    QuestI0
+                </button>
+
+                <button class="option" onclick="window.open('/camera.html', 'camera');">
+                    <img src="./assets/camera.png" alt="Camera" class="icon">
+                    Camera
+                </button>
+
+                <button class="option" onclick="window.location.href='/agenda'">
+                    <img src="./assets/agenda.png" alt="Agenda" class="icon">
+                    Agenda
+                </button>
+
+                <button class="option" onclick="window.location.href='/about'">
+                    <img src="./assets/sobre.png" alt="Sobre" class="icon">
+                    Sobre
+                </button>
+            </div>
+        </main>
     </body>
-</body>
-</html>
-
-<?php
+    </html>
+    <?php
 }
 
-$dbHost=$_ENV["MYSQL_HOST"];
-$dbUnam=$_ENV["MYSQL_USER"]; 
-$dbPwrd=$_ENV["MYSQL_PASSWORD"];
-$dbName=$_ENV["MYSQL_DATABASE"];
+// $dbHost=$_ENV["MYSQL_HOST"];
+// $dbUnam=$_ENV["MYSQL_USER"]; 
+// $dbPwrd=$_ENV["MYSQL_PASSWORD"];
+// $dbName=$_ENV["MYSQL_DATABASE"];
 
-global $con;
-$con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));
+// global $con;
+// $con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));
 
-mysqli_select_db($con, $dbName) or trigger_error("Erro ao acessar o banco de dados: " . mysqli_error($con));
+// mysqli_select_db($con, $dbName) or trigger_error("Erro ao acessar o banco de dados: " . mysqli_error($con));
 
+// if ($con) {
+//     $query = "set names utf8";
+//     $result = mysqli_query($con, $query);
+// }
 
-if ($con) {
-        $query="set names utf8";
-        $result=mysqli_query($con,$query);
-}
+// if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
+//     $k = $_GET['key'];
+//     $sql = "SELECT * FROM slots WHERE akey=\"$k\"";
+//     $result = mysqli_query($con, $sql);
 
+//     if (mysqli_num_rows($result) > 0) {
+//         while($row = mysqli_fetch_assoc($result)) {
+//             $s = $row["start"];
+//             $e = $row["end"];
+//             $cat = $row["catID"];
+//             switch ($cat) {
+//                 case 1: 
+//                     $editor = "fpga";
+//                     break;
+//                 case 2:
+//                     $editor = "arduino_mega";
+//                     break;
+//                 case 3:
+//                     $editor = "arduino_uno";
+//                     break;
+//                 case 4:
+//                     $editor = "stm32";
+//                     break;
+//             }
+//         }
+//         header("Location: https://legacy.vlab.dc.ufscar.br/editors/$editor/index.php?key=$k");
+//         exit;
+//     } else {
+//         page();
+//         exit;    
+//     }
+// } else {
+//     page();
+//     exit;
+// }
 
-if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
-
-	$k=$_GET['key'];
-	$sql = "SELECT * FROM slots WHERE akey=\"$k\"";
-	$result = mysqli_query($con, $sql);
-
-	if (mysqli_num_rows($result) > 0) {
-		while($row = mysqli_fetch_assoc($result)) {
-
-			$s=$row["start"];
-			$e=$row["end"];
-			$cat=$row["catID"];
-			switch ($cat) {
-				case 1: 
-				  $editor = "fpga";
-				  break;
-				case 2:
-				  $editor = "arduino_mega";
-				  break;
-				case 3:
-				  $editor = "arduino_uno";
-				  break;
-				case 4:
-				  $editor = "stm32";
-				  break;
-			} 
-		}
-		header("Location: https://legacy.vlab.dc.ufscar.br/editors/$editor/index.php?key=$k");
-		exit;
-	} else {
-		page();
-		exit;	
-	}
-} else {
-	page();
-	exit;
-}
-
+page();
 ?>
-

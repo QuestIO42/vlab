@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    /* font-family */
+    --fonte: 'Space Mono', monospace;
+
+    /* colors */
+    --roxo-300: #5a4ac2;
+    --roxo-500: #877dbf;
+    --roxo-900: #3e347b;
+    --amarelo: #f2db3f;
+    --verde-300: #3ff29b;
+    --verde-900: #5d9d7e;
+    --cinza: #888;
+    --cinzaClaro: #DDD;
+    --preto-texto: rgba(0, 0, 0, 0.75);
+    --branco: #ffffff;
+    --laranja: #f2953f;
+    --preto: #1e1e1e;
+
+    /* shadow */
+    --box-shadow-default-roxo-300: 0 0 0 0px #FFFFFF, 6px 6px #5A4AC2;
+    --box-shadow-default-roxo-500: 0 0 0 0px #FFFFFF, 6px 6px #3E347B;
+    --box-shadow-default-roxo-900: 0 0 0 0px #FFFFFF, 6px 6px #3E347B;
+    --box-shadow-default-verde-300: 0 0 0 0px #FFFFFF, 6px 6px #3FF29B;
+    --box-shadow-default-verde-900: 0 0 0 0px #FFFFFF, 6px 6px #5D9D7E;
+    --box-shadow-default-cinza-300: 0 0 0 0px #FFFFFF, 6px 6px #DDDDDD;
+    --box-shadow-default-cinza: 0 0 0 0px #FFFFFF, 6px 6px #BBBBBB;
+    --box-shadow-default-preto: 0 0 0 0px #FFFFFF, 6px 6px #1E1E1E;
+    --box-shadow-default-preto-900: 0 0 0 0px #FFFFFF, 6px 6px #000000;
+    --box-shadow-default-laranja: 0 0 0 0px #FFFFFF, 6px 6px #97581F;
+  }
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    font-family: var(--fonte);
+    background-image: url('./assets/grid.svg');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0px 40px 0px;
+    align-items: center;
+    justify-content: center;
+}
+
+.subtitle {
+    padding: 12px 16px;
+    background-color: var(--cinzaClaro);
+    box-shadow: var(--box-shadow-default-cinza);
+    border: 1px solid var(--cinza);
+    color: #777;
+    font-size: 24px;
+}
+
+.title {
+    margin: 12px 0px 0px 0px;
+    font-size: 36px;
+}
+
+.message {
+    width: 55%;
+    margin: 36px 0px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FCFCFC;
+    border: 1px solid var(--cinzaClaro);
+}
+
+.message h3 {
+    margin: 8px 0px;
+}
+
+.message p {
+    text-align: center;
+    color: var(--cinza);
+}
+
+.option-container {
+    display: flex;
+    gap: 20px;
+}
+
+.option,
+.option-questio {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-family: var(--fonte);
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.option {
+    color: #bab1fc; 
+    background-color: var(--roxo-300); 
+    box-shadow: var(--box-shadow-default-roxo-500);
+}
+
+.option-questio {
+    color: #2f6e4e; 
+    background-color: var(--verde-300); 
+    box-shadow: var(--box-shadow-default-verde-900);
+}
+
+.option:hover,
+.option-questio:hover {
+    transform: scale(1.05);
+}
+
+.icon {
+    width: 36px;
+    height: 36px;
+}
+
+.github-fork-ribbon:before {
+    background-color: var(--roxo-500);
+}
