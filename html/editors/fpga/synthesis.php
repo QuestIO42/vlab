@@ -66,7 +66,7 @@ if(ob_get_length() > 0) {
     ob_end_flush();
 }
 
-$cmd = "mosquitto_pub -h 'localhost' -t 'quartus' -m 'quartus' && mosquitto_sub -h 'localhost' -t 'quartus/output'";
+$cmd = "mosquitto_pub -h 'localhost' -t 'quartus' -m 'quartus'";
 
 $descriptorspec = array(
    0 => array("pipe", "r"),   // stdin is a pipe that the child will read from

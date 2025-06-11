@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import requests
 from time import sleep
@@ -56,5 +57,5 @@ if __name__ == "__main__":
     switch_id = "switch.vlabpixar"
     get_switch_state(switch_id)  # Consultar o estado
     turn_on_switch(switch_id)    # Ligar o switch
-    sleep(300)                   # Esperar 5 minutos
+    sleep(30)                    # Esperar 30 segundos
     turn_off_switch(switch_id)   # Desligar o switch

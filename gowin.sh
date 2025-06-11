@@ -17,12 +17,10 @@ sleep 1
 kill -9 $P
 kill -9 $P
 
-export HOME=`pwd`
-D=`date +%d-%m-%Y-%H-%M-%S`
-
-#cp /var/www/html/editors/fpga/top.sv /home/vlab/golden/golden.srcs/sources_1/imports/new
-#cp /var/www/html/editors/fpga/top.sv /home/vlab/build_history/fpga/$D
-cd /home/vlab/gowin
+cd /home/vlab/gowin/src
+tar zxvf $1
+mv $1 ../build_history 
+cd ..
 
 gw_sh flow.tcl && openFPGALoader -b tangprimer20k impl/pnr/project.fs
 

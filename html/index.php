@@ -49,7 +49,7 @@ function page() {
                     QuestI0
                 </button>
 
-                <button class="option" onclick="window.open('/camera.html', 'camera');">
+                <button class="option" onclick="window.open('/camera.php', 'camera');">
                     <img src="./assets/camera.png" alt="Camera" class="icon">
                     Camera
                 </button>
@@ -70,56 +70,56 @@ function page() {
     <?php
 }
 
-// $dbHost=$_ENV["MYSQL_HOST"];
-// $dbUnam=$_ENV["MYSQL_USER"]; 
-// $dbPwrd=$_ENV["MYSQL_PASSWORD"];
-// $dbName=$_ENV["MYSQL_DATABASE"];
+$dbHost=$_ENV["MYSQL_HOST"];
+$dbUnam=$_ENV["MYSQL_USER"]; 
+$dbPwrd=$_ENV["MYSQL_PASSWORD"];
+$dbName=$_ENV["MYSQL_DATABASE"];
 
-// global $con;
-// $con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));
+global $con;
+$con = mysqli_connect($dbHost, $dbUnam, $dbPwrd) or trigger_error("Erro ao acessar o Banco de Dados: " . mysqli_error($con));
 
-// mysqli_select_db($con, $dbName) or trigger_error("Erro ao acessar o banco de dados: " . mysqli_error($con));
+mysqli_select_db($con, $dbName) or trigger_error("Erro ao acessar o banco de dados: " . mysqli_error($con));
 
-// if ($con) {
-//     $query = "set names utf8";
-//     $result = mysqli_query($con, $query);
-// }
+if ($con) {
+    $query = "set names utf8";
+    $result = mysqli_query($con, $query);
+}
 
-// if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
-//     $k = $_GET['key'];
-//     $sql = "SELECT * FROM slots WHERE akey=\"$k\"";
-//     $result = mysqli_query($con, $sql);
+if (!empty($_GET['key']) && is_numeric($_GET['key'])) {
+    $k = $_GET['key'];
+    $sql = "SELECT * FROM slots WHERE akey=\"$k\"";
+    $result = mysqli_query($con, $sql);
 
-//     if (mysqli_num_rows($result) > 0) {
-//         while($row = mysqli_fetch_assoc($result)) {
-//             $s = $row["start"];
-//             $e = $row["end"];
-//             $cat = $row["catID"];
-//             switch ($cat) {
-//                 case 1: 
-//                     $editor = "fpga";
-//                     break;
-//                 case 2:
-//                     $editor = "arduino_mega";
-//                     break;
-//                 case 3:
-//                     $editor = "arduino_uno";
-//                     break;
-//                 case 4:
-//                     $editor = "stm32";
-//                     break;
-//             }
-//         }
-//         header("Location: https://legacy.vlab.dc.ufscar.br/editors/$editor/index.php?key=$k");
-//         exit;
-//     } else {
-//         page();
-//         exit;    
-//     }
-// } else {
-//     page();
-//     exit;
-// }
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            $s = $row["start"];
+            $e = $row["end"];
+            $cat = $row["catID"];
+            switch ($cat) {
+                case 1: 
+                    $editor = "fpga";
+                    break;
+                case 2:
+                    $editor = "arduino_mega";
+                    break;
+                case 3:
+                    $editor = "arduino_uno";
+                    break;
+                case 4:
+                    $editor = "stm32";
+                    break;
+            }
+        }
+        header("Location: https://legacy.vlab.dc.ufscar.br/editors/$editor/index.php?key=$k");
+        exit;
+    } else {
+        page();
+        exit;    
+    }
+} else {
+    page();
+    exit;
+}
 
 page();
 ?>

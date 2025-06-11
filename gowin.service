@@ -1,0 +1,13 @@
+[Unit]
+Description=Gowin MQTT Compilation Service
+After=network.target
+
+[Service]
+Type=simple
+User=vlab
+WorkingDirectory=/home/vlab/gowin
+ExecStart=/usr/bin/python3 /home/vlab/gowin/gowin.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
