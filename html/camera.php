@@ -92,16 +92,11 @@
     </div>
 
 
-
-
-
-
-
 <?php
 class ExecutionQueue {
     private $queueFile = 'queue.json';
     private $executionTimeout = 300; // 5 minutes in seconds
-    private $processedTimeout = 3000; // 50 minutes in seconds
+    private $processedTimeout = 604800; // 1 week in seconds
     
     public function __construct() {
         if (!file_exists($this->queueFile)) {
@@ -142,17 +137,16 @@ class ExecutionQueue {
     public function addFile($filename) {
         $queue = $this->loadQueue();
         
-        $fullpath = "/var/www/html/gowin/src/" . $filename;
+        $fullpath = "/home/vlab/gowin/src/" . $filename;
         // Check if file exists in the filesystem
         if (!file_exists($fullpath)) {
             echo "File does not exist: " . htmlspecialchars($fullpath);
             return false; // File does not exist
         }
-
+        
         // Check if file already exists in queue
         foreach ($queue as $item) {
             if ($item['filename'] === $filename) {
-                echo "File already in queue: " . htmlspecialchars($filename) . "<br>";
                 return false; // File already in queue
             }
         }
@@ -170,7 +164,6 @@ class ExecutionQueue {
             $newItem['status'] = 'executing';
             $newItem['started_at'] = time();
             $this->moveQueue($filename);
-            echo "File is being processed: " . htmlspecialchars($filename) . "<br>";
         }
         
         $queue[] = $newItem;
@@ -221,7 +214,6 @@ class ExecutionQueue {
                     $item['started_at'] = time();
                     $updated = true;
                     $this->moveQueue($item['filename']);
-                    echo "File is enqueued: " . htmlspecialchars($filename) . "<br>";
                     break;
                 }
             }
@@ -255,22 +247,6 @@ class ExecutionQueue {
         return $result;
     }
     
-    public function removeFile($filename) {
-        $queue = $this->loadQueue();
-        $queue = array_filter($queue, function($item) use ($filename) {
-            return $item['filename'] !== $filename;
-        });
-        $this->saveQueue(array_values($queue));
-    }
-    
-    public function clearProcessed() {
-        $queue = $this->loadQueue();
-        $queue = array_filter($queue, function($item) {
-            return $item['status'] !== 'processed';
-        });
-        $this->saveQueue(array_values($queue));
-    }
-
     public function moveQueue($filename) {
       $cmd = "mosquitto_pub -h 'localhost' -t 'gowin' -m '$filename'";
       $cwd = '/tmp';
@@ -281,12 +257,10 @@ class ExecutionQueue {
       );
       flush();
       $process = proc_open($cmd, $descriptorspec, $pipes, $cwd, array());
-      echo "Command sent: " . $cmd . "<br>";
     }
 }
 
 $queueManager = new ExecutionQueue();
-$message = '';
 
 // Handle GET parameters
 if (isset($_GET['filename']) && !empty($_GET['filename'])) {
@@ -361,7 +335,7 @@ function formatTime($timestamp) {
                     <td><?php echo htmlspecialchars($file['filename']); ?></td>
                     <td><?php echo formatTime($file['submitted_at']); ?></td>
                     <td><?php echo formatTime($file['started_at']); ?></td>
-                     <td><?php echo formatTime($file['completed_at']); ?></td>
+                    <td><?php echo formatTime($file['completed_at']); ?></td>
                 </tr>
             <?php endforeach; ?>
         </table>
@@ -369,12 +343,3 @@ function formatTime($timestamp) {
     
 </body>
 </html>
-
-
-
-
-
-
-
-
-
