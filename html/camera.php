@@ -97,6 +97,10 @@
             background-color: #DDD;
             box-shadow: 0 0 0 0px #FFFFFF, 6px 6px #BBBBBB;
         }
+
+        .files p {
+            color: #555
+        }
     
         @media (max-width: 1200px) {
             .frame-container {

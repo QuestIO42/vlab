@@ -1361,3 +1361,4 @@ Values string: 2024-01-29,2024-01-29,1
 2025.06.09 03:43:53 mycal:ERROR Script: /agenda/index.php - Database connection error: SQLSTATE[HY000] [2002] No such file or directory
 2025.06.09 05:41:07 mycal:ERROR Script: /agenda/index.php - Database connection error: SQLSTATE[HY000] [2002] No such file or directory
 2025.06.09 09:01:50 mycal:ERROR Script: /agenda/index.php - Database connection error: SQLSTATE[HY000] [2002] No such file or directory
+2025.06.15 21:04:03 mycal:ERROR Script: /agenda/index.php - Database connection error: SQLSTATE[HY000] [2002] No such file or directory
