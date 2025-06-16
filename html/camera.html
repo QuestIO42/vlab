@@ -7,19 +7,28 @@
     <link rel="stylesheet" href="styles.css">
     <style>
       * {
-        box-sizing: border-box;
+         box-sizing: border-box;
       }
   
       html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        font-family: var(--fonte, sans-serif);
-        background-image: url('./assets/grid.svg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: var(--fonte);
+         margin: 0;
+         padding: 0;
+         height: 100%;
+         font-family: var(--fonte, sans-serif);
+         background-image: url('./assets/grid.svg');
+         background-size: cover;
+         background-repeat: no-repeat;
+         background-position: center;
+         font-family: var(--fonte);
+      }
+
+      .logo {
+         margin: 32px;
+         transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+         transform: scale(1.05); 
       }
 
       .content {
@@ -39,13 +48,13 @@
       }
   
       .frame-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; 
-        gap: 64px;
-        padding: 16px; 
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         align-items: center;
+         height: 100vh; 
+         gap: 64px;
+         padding: 16px; 
       }
   
       iframe {
@@ -66,15 +75,19 @@
       }
   
       @media (max-width: 1200px) {
-        .frame-container {
-          flex-direction: column;
-          height: auto; 
-          gap: 48px;
+         .frame-container {
+            flex-direction: column;
+            height: auto; 
+            gap: 48px;
         }
       }
     </style>
 </head>
 <body>
+   <a href="https://questio42.github.io/">
+      <img class="logo" src="./assets/logo.svg" alt="Logo QuestIO" width="60" height="60" />
+   </a>
+
     <div class="frame-container">
       <div class="content">
          <h2> VGA </h2>

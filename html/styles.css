@@ -50,6 +50,15 @@ main {
     justify-content: center;
 }
 
+.logo {
+    margin: 32px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05); 
+}
+
 .subtitle {
     padding: 12px 16px;
     background-color: var(--cinzaClaro);
