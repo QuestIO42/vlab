@@ -44,7 +44,7 @@ function page() {
             </div>
 
             <div class="option-container">
-                <button class="option-home" onclick="window.location.href='https://questio42.github.io/'">
+                <button class="option-home" onclick="window.location.href='/'">
                     <img src="./assets/home.png" alt="QuestIO" class="icon">
                     Home
                 </button>
