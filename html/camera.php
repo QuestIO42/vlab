@@ -6,22 +6,22 @@
     <title>Lab. Remoto de Embarcados - Câmera</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+      }
   
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: var(--fonte, sans-serif);
-            background-attachment: fixed;
-            background-image: url('./assets/grid.svg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            font-family: var(--fonte);
-        }
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: var(--fonte, sans-serif);
+        background-attachment: fixed;
+        background-image: url('./assets/grid.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-family: var(--fonte);
+      }
 
         .logo {
             margin: 32px;
@@ -32,48 +32,48 @@
             transform: scale(1.05); 
         }
 
-        .content {
-            width: 100%;
-            max-width: 664px; 
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 8px;
-        }
-        
-        .content h2 {
-            width: fit-content;
-            padding: 8px 16px;
-            color: #bab1fc; 
-            background-color: #5a4ac2;
-            box-shadow: 0 0 0 0px #FFFFFF, 6px 6px #3E347B;
-        }
-    
-        .frame-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 64px;
-            padding: 16px; 
-        }
-    
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+      .content {
+         width: 100%;
+         max-width: 664px; 
+         display: flex;
+         flex-direction: column;
+         margin-bottom: 8px;
+      }
+      
+      .content h2 {
+         width: fit-content;
+         padding: 8px 16px;
+         color: #bab1fc; 
+         background-color: #5a4ac2;
+         box-shadow: 0 0 0 0px #FFFFFF, 6px 6px #3E347B;
+      }
+  
+      .frame-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 64px;
+        padding: 16px; 
+      }
+  
+      iframe {
+         width: 100%;
+         height: 100%;
+         border: none;
+      }
 
-        .iframe-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 504px;
-            padding: 12px;
-            background-color: #DDDDDD;
-            box-shadow: 0 0 0 0px #FFFFFF, 8px 8px #BBBBBB;;
-        }
-
+      .iframe-wrapper {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         width: 100%;
+         height: 504px;
+         padding: 12px;
+         background-color: #DDDDDD;
+         box-shadow: 0 0 0 0px #FFFFFF, 8px 8px #BBBBBB;;
+      }
+  
         .files {
             width: 100%;
             padding: 0px 13% 24px 13%;
@@ -102,12 +102,12 @@
             color: #555
         }
     
-        @media (max-width: 1200px) {
-            .frame-container {
-            flex-direction: column;
-            height: auto; 
-            gap: 48px;
-            }
+      @media (max-width: 1200px) {
+        .frame-container {
+          flex-direction: column;
+          height: auto; 
+          gap: 48px;
+        }
 
             .files {
                 flex-direction: column;
@@ -115,7 +115,7 @@
                 padding: 0px 16px;
                 gap: 48px;
             }
-        }
+      }
     </style>
 </head>
 <body>
@@ -124,19 +124,19 @@
     </a>
 
     <div class="frame-container">
-        <div class="content">
-            <h2> VGA </h2>
-            <div class="iframe-wrapper">
-                <iframe src="https://cam1.vlab.dc.ufscar.br/" title="Câmera 1"></iframe>
-            </div>
-        </div>
+      <div class="content">
+         <h2> VGA </h2>
+         <div class="iframe-wrapper">
+            <iframe src="https://cam1.vlab.dc.ufscar.br/" title="Câmera 1"></iframe>
+         </div>
+      </div>
 
-        <div class="content">
-            <h2> DE-10 Standard </h2>
-            <div class="iframe-wrapper">
-                <iframe src="https://cam2.vlab.dc.ufscar.br/" title="Câmera 2"></iframe>
-            </div>
-        </div>
+      <div class="content">
+         <h2> DE-10 Standard </h2>
+         <div class="iframe-wrapper">
+            <iframe src="https://cam2.vlab.dc.ufscar.br/" title="Câmera 2"></iframe>
+         </div>
+      </div>
     </div>
 
 <?php
@@ -226,6 +226,15 @@ class ExecutionQueue {
         }
         return false;
     }
+
+    private function hasWaitingProcess($queue) {
+        foreach ($queue as $item) {
+            if ($item['status'] === 'waiting') {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public function updateQueue() {
         $queue = $this->loadQueue();
@@ -235,8 +244,9 @@ class ExecutionQueue {
             // Check for timed out executions
             if ($item['status'] === 'executing' && 
                 $item['started_at'] && 
-                (time() - $item['started_at']) > $this->executionTimeout) {
-                
+                (time() - $item['started_at']) > $this->executionTimeout &&
+                $this->hasWaitingProcess($queue)) {
+                    
                 $item['status'] = 'processed';
                 $item['completed_at'] = time();
                 $updated = true;
@@ -328,69 +338,69 @@ function formatTime($timestamp) {
 ?>
     <div class="files">
         <div class="files-content">     
-            <h2>Currently Executing (<?php echo count($queueData['executing']); ?>)</h2>
-            <?php if (empty($queueData['executing'])): ?>
-                <p>No files currently executing</p>
-            <?php else: ?>
-                <table border="1" cellpadding="5">
-                    <tr>
-                        <th>Filename</th>
-                        <th>Started At</th>
-                    </tr>
-                    <?php foreach ($queueData['executing'] as $file): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($file['filename']); ?></td>
-                            <td><?php echo formatTime($file['started_at']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-            <?php endif; ?>
+    <h2>Currently Executing (<?php echo count($queueData['executing']); ?>)</h2>
+    <?php if (empty($queueData['executing'])): ?>
+        <p>No files currently executing</p>
+    <?php else: ?>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Filename</th>
+                <th>Started At</th>
+            </tr>
+            <?php foreach ($queueData['executing'] as $file): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($file['filename']); ?></td>
+                    <td><?php echo formatTime($file['started_at']); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
         </div>
         
         <div class="files-content">  
-            <h2>Waiting Queue (<?php echo count($queueData['waiting']); ?>)</h2>
-            <?php if (empty($queueData['waiting'])): ?>
-                <p>No files waiting in queue</p>
-            <?php else: ?>
-                <table border="1" cellpadding="5">
-                    <tr>
-                        <th>Position</th>
-                        <th>Filename</th>
-                        <th>Submitted At</th>
-                    </tr>
-                    <?php foreach ($queueData['waiting'] as $index => $file): ?>
-                        <tr>
-                            <td><?php echo $index + 1; ?></td>
-                            <td><?php echo htmlspecialchars($file['filename']); ?></td>
-                            <td><?php echo formatTime($file['submitted_at']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-            <?php endif; ?>
+    <h2>Waiting Queue (<?php echo count($queueData['waiting']); ?>)</h2>
+    <?php if (empty($queueData['waiting'])): ?>
+        <p>No files waiting in queue</p>
+    <?php else: ?>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Position</th>
+                <th>Filename</th>
+                <th>Submitted At</th>
+            </tr>
+            <?php foreach ($queueData['waiting'] as $index => $file): ?>
+                <tr>
+                    <td><?php echo $index + 1; ?></td>
+                    <td><?php echo htmlspecialchars($file['filename']); ?></td>
+                    <td><?php echo formatTime($file['submitted_at']); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
         </div>
-            
+        
         <div class="files-content">  
-            <h2>Processed Files (<?php echo count($queueData['processed']); ?>)</h2>
-            <?php if (empty($queueData['processed'])): ?>
-                <p>No processed files</p>
-            <?php else: ?>
-                <table border="1" cellpadding="5">
-                    <tr>
-                        <th>Filename</th>
-                        <th>Submitted At</th>
-                        <th>Started At</th>
-                        <th>Completed At</th>
-                    </tr>
-                    <?php foreach ($queueData['processed'] as $file): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($file['filename']); ?></td>
-                            <td><?php echo formatTime($file['submitted_at']); ?></td>
-                            <td><?php echo formatTime($file['started_at']); ?></td>
-                            <td><?php echo formatTime($file['completed_at']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-            <?php endif; ?>
+    <h2>Processed Files (<?php echo count($queueData['processed']); ?>)</h2>
+    <?php if (empty($queueData['processed'])): ?>
+        <p>No processed files</p>
+    <?php else: ?>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Filename</th>
+                <th>Submitted At</th>
+                <th>Started At</th>
+                <th>Completed At</th>
+            </tr>
+            <?php foreach ($queueData['processed'] as $file): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($file['filename']); ?></td>
+                    <td><?php echo formatTime($file['submitted_at']); ?></td>
+                    <td><?php echo formatTime($file['started_at']); ?></td>
+                    <td><?php echo formatTime($file['completed_at']); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
         </div>
     </div>
     
