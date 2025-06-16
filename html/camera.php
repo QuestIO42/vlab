@@ -179,6 +179,15 @@ class ExecutionQueue {
         }
         return false;
     }
+
+    private function hasWaitingProcess($queue) {
+        foreach ($queue as $item) {
+            if ($item['status'] === 'waiting') {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public function updateQueue() {
         $queue = $this->loadQueue();
@@ -188,8 +197,9 @@ class ExecutionQueue {
             // Check for timed out executions
             if ($item['status'] === 'executing' && 
                 $item['started_at'] && 
-                (time() - $item['started_at']) > $this->executionTimeout) {
-                
+                (time() - $item['started_at']) > $this->executionTimeout &&
+                $this->hasWaitingProcess($queue)) {
+                    
                 $item['status'] = 'processed';
                 $item['completed_at'] = time();
                 $updated = true;
