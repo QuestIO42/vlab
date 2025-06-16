@@ -75,7 +75,7 @@ main {
 }
 
 .options {
-    width: 70%;
+    width: 80%;
     padding: 16px;
     margin: 12px 0px 0px 0px;
     display: flex;
@@ -125,11 +125,11 @@ main {
 }
 
 .codespace {
-    width: 70%;
+    width: 80%;
 }
 
 .console {
-    width: 70%;
+    width: 80%;
     margin: 12px 0px;
 }
 
