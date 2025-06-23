@@ -87,7 +87,7 @@
         .files-content {
             display: flex;
             flex-direction: column;
-
+            margin: 0px 0px 8px 0px;
         }
 
         .files h2 {
@@ -379,7 +379,7 @@ function formatTime($timestamp) {
     <?php endif; ?>
         </div>
         
-        <div class="files-content">  
+    <div class="files-content">  
     <h2>Processed Files (<?php echo count($queueData['processed']); ?>)</h2>
     <?php if (empty($queueData['processed'])): ?>
         <p>No processed files</p>
