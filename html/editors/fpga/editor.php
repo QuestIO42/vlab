@@ -44,6 +44,7 @@ Exemplos:
     <optgroup label="Basic">
       <option value="LEDs">LEDs</option>
       <option value="hexcount">Hex Count</option>
+      <option value="ws2812b">8x8 RGB LEDs</option>
     </optgroup>
     <optgroup label="VGA">
       <option value="vga">VGA 640x480</option>
