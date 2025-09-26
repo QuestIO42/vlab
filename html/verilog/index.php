@@ -2,6 +2,15 @@
 <html>
     <head>
         <title>Lab. Remoto de L&oacute;gica Digital - DC/UFSCar</title>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2YFMTLKN4V"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-2YFMTLKN4V');
+        </script>
+
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
         <script type="text/javascript" src="sendContent.js"></script>
         <style>body {background-color: #e0e0e0; color: #2b3856;}</style>

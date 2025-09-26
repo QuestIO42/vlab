@@ -6,6 +6,15 @@ function page() {
     <html lang="pt-br">
     <head>
         <title>Lab. Remoto de Embarcados - DC/UFSCar</title>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2YFMTLKN4V"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-2YFMTLKN4V');
+        </script>
+
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
         <link rel="stylesheet" href="styles.css">
