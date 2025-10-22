@@ -28,7 +28,7 @@ module top #(parameter VGA_BITS = 8) (
 endmodule
 
 /*
-Scrolling starfield generator using a period (2^16-1) LFSR.
+Scrolling starfield generator using a period (2^16-1) LFSR with a floating QR overlay.
 */
 
 module starfield_top(clk, reset, hsync, vsync, rgb);
@@ -41,6 +41,18 @@ module starfield_top(clk, reset, hsync, vsync, rgb);
   wire [9:0] vpos;
   wire [15:0] lfsr;
 
+  // Slow clock for QR movement
+  reg [23:0] clk_div = 0;
+  reg visual_clk = 0;
+  localparam WAIT_TIME = 24'd1350000;
+  always @(posedge clk) begin
+    clk_div <= clk_div + 1;
+    if (clk_div == WAIT_TIME) begin
+      clk_div <= 0;
+      visual_clk <= ~visual_clk;
+    end
+  end
+
   hvsync_generator hvsync_gen(
     .clk(clk),
     .reset(reset),
@@ -50,18 +62,52 @@ module starfield_top(clk, reset, hsync, vsync, rgb);
     .hpos(hpos),
     .vpos(vpos)
   );
-  
-  // enable LFSR only in 512x512 area
-  wire star_enable = !hpos[9] & !vpos[9];
-  
+
+  // Enable LFSR over the full visible area (fix screen width)
+  wire star_enable = display_on;
+
   // LFSR with period = 2^16-1 = 256*256-1
   LFSR #(16'b1000000001011,0) lfsr_gen(
     .clk(clk),
     .reset(reset),
     .enable(star_enable),
-    .lfsr(lfsr));
+    .lfsr(lfsr)
+  );
 
   wire star_on = &lfsr[15:9]; // all 7 bits must be set
-  assign rgb = display_on && star_on ? lfsr[2:0] : 0;
+  wire [2:0] star_rgb = star_on ? lfsr[2:0] : 3'b000;
+
+  // Floating QR overlay (bouncing)
+  localparam QR_SIZE = 54;
+  reg  [26:0] QR_code [0:26];
+  initial $readmemb("qr_code.bin", QR_code);
+
+  reg [9:0] qr_x = 10'd0, qr_y = 10'd0; // top-left of QR
+  reg incr_x = 1'b1, incr_y = 1'b1;
+
+  // Bounce QR position at a slower rate
+  always @(posedge visual_clk) begin
+    // Horizontal bounce
+    if (incr_x) begin
+      if (qr_x >= (640 - QR_SIZE)) incr_x <= 1'b0; else qr_x <= qr_x + 1'b1;
+    end else begin
+      if (qr_x == 0) incr_x <= 1'b1; else qr_x <= qr_x - 1'b1;
+    end
+    // Vertical bounce
+    if (incr_y) begin
+      if (qr_y >= (480 - QR_SIZE)) incr_y <= 1'b0; else qr_y <= qr_y + 1'b1;
+    end else begin
+      if (qr_y == 0) incr_y <= 1'b1; else qr_y <= qr_y - 1'b1;
+    end
+  end
+
+  wire in_qr = (hpos >= qr_x && hpos < (qr_x + QR_SIZE)) && (vpos >= qr_y && vpos < (qr_y + QR_SIZE));
+  wire [9:0] tlx = hpos - qr_x;
+  wire [9:0] tly = vpos - qr_y;
+  wire [26:0] QR_line = QR_code[tly[9:1]];   // /2 scaling
+  wire QR_pixel = ~QR_line[tlx[9:1]];        // /2 scaling
+  wire [2:0] qr_rgb = {3{QR_pixel}};
+
+  assign rgb = display_on ? (in_qr ? qr_rgb : star_rgb) : 3'b000;
 
 endmodule
