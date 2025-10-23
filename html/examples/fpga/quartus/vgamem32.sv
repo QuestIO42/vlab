@@ -50,11 +50,21 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   reg inDisplayArea;
   reg vga_HS, vga_VS;
 
+  // QR support
+  localparam QR_SIZE = 54;
+  reg  [26:0] QR_code [0:26];
+  wire [26:0] QR_line;
+  wire QR_pixel;
+  reg [9:0] qr_x = 10'd8;
+  reg [9:0] qr_y = 10'd8;
+  initial $readmemb("qr_code.bin", QR_code);
+
   wire CounterXmaxed = (CounterX == 800); // 16 + 48 + 96 + 640
   wire CounterYmaxed = (CounterY == 525); // 10 +  2 + 33 + 480
   wire [4:0] col;
   wire [3:0] row;
   wire [7:0] vbyte;
+  wire in_qr;
 
   always @(posedge clk or posedge reset)
     if (reset)
@@ -87,12 +97,22 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
     inDisplayArea <= (CounterX < 640) && (CounterY < 480);
   end
 
+  // QR sampling
+  assign in_qr = (CounterX >= qr_x && CounterX < (qr_x + QR_SIZE)) && (CounterY >= qr_y && CounterY < (qr_y + QR_SIZE));
+  assign QR_line = QR_code[(CounterY - qr_y) >> 1];
+  assign QR_pixel = ~QR_line[(CounterX - qr_x) >> 1];
+
   assign VGA_HS_O = ~vga_HS;
   assign VGA_VS_O = ~vga_VS;  
 
-  assign VGA_R = inDisplayArea ? {vbyte[5:4], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-  assign VGA_G = inDisplayArea ? {vbyte[3:2], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-  assign VGA_B = inDisplayArea ? {vbyte[1:0], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
+  wire [VGA_BITS-1:0] r_mem = {vbyte[5:4], {VGA_BITS-2{1'b0}}};
+  wire [VGA_BITS-1:0] g_mem = {vbyte[3:2], {VGA_BITS-2{1'b0}}};
+  wire [VGA_BITS-1:0] b_mem = {vbyte[1:0], {VGA_BITS-2{1'b0}}};
+  wire [VGA_BITS-1:0] qr_bus = {VGA_BITS{QR_pixel}};
+
+  assign VGA_R = inDisplayArea ? (in_qr ? qr_bus : r_mem) : {VGA_BITS{1'b0}};
+  assign VGA_G = inDisplayArea ? (in_qr ? qr_bus : g_mem) : {VGA_BITS{1'b0}};
+  assign VGA_B = inDisplayArea ? (in_qr ? qr_bus : b_mem) : {VGA_BITS{1'b0}};
 endmodule
 
 
