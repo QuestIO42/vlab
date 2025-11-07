@@ -60,9 +60,9 @@ def subscribe(client: mqtt_client):
             turn_on_switch("switch.vlabpixar")
             sleep(300)
             turn_off_switch("switch.vlabpixar")
-        elif command == 'quartus':
+        else:
             turn_on_switch("switch.vlabpixar")
-            make_proc = subprocess.Popen(["./quartus.sh"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            make_proc = subprocess.Popen(["./quartus.sh", command], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             stdout, stderr = make_proc.communicate()
             client.publish(TOPIC+'/output', stdout)
             client.publish(TOPIC+'/output', stderr)
@@ -71,8 +71,6 @@ def subscribe(client: mqtt_client):
             print("Return code: {}".format(make_proc.returncode))
             sleep(300)
             turn_off_switch("switch.vlabpixar")
-        else:
-            print("Invalid command!")
 
     client.subscribe(TOPIC)
     client.on_message = on_message

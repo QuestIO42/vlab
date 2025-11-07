@@ -103,7 +103,7 @@ ifeq ($(shell uname -m),x86_64)
 endif
 
 MAP_ARGS = $(QUARTUS_ARGS) --read_settings_files=on $(addprefix --source=,$(SRCS))
-FIT_ARGS = $(QUARTUS_ARGS) --part=$(PART) --read_settings_files=on
+FIT_ARGS = $(QUARTUS_ARGS) --part=$(PART) --read_settings_files=on --effort=fast --one_fit_attempt=on
 ASM_ARGS = $(QUARTUS_ARGS)
 STA_ARGS = $(QUARTUS_ARGS)
 SH_ARGS  = $(QUARTUS_ARGS)

@@ -16,9 +16,13 @@ kill -9 $P
 export HOME=`pwd`
 D=`date +%Y-%m-%d-%H-%M-%S`
 
-cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/quartus
-cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/quartus/build_history/$D
-cd /home/vlab/quartus
+# cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/quartus
+# cp /srv/QuestIO42/vlab/html/editors/fpga/top.sv /home/vlab/quartus/build_history/$D
+cd /home/vlab/quartus/rtl
+find . -type f ! -name '*.tgz' -delete
+tar zxvf $1
+mv $1 ../build_history 
+cd .. 
 
 make clean
 make program

@@ -195,7 +195,7 @@ class ExecutionQueue {
     public function addFile($filename) {
         $queue = $this->loadQueue();
         
-        $fullpath = "/home/vlab/gowin/src/" . $filename;
+        $fullpath = "/home/vlab/quartus/rtl/" . $filename;
         // Check if file exists in the filesystem
         if (!file_exists($fullpath)) {
             echo "File does not exist: " . htmlspecialchars($fullpath);
@@ -316,7 +316,7 @@ class ExecutionQueue {
     }
     
     public function moveQueue($filename) {
-      $cmd = "mosquitto_pub -h 'localhost' -t 'gowin' -m '$filename'";
+      $cmd = "mosquitto_pub -h 'localhost' -t 'quartus' -m '$filename'";
       $cwd = '/tmp';
       $descriptorspec = array(
          0 => array("pipe", "r"),   // stdin is a pipe that the child will read from
