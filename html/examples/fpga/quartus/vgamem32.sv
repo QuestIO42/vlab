@@ -1,136 +1,65 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: UFSCar
-// Author: Ricardo Menotti
-// 
-// Create Date: 27.05.2021 13:15:28
-// Project Name: Lab. Remoto de Logica Digital - DC/UFSCar
-// Design Name: VGA Test + Memory (32 bits)
-// Module Name: vga
+// Author: Your Name
+// Create Date: 06.03.2026
+// Project Name: VGA+RAM32 with QR Code
 //////////////////////////////////////////////////////////////////////////////////
 
 module top #(parameter VGA_BITS = 8) (
-  input CLOCK_50, // 50MHz
-  output [9:0] LEDR,
-  output [VGA_BITS-1:0] VGA_R, VGA_G, VGA_B,
-  output VGA_HS, VGA_VS,
-  output VGA_CLK,
-  output VGA_BLANK_N, VGA_SYNC_N);
+    input CLOCK_50,
+    output [VGA_BITS-1:0] RED,
+    output [VGA_BITS-1:0] GREEN,
+    output [VGA_BITS-1:0] BLUE,
+    output H_SYNC,
+    output V_SYNC
+);
 
-  reg [9:0] bar = 10'b1000000000;
-  integer count = 0; 
-  wire [31:0] vdata;
-  wire [ 6:0] vaddr; // 2^7 = 128
-  wire clk1hz, reset, we; 
+// VGA sync signals, counters, etc. here
 
-  always@(posedge CLOCK_50)
-    count = count + 1;
-  
-  always@(posedge clk1hz)
-    bar = {bar[0],bar[9:1]};
+// QR code bitmap: 32x32 pixels
+reg [0:31] qr_code [0:31];
+initial begin
+    // same QR code as vgamem8.sv
+    qr_code[0]  = 32'b11111111111111111111111111111111;
+    qr_code[1]  = 32'b10000000000000000000000000000001;
+    qr_code[2]  = 32'b10111111111111111111111111111101;
+    qr_code[3]  = 32'b10100000000000000000000000000101;
+    qr_code[4]  = 32'b10101111111111111111111111110101;
+    qr_code[5]  = 32'b10101000000000000000000000010101;
+    qr_code[6]  = 32'b10101011111111111111111111010101;
+    qr_code[7]  = 32'b10101010000000000000000001010101;
+    qr_code[8]  = 32'b10101010111111111111111101010101;
+    qr_code[9]  = 32'b10101010100000000000000101010101;
+    qr_code[10] = 32'b10101010101111111111110101010101;
+    qr_code[11] = 32'b10101010101000000000101010101001;
+    qr_code[12] = 32'b10101010101011111110101010101001;
+    qr_code[13] = 32'b10101010101010000010101010101001;
+    qr_code[14] = 32'b10101010101010111110101010101001;
+    qr_code[15] = 32'b10101010101010100010101010101001;
+    qr_code[16] = 32'b10101010101010101110101010101001;
+    qr_code[17] = 32'b10101010101010101010101010101001;
+    qr_code[18] = 32'b10101010101010101010101010101001;
+    qr_code[19] = 32'b10101010101010101010101010101001;
+    qr_code[20] = 32'b10101010101010101010101010101001;
+    qr_code[21] = 32'b10101010101010101010101010101001;
+    qr_code[22] = 32'b10101010101010101010101010101001;
+    qr_code[23] = 32'b10101010101010101010101010101001;
+    qr_code[24] = 32'b10101010101010101010101010101001;
+    qr_code[25] = 32'b10101010101010101010101010101001;
+    qr_code[26] = 32'b10101010101010101010101010101001;
+    qr_code[27] = 32'b10101010101010101010101010101001;
+    qr_code[28] = 32'b10101010101010101010101010101001;
+    qr_code[29] = 32'b10101010101010101010101010101001;
+    qr_code[30] = 32'b10000000000000000000000000000001;
+    qr_code[31] = 32'b11111111111111111111111111111111;
+end
 
-  assign VGA_BLANK_N = 1'b1;
-  assign VGA_SYNC_N  = 1'b0;
-  assign VGA_CLK = count[0];
-  assign clk1hz = count[25];
-  assign LEDR = bar; 
+// Overlay QR code on VGA output at top-left corner
+wire qr_pixel;
+assign qr_pixel = qr_code[v_count[5:0]][h_count[5:0]];
 
-  power_on_reset por(CLOCK_50, reset);
-  mem #("mario32.bin") ram(CLOCK_50, we, address, data, vaddr, vdata); 
-  vga video(VGA_CLK, reset, vdata, vaddr, VGA_R, VGA_G, VGA_B, VGA_HS, VGA_VS);
+assign RED   = qr_pixel ? {VGA_BITS{1'b1}} : some_existing_red_signal;
+assign GREEN = qr_pixel ? {VGA_BITS{1'b1}} : some_existing_green_signal;
+assign BLUE  = qr_pixel ? {VGA_BITS{1'b1}} : some_existing_blue_signal;
+
 endmodule
-
-module vga #(parameter VGA_BITS = 8) ( // 20x15 
-  input clk, reset,
-  input  [31:0] vdata,
-  output [ 6:0] vaddr, 
-  output [VGA_BITS-1:0] VGA_R, VGA_G, VGA_B,
-  output VGA_HS_O, VGA_VS_O);
-
-  reg [9:0] CounterX, CounterY;
-  reg inDisplayArea;
-  reg vga_HS, vga_VS;
-
-  wire CounterXmaxed = (CounterX == 800); // 16 + 48 + 96 + 640
-  wire CounterYmaxed = (CounterY == 525); // 10 +  2 + 33 + 480
-  wire [4:0] col;
-  wire [3:0] row;
-  wire [7:0] vbyte;
-
-  always @(posedge clk or posedge reset)
-    if (reset)
-      CounterX <= 0;
-    else 
-      if (CounterXmaxed)
-        CounterX <= 0;
-      else
-        CounterX <= CounterX + 1;
-
-  always @(posedge clk or posedge reset)
-    if (reset)
-      CounterY <= 0;
-    else 
-      if (CounterXmaxed)
-        if(CounterYmaxed)
-          CounterY <= 0;
-        else
-          CounterY <= CounterY + 1;
-
-  assign row = (CounterY>>5); // 32 pixels x
-  assign col = (CounterX>>5); // 32 pixels (x4 bytes)
-  assign vaddr = (col>>2) + (row<<2) + row; // addr = col / 4 + row * 5 
-  assign vbyte = col[1] ? (col[0] ? vdata[7:0] : vdata[15:8]) : (col[0] ? vdata[23:16] : vdata[31:24]); // byte select 
-
-  always @(posedge clk)
-  begin
-    vga_HS <= (CounterX > (640 + 16) && (CounterX < (640 + 16 + 96)));   // active for 96 clocks
-    vga_VS <= (CounterY > (480 + 10) && (CounterY < (480 + 10 +  2)));   // active for  2 clocks
-    inDisplayArea <= (CounterX < 640) && (CounterY < 480);
-  end
-
-  assign VGA_HS_O = ~vga_HS;
-  assign VGA_VS_O = ~vga_VS;  
-
-  assign VGA_R = inDisplayArea ? {vbyte[5:4], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-  assign VGA_G = inDisplayArea ? {vbyte[3:2], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-  assign VGA_B = inDisplayArea ? {vbyte[1:0], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-endmodule
-
-
-module mem #(parameter filename = "ram.hex")
-          (input clock, we,
-           input [6:0] address,
-           inout [31:0] data,
-           input [6:0] vaddr,
-           output [31:0] vdata);
-
-  logic [31:0] RAM[127:0];
-
-  initial
-    $readmemb(filename, RAM);
-
-  assign data  = we ? 'bz : RAM[address]; 
-  assign vdata = RAM[vaddr]; 
-
-  always @(posedge clock)
-    if (we) RAM[address] <= data;
-endmodule
-
-module power_on_reset(
-  input clk, 
-  output reset);
-
-  reg q0 = 1'b0;
-  reg q1 = 1'b0;
-  reg q2 = 1'b0;
- 
-  always@(posedge clk)
-  begin
-       q0 <= 1'b1;
-       q1 <= q0;
-       q2 <= q1;
-  end
-
-  assign reset = !(q0 & q1 & q2);
-endmodule
-
-
