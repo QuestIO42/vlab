@@ -46,6 +46,10 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   output [VGA_BITS-1:0] VGA_R, VGA_G, VGA_B,
   output VGA_HS_O, VGA_VS_O);
 
+  localparam QR_SIZE = 54;
+  localparam QR_X = 10'd584;
+  localparam QR_Y = 10'd424;
+
   reg [9:0] CounterX, CounterY;
   reg inDisplayArea;
   reg vga_HS, vga_VS;
@@ -55,6 +59,15 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   wire [4:0] col;
   wire [3:0] row;
   wire [7:0] vbyte;
+  wire qr_window;
+  wire [4:0] qr_col, qr_row;
+  wire [26:0] QR_line;
+  wire QR_pixel;
+
+  reg [26:0] QR_code [0:26];
+
+  initial
+    $readmemb("qr_code.bin", QR_code);
 
   always @(posedge clk or posedge reset)
     if (reset)
@@ -79,6 +92,12 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   assign col = (CounterX>>5); // 32 pixels (x4 bytes)
   assign vaddr = (col>>2) + (row<<2) + row; // addr = col / 4 + row * 5 
   assign vbyte = col[1] ? (col[0] ? vdata[7:0] : vdata[15:8]) : (col[0] ? vdata[23:16] : vdata[31:24]); // byte select 
+  assign qr_window = (CounterX >= QR_X && CounterX < QR_X + QR_SIZE) &&
+                     (CounterY >= QR_Y && CounterY < QR_Y + QR_SIZE);
+  assign qr_col = qr_window ? ((CounterX - QR_X) >> 1) : 5'd0;
+  assign qr_row = qr_window ? ((CounterY - QR_Y) >> 1) : 5'd0;
+  assign QR_line = QR_code[qr_row];
+  assign QR_pixel = ~QR_line[qr_col];
 
   always @(posedge clk)
   begin
@@ -90,9 +109,9 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   assign VGA_HS_O = ~vga_HS;
   assign VGA_VS_O = ~vga_VS;  
 
-  assign VGA_R = inDisplayArea ? {vbyte[5:4], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-  assign VGA_G = inDisplayArea ? {vbyte[3:2], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
-  assign VGA_B = inDisplayArea ? {vbyte[1:0], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
+  assign VGA_R = qr_window ? {VGA_BITS{QR_pixel}} : inDisplayArea ? {vbyte[5:4], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
+  assign VGA_G = qr_window ? {VGA_BITS{QR_pixel}} : inDisplayArea ? {vbyte[3:2], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
+  assign VGA_B = qr_window ? {VGA_BITS{QR_pixel}} : inDisplayArea ? {vbyte[1:0], {VGA_BITS-2{1'b0}}} : {VGA_BITS{1'b0}};
 endmodule
 
 
@@ -132,5 +151,4 @@ module power_on_reset(
 
   assign reset = !(q0 & q1 & q2);
 endmodule
-
 
