@@ -112,8 +112,8 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   output VGA_HS_O, VGA_VS_O);
 
   localparam QR_SIZE = 54;
-  localparam QR_X = 10'd584;
-  localparam QR_Y = 10'd424;
+  localparam QR_X = 10'd544;
+  localparam QR_Y = 10'd384;
 
   reg [9:0] CounterX, CounterY;
   reg inDisplayArea;
@@ -155,7 +155,8 @@ module vga #(parameter VGA_BITS = 8) ( // 20x15
   assign row = (CounterY>>5); // 32 pixels x
   assign col = (CounterX>>5); // 32 pixels 
   assign vaddr = col + (row<<4) + (row<<2); // addr <= col + row x 20
-  assign qr_window = (CounterX >= QR_X && CounterX < QR_X + QR_SIZE) &&
+  assign qr_window = (CounterX < 640 && CounterY < 480) &&
+                     (CounterX >= QR_X && CounterX < QR_X + QR_SIZE) &&
                      (CounterY >= QR_Y && CounterY < QR_Y + QR_SIZE);
   assign qr_col = qr_window ? ((CounterX - QR_X) >> 1) : 5'd0;
   assign qr_row = qr_window ? ((CounterY - QR_Y) >> 1) : 5'd0;
