@@ -12,13 +12,19 @@ module top #(parameter VGA_BITS = 8) (
   output VGA_BLANK_N, VGA_SYNC_N);
 
   always@(posedge CLOCK_50)
-    VGA_CLK = ~VGA_CLK;
+    VGA_CLK <= ~VGA_CLK;
 
   wire RESET;
   power_on_reset por(VGA_CLK, RESET);
 
   wire [2:0] RGB;
-  starfield_top(VGA_CLK, RESET, VGA_HS, VGA_VS, RGB);
+  starfield_top starfield_inst(
+    .clk(VGA_CLK),
+    .reset(RESET),
+    .hsync(VGA_HS),
+    .vsync(VGA_VS),
+    .rgb(RGB)
+  );
   assign VGA_R = {VGA_BITS{RGB[2]}};
   assign VGA_G = {VGA_BITS{RGB[1]}};
   assign VGA_B = {VGA_BITS{RGB[0]}};
