@@ -13,7 +13,7 @@
         gtag('config', 'G-2YFMTLKN4V');
     </script>
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
     <link rel="stylesheet" href="styles.css">
     <style>
       * {
@@ -132,6 +132,10 @@
 <body>
     <a href="https://questio42.github.io/">
         <img class="logo" src="./assets/logo.svg" alt="Logo QuestIO" width="60" height="60" />
+    </a>
+
+    <a class="github-fork-ribbon" href="https://github.com/QuestIO42/" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">
+        Fork me on GitHub
     </a>
 
     <div class="frame-container">
