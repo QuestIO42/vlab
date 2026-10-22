@@ -16,12 +16,12 @@ export LM_LICENSE_FILE=1800@licencas.ufscar.br
 
 ###################################################################
 # Part, Family, Boardfile 
-# BOARD = DE0_CV
+BOARD = DE0_CV
 # BOARD = DE1
 # BOARD = DE2_115
 # BOARD = DE2i_150
 # BOARD = DE10_lite
-BOARD = DE10_standard
+# BOARD = DE10_standard
 
 ifeq ($(BOARD),DE0_CV)
 	FAMILY = "Cyclone V"

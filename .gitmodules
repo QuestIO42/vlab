@@ -1,3 +1,9 @@
 [submodule "up1"]
 	path = up1
 	url = https://github.com/menotti/up1
+[submodule "quartus/remote-lab-quartus-de0cv"]
+	path = quartus/remote-lab-quartus-de0cv
+	url = git@github.com:DC-UFSCar/remote-lab-quartus-de0cv.git
+[submodule "fpga-send"]
+	path = fpga-send
+	url = git@github.com:DC-UFSCar/fpga-send.git
