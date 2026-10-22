@@ -37,22 +37,22 @@ endif
 ifeq ($(BOARD),DE1)
 	FAMILY = "Cyclone II"
 	PART = EP2C20F484C7
-	BOARDFILE = ../DE1.qsf
+	BOARDFILE = DE1.qsf
 endif
 ifeq ($(BOARD),DE2_115)
 	FAMILY = "Cyclone IV E"
 	PART = EP4CE115F29C7
-	BOARDFILE = ../DE2_115.qsf
+	BOARDFILE = DE2_115.qsf
 endif
 ifeq ($(BOARD),DE2i_150)
 	FAMILY = "Cyclone IV GX"
 	PART = EP4CGX150DF31C7
-	BOARDFILE = ../DE2i_150.qsf
+	BOARDFILE = DE2i_150.qsf
 endif
 ifeq ($(BOARD),DE10_lite)
 	FAMILY = "MAX 10"
 	PART = 10M50DAF484C7G
-	BOARDFILE = ../DE10_lite.qsf
+	BOARDFILE = DE10_lite.qsf
 endif
 
 ###################################################################
@@ -154,7 +154,7 @@ asm.chg:
 ###################################################################
 
 program: all $(PROJECT).sof
-	$(QUARTUS_PGM) $(PGM_ARGS) -o "P;$(PROJECT).sof$(JTAG_DEVICE_INDEX)"
+	$(QUARTUS_PGM) -c USB-Blaster $(PGM_ARGS) -o "P;$(PROJECT).sof$(JTAG_DEVICE_INDEX)"
 
 program-pof: $(PROJECT).pof
 	$(QUARTUS_PGM) $(PGM_ARGS) -o "BVP;$(PROJECT).pof"
